@@ -1,6 +1,5 @@
 
 ###> symfony/framework-bundle ###
-/.env.local
 /.env.local.php
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
@@ -20,8 +19,6 @@
 ###< phpunit/phpunit ###
 
 .idea
-.env
-.env.test
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
 /public/build/
