@@ -1,7 +1,53 @@
 :root {
     --bg-color-body: #FAFBFE;
+    --color-pink: #FA5C7C;
+    --color-orange: #FCAD73;
+    --color-grey: #B2bBC0;
+    --color-blue: #0F2544;
 }
 
 body {
     background-color: var(--bg-color-body);
+}
+
+#header {
+    background-color: var(--color-blue);
+    height: 100vh;
+    width: 200px;
+}
+
+#header #logo {
+    height: 20%;
+    width: 100%;
+}
+
+#header nav {
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: space-around;
+}
+
+#header div i {
+    color: white;
+}
+
+.header-nav-link i {
+    width: 20%;
+    text-align: center;
+}
+
+.header-nav-link a {
+    width: 80%;
+}
+
+#header #footer {
+    height: 20%;
+    width: 100%;
+}
+
+a {
+    color: white;
+    text-decoration: none;
 }

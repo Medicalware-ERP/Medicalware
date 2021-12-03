@@ -9,7 +9,7 @@
     },
     "engines": {
         "node": "14.17.0",
-        "npm" : "6.x"
+        "npm": "6.x"
     },
     "license": "UNLICENSED",
     "private": true,
@@ -19,5 +19,9 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
+    },
+    "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.15.4",
+        "normalize.css": "^8.0.1"
     }
 }
