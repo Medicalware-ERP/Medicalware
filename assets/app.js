@@ -10,5 +10,6 @@ import 'normalize.css'
 import './styles/app.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
+
 // start the Stimulus application
 import './bootstrap';
