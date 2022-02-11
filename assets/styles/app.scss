@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import "./sidebar/sidebar";
+@import "./dashboard/dashboard";
+
+:root {
+    --bg-color-body:#FAFBFE;
+    --color-pink:#FA5C7C;
+    --color-orange:#FCAD73;
+    --color-grey:#B2bBC0;
+    --color-blue:#0F2544;
+}
+
+/* GlobalStyles de l'application */
+
+body {
+    background-color: var(--bg-color-body);
+    font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}

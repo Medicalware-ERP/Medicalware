@@ -1,0 +1,31 @@
+/* Dashboard body */
+
+.dashboard-section {
+  position: relative;
+  background: #E4E9F7;
+  height: 100vh;
+  left: 291px;
+  width: calc(100% - 291px);
+  transition: all 0.5s ease;
+
+  .dashboard-content {
+    height: 60px;
+    display: flex;
+    align-items: center;
+
+    .fa-bars, .text {
+      color: #11101d;
+      font-size: 18px;
+    }
+
+    .fa-bars {
+      margin: 0 15px;
+      cursor: pointer;
+    }
+
+    &.text {
+      font-size: 26px;
+      font-weight: 600;
+    }
+  }
+}

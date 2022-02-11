@@ -7,7 +7,7 @@
 
 // any CSS you import will output into a single css file (app.css in this case)
 import 'normalize.css'
-import './styles/app.css';
+import './styles/app.scss';
 import '@fortawesome/fontawesome-free/css/all.css';
 
 
