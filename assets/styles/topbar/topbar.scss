@@ -1,0 +1,44 @@
+.topbar {
+  height: 75px;
+  background-color: white;
+  box-shadow: 0 3px 9px -1px #000000;
+  width: calc(100vw - 291px);
+
+  .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+
+    .profile {
+      width: 150px;
+      background: var(--color-blue);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height:100%;
+      column-gap:10px;
+
+      .profile-left img.profile-img {
+        height:30px;
+        width:30px;
+        border-radius:50%;
+        object-fit:cover;
+      }
+
+      .profile-right span.profile-username, .profile-right small.profile-role {
+        color: white;
+        display:flex;
+        padding:5px;
+        flex-direction: column;
+
+        &:first-child {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
+
+
