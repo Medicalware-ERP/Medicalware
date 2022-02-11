@@ -1,0 +1,209 @@
+@startuml
+abstract class Person {
+ -String lastname
+ -String firstname
+ -Adress adress
+ -String phone
+ -String birthday_date
+}
+
+abstract class EnumEntity {
+    -String name
+    -String description
+    -String color
+    -String slug
+}
+
+class User {
+  -String id
+  -String email
+  -Array roles
+  -String type
+  -Boolean isActive
+  -String password
+  -Date createdAt
+}
+
+class Doctor {
+    - Specialisation specialisation
+}
+class Specialisation {}
+
+class Adress {
+    -String street
+    -String postalCode
+    -String city
+}
+
+class Patient {
+    -String numberSocialSecurity
+    -Insurance insurance
+}
+
+class Insurance {
+    -String name
+    -String description
+}
+
+class MedicalFile {
+    -Integer id
+    -Patient patient
+}
+
+class MedicalFileLine {
+    -Date startDate
+    -Date endDate
+    -Disease disease
+    -Doctor doctor
+    -Service service
+}
+
+class Disease {
+    -String name
+    -String description
+}
+
+class Equipment {
+    -String reference
+    -Float price
+    -String name
+    -Service service
+}
+
+class Stock {
+    -Integer quantity
+    -Equipment equipment
+}
+
+class Service {
+    -String name
+    -ServiceSpecialisation serviceSpecialisation
+}
+
+class ServiceSpecialisation {}
+
+class Event {
+      -String name
+      -DateTime startDate
+      -DateTime endDate
+      -EventType eventType
+      -Room room
+      -User user
+}
+
+class EventType {}
+
+class Room {
+    -String name
+    -RoomType roomType
+    -Integer capacity
+}
+
+class RoomType {}
+
+class Provider {
+    -String name
+    -Adress adress
+    -String numberMobile
+    -String siret
+    -String email
+    -Order orders
+    -Equipment equipments
+}
+
+class Invoice {
+    -Patient patient
+    -InvoiceLine invoiceLines
+    -Float HT
+    -Float TTC
+    -PaymentMethod paymentMethod
+    -TVA tva
+    -DateTime validatedAt
+    -User validatedBy
+    -DateTime date
+}
+
+class PaymentMethod {}
+
+class InvoiceType {}
+
+class InvoiceLine {
+    -String reference
+    -String description
+    -Float priceUnit
+}
+
+class Order {
+    -String reference
+    -OrderLine orderLines
+    -Float total
+    -DateTime deliveryDate
+    -DateTime deliveryPlannedDate
+    -Provider provider
+}
+
+class OrderLine {
+    -String reference
+    -Float priceUnit
+    -Integer quantity
+    -String description
+}
+
+class TVA {}
+
+class Disease {}
+
+/' Doctor '/
+Specialisation "*" -- "*" Doctor
+
+/' Users '/
+Adress "1" -- "1" Person
+Person <|-- User
+User <|-- Doctor
+Person <|-- Patient
+
+/' Patient '/
+Patient "1" -- "1" MedicalFile
+Patient "1" -- "*" Insurance
+MedicalFile "*" -- "1" MedicalFileLine
+MedicalFileLine "1" -- "*" Disease
+MedicalFileLine "1" -- "*" Doctor
+MedicalFileLine "1" -- "*" Service
+Service "1" -- "1" ServiceSpecialisation
+
+/' Enums '/
+ServiceSpecialisation <|-- EnumEntity
+Specialisation <|-- EnumEntity
+EventType <|-- EnumEntity
+RoomType <|-- EnumEntity
+InvoiceType <|-- EnumEntity
+PaymentMethod <|-- EnumEntity
+TVA <|-- EnumEntity
+Disease <|-- EnumEntity
+
+/' Planning '/
+EventType "*" -- "1" Event
+
+/' Rooms '/
+RoomType "*" -- "1" Room
+
+/' Providers '/
+Provider "*" -- "1" Order
+Provider "*" -- "1" Equipment
+Provider "1" -- "*" Adress
+
+/' Invoices '/
+Invoice "*" -- "1" InvoiceLine
+Invoice "1" -- "*" Patient
+Invoice "1" -- "*" User
+
+/' Orders '/
+Order "*" -- "1" OrderLine
+
+/' Disease '/
+Disease "*" -- "*" Patient
+
+/' Stock '/
+Stock "*" -- "1" Equipment
+Service "*" -- "*" Equipment
+@enduml
