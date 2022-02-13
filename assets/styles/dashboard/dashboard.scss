@@ -1,31 +1,21 @@
-/* Dashboard body */
-
 .dashboard-section {
   position: relative;
-  background: #E4E9F7;
+  background: var(--bg-color-body);
   height: 100vh;
-  left: 291px;
-  width: calc(100% - 291px);
+  left: var(--width-side-bar);
+  top: 0;
+  z-index: -1;
+  width: calc(100% - var(--width-side-bar));
   transition: all 0.5s ease;
 
   .dashboard-content {
-    height: 60px;
     display: flex;
+    padding: 20px;
     align-items: center;
-
-    .fa-bars, .text {
-      color: #11101d;
-      font-size: 18px;
-    }
-
-    .fa-bars {
-      margin: 0 15px;
-      cursor: pointer;
-    }
-
-    &.text {
-      font-size: 26px;
-      font-weight: 600;
-    }
   }
+}
+
+.sidebar.close ~ .dashboard-section {
+  left: var(--width-side-bar-close);
+  width: calc(100% - var(--width-side-bar-close));
 }
