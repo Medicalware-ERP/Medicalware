@@ -1,0 +1,126 @@
+@import "https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap";
+
+.form-login {
+  display: flex;
+  flex-direction: column;
+  //background-color: rgb(255 255 255 / 15%);
+  align-items: center;
+  padding: 50px;
+  z-index: 1;
+  width: 25rem;
+  height: 25rem;
+  position: relative;
+  border-radius: 10px;
+  justify-content: center;
+}
+
+.logo-details-form-login {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-evenly;
+}
+.logo-image {
+  width: 50px;
+  height: 50px;
+}
+.logo-name-login {
+  font-size: 26px;
+  font-family: "Berkshire Swash", cursive;
+  color: white;
+}
+.form-input {
+  outline: none;
+  border: none;
+  border-bottom: 1px solid lightgrey;
+  padding: 0.8rem 1.9rem;
+  background-color: transparent;
+}
+.field {
+  padding-top: 10px;
+  position: relative;
+  display: flex;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  flex-direction: column;
+  input {
+    position: relative;
+    caret-color: transparent;
+    color: white;
+    &:focus {
+      ~ {
+        label {
+          transform: translateY(-45px) translateX(-5px);
+          font-size: 10px;
+          font-style: normal;
+        }
+      }
+    }
+    &:valid {
+      ~ {
+        label {
+          transform: translateY(-45px) translateX(-5px);
+          font-size: 10px;
+          font-style: normal;
+        }
+      }
+    }
+  }
+}
+label {
+  padding-left: 5px;
+  transition: all 0.3s ease-in;
+  transform: translateY(-25px) translateX(10.5px);
+  pointer-events: none;
+  font-size: 15px;
+  position: absolute;
+  font-weight: 100;
+  color: white;
+  font-style: italic;
+  top: 50px;
+}
+.btn-login {
+  outline: none;
+  padding: 15px;
+  color: #fff;
+  background-color: rgb(255 255 255 / 0%);
+  margin-top: 20px;
+  border: none #727cf5;
+  border-radius: 0.25rem;
+  box-shadow: 0 2px 6px 0 rgb(114 124 245 / 50%);
+  cursor: pointer;
+  transition: all ease-in 0.2s;
+
+  &:hover {
+    color: #fff;
+    background-color: rgb(15 37 68 / 40%);
+    border-color: #5b63c4;
+  }
+}
+.container-video {
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  position: relative;
+
+  &::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: '';
+    background-image: radial-gradient( #000000, rgba(11, 39, 65, 0.32) 87%, rgba(0, 0, 0, 0) );
+  }
+}
+.video-page-login {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  object-fit: cover;
+}
