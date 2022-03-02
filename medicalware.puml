@@ -22,6 +22,8 @@ class User {
   -Boolean isActive
   -String password
   -Date createdAt
+  -Date leftAt
+  -String avatar
 }
 
 class Doctor {
