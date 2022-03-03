@@ -3,26 +3,152 @@
 {% block title %}Ressources humaine{% endblock %}
 
 {% block body %}
-    <div class="card">
-        {% if user.avatar is not null %}
-            <p>Avatar</p> {# Todo : mettre l'image #}
-        {% else %}
-            <p>{{ user.firstName|first|upper ~ user.lastName|first|upper }}</p>
-        {% endif %}
-        <p><b>Identifiant :</b> {{ user.id }}</p>
-        <p><b>Nom :</b>         {{ user.lastName }}</p>
-        <p><b>Prénom : </b>     {{ user.firstName }}</p>
-        <p><b>Addresse : </b>   {{ user.address }}</p>
-        <p><b>Téléphone : </b>  {{ user.phoneNumber }}</p>
-        <p><b>Email : </b>      {{ user.email }}</p>
-        <p><b>Âge: </b> {{ date().diff(date(user.birthdayDate)).y }} ans ({{ user.birthdayDate|date('d/m/Y') }})</p>
-        <p><b>Rejoins l'entreprise le : </b>    {{ user.createdAt | date('d/m/Y') }}</p>
-        <p><b>Quitter l'entreprise le : </b>    {{ user.leftAt is null ? "-" : user.leftAt | date('d/m/Y')}}</p>
-        <p><b>Compte actif : </b> {{ user.isActive ? 'Oui' : 'Non' }}</p>
-        <p><b>Profession :</b> {{ user.profession }}</p>
-        <p><b>Roles :</b> {{ user.roles | join(', ', ' et ') }}</p>
-        <p style="display: flex; justify-content: flex-end"><a href="{{ path('app_edit_user', {'id': user.id}) }}">Editer</a></p>
+    <div id="user-details-container">
+        <div class="card">
+
+            <div class="row">
+                {% if user.avatar is not null %}
+                    <img class="avatar" src="https://cdn.pixabay.com/photo/2015/03/03/08/55/portrait-657116_960_720.jpg" />
+                    {# Todo : mettre l'image #}
+                {% else %}
+                    <div class="avatar avatar-text">
+                        <span>
+                            {{ user.firstName|first|upper ~ user.lastName|first|upper }}
+                        </span>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Nom :
+                </div>
+
+                <div class="right-item">
+                    {{ user.lastName }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Prénom :
+                </div>
+
+                <div class="right-item">
+                    {{ user.firstName }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Adresse :
+                </div>
+
+                <div class="right-item">
+                    {{ user.address }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Email :
+                </div>
+
+                <div class="right-item">
+                    {{ user.email }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Téléphone :
+                </div>
+
+                <div class="right-item">
+                    {{ user.phoneNumber }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Âge :
+                </div>
+
+                <div class="right-item">
+                    {{ date().diff(date(user.birthdayDate)).y }} ans ({{ user.birthdayDate|date('d/m/Y') }})
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Rejoins l'entreprise le :
+                </div>
+
+                <div class="right-item">
+                    {{ user.createdAt | date('d/m/Y') }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Quitter l'entreprise le :
+                </div>
+
+                <div class="right-item">
+                    {{ user.leftAt is null ? "-" : user.leftAt | date('d/m/Y') }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Compte actif :
+                </div>
+
+                <div class="right-item">
+                    {{ user.isActive ? 'Oui' : 'Non' }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Profession :
+                </div>
+
+                <div class="right-item">
+                    {{ user.profession }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Rôle(s) :
+                </div>
+
+                <div class="right-item">
+                    {{ user.roles | join(', ', ' et ') }}
+                </div>
+            </div>
+
+            <div class="row row-actions">
+                <div class="left-item">
+                    #{{ user.id }}
+                </div>
+
+                <div class="right-item">
+
+                    <a class="btn-primary" href="{{ path('app_edit_user', {'id': user.id}) }}">
+                        Éditer
+                    </a>
+
+                    <a class="btn-danger" href="#">
+                        Désactiver
+                    </a>
+                </div>
+            </div>
+
+        </div>
     </div>
+
 {% endblock %}
 
 {% block javascripts %}
