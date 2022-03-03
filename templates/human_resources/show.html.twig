@@ -21,7 +21,7 @@
         <p><b>Compte actif : </b> {{ user.isActive ? 'Oui' : 'Non' }}</p>
         <p><b>Profession :</b> {{ user.profession }}</p>
         <p><b>Roles :</b> {{ user.roles | join(', ', ' et ') }}</p>
-        <p class=""><button>Editer</button></p>
+        <p style="display: flex; justify-content: flex-end"><a href="{{ path('app_edit_user', {'id': user.id}) }}">Editer</a></p>
     </div>
 {% endblock %}
 
