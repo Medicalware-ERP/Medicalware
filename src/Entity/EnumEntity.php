@@ -31,7 +31,7 @@ abstract class EnumEntity
         return $this->id;
     }
 
-    public function __construct(string $slug, string $name, string $description = null, string $color = "#FFFFFF" )
+    public function __construct(string $slug, string $name, string $description = null, string $color = "#FFFFFF")
     {
         $this->slug         = $slug;
         $this->name         = $name;
