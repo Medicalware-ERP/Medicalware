@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\AddressRepository;
 use Doctrine\ORM\Mapping as ORM;
+use function Symfony\Component\Translation\t;
 
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
 class Address
@@ -24,6 +25,13 @@ class Address
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $city = null;
+
+    public function __construct(string $street, string $city, string $postalCode)
+    {
+        $this->street = $street;
+        $this->city  = $city;
+        $this->postalCode = $postalCode;
+    }
 
     public function getId(): ?int
     {
@@ -76,5 +84,10 @@ class Address
         $this->city = $city;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getStreet().' '.$this->getComplementaryInfo().' '.$this->getCity().' '.$this->getPostalCode();
     }
 }

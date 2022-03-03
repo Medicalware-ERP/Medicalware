@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ressources humaine{% endblock %}
+
+{% block body %}
+
+
+    <div class="card" style="margin-top: 20px ">
+        <div class="p-5">
+            Ressources humaine
+        </div>
+        <hr>
+        <table>
+            <thead>
+                <tr>
+                    <th>Avatar</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Tél.</th>
+                    <th>Email</th>
+                    <th>Profession</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <td>{{ user.id }}</td>
+                <td>{{ user.lastName }}</td>
+                <td>{{ user.firstName }}</td>
+                <td>{{ user.phoneNumber }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.profession }}</td>
+                <td>
+                    <a href="{{ path('app_show_user', {'id': user.id }) }}">Voir</a>
+                    <button>Desactiver</button>
+                </td>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+

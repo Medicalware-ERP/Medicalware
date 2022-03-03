@@ -7,7 +7,7 @@
 /* GlobalStyles de l'application */
 
 :root {
-  --bg-color-body: #FAFBFE;
+  --bg-color-body: #f6f7fa;
   --color-white: #ffffff;
   --color-pink: #FA5C7C;
   --color-orange: #FCAD73;
@@ -37,4 +37,15 @@ ul li {
 
 a {
   text-decoration: none;
+}
+
+.card {
+  background-color: #FFFFFF;
+  width: 100%;
+  padding: 10px;
+  box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
+}
+
+.p-5 {
+  padding: 5px;
 }

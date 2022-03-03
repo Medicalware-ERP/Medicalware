@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ressources humaine{% endblock %}
+
+{% block body %}
+    <div class="card">
+        {% if user.avatar is not null %}
+            <p>Avatar</p> {# Todo : mettre l'image #}
+        {% else %}
+            <p>{{ user.firstName|first|upper ~ user.lastName|first|upper }}</p>
+        {% endif %}
+        <p><b>Identifiant :</b> {{ user.id }}</p>
+        <p><b>Nom :</b>         {{ user.lastName }}</p>
+        <p><b>Prénom : </b>     {{ user.firstName }}</p>
+        <p><b>Addresse : </b>   {{ user.address }}</p>
+        <p><b>Téléphone : </b>  {{ user.phoneNumber }}</p>
+        <p><b>Email : </b>      {{ user.email }}</p>
+        <p><b>Âge: </b> {{ date().diff(date(user.birthdayDate)).y }} ans ({{ user.birthdayDate|date('d/m/Y') }})</p>
+        <p><b>Rejoins l'entreprise le : </b>    {{ user.createdAt | date('d/m/Y') }}</p>
+        <p><b>Quitter l'entreprise le : </b>    {{ user.leftAt is null ? "-" : user.leftAt | date('d/m/Y')}}</p>
+        <p><b>Compte actif : </b> {{ user.isActive ? 'Oui' : 'Non' }}</p>
+        <p><b>Profession :</b> {{ user.profession }}</p>
+        <p><b>Roles :</b> {{ user.roles | join(', ', ' et ') }}</p>
+        <p class=""><button>Editer</button></p>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+

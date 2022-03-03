@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Entity;
 
 use App\Repository\EnumEntityRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 
-#[ORM\Entity(repositoryClass: EnumEntityRepository::class)]
+#[ORM\MappedSuperclass]
 abstract class EnumEntity
 {
     #[ORM\Id]
@@ -86,5 +88,10 @@ abstract class EnumEntity
         $this->description = $description;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 }

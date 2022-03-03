@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Entity;
 
 use App\Repository\PersonRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: PersonRepository::class)]
+#[ORM\MappedSuperclass]
 abstract class Person
 {
     #[ORM\Id]
@@ -28,6 +31,25 @@ abstract class Person
 
     #[ORM\Column(type: 'datetime_immutable')]
     private ?\DateTimeImmutable $birthdayDate = null;
+
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int|null $id
+     * @return Person
+     */
+    public function setId(?int $id): Person
+    {
+        $this->id = $id;
+        return $this;
+    }
+
 
     public function getLastName(): ?string
     {
@@ -77,12 +99,12 @@ abstract class Person
         return $this;
     }
 
-    public function getBirthdayDate(): ?\DateTimeImmutable
+    public function getBirthdayDate(): ?DateTimeImmutable
     {
         return $this->birthdayDate;
     }
 
-    public function setBirthdayDate(\DateTimeImmutable $birthdayDate): self
+    public function setBirthdayDate(DateTimeImmutable $birthdayDate): self
     {
         $this->birthdayDate = $birthdayDate;
 
