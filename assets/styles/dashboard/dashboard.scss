@@ -1,11 +1,12 @@
 .dashboard-section {
   position: relative;
   background: var(--bg-color-body);
-  height: 100vh;
+  height: calc(100vh - var(--height-top-bar));
+  width: calc(100% - var(--width-side-bar));
   left: var(--width-side-bar);
   top: 0;
-  width: calc(100% - var(--width-side-bar));
   transition: all 0.5s ease;
+  overflow-y: auto;
 
   .dashboard-content {
     display: flex;
