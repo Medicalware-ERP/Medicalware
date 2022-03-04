@@ -15,111 +15,119 @@
         {{ encore_entry_script_tags('sidebar') }}
     {% endblock %}
 </head>
-<body>
-    <div class="sidebar">
-        <div class="logo-details">
-            <img src={{ asset('build/images/logo.png') }} alt="" />
-            <span class="logo_name">MedicalWare</span>
-        </div>
-        <ul class="nav-links">
-            <li>
-                <a href="{{ path('app_human_resources') }}">
-                    <i class="fa fa-user"></i>
-                    <span class="link_name">Ressources humaines</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Ressources humaines</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fa fa-calendar-alt"></i>
-                    <span class="link_name">Planning</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Planning</a></li>
-                </ul>
-            </li>
-            <li id="accountent">
-                <div class="icon-link">
-                    <a href="#">
-                        <i class="fa fa-money-check-alt"></i>
-                        <span class="link_name">Comptabilité</span>
+    <body>
+        <div class="sidebar">
+            <div class="logo-details">
+                <img src={{ asset('build/images/logo.png') }} alt="" />
+                <span class="logo_name">MedicalWare</span>
+            </div>
+            <ul class="nav-links">
+                <li>
+                    <a href="{{ path('app_human_resources') }}">
+                        <i class="fa fa-user"></i>
+                        <span class="link_name">Ressources humaines</span>
                     </a>
-                    <i class="fa fa-angle-right arrow"></i>
-                </div>
-                <ul class="sub-menu">
-                    <li><a class="link_name" href="#">Comptabilité</a></li>
-                    <li><a href="#">Factures</a></li>
-                    <li><a href="#">Commandes d'achats</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fa fa-truck"></i>
-                    <span class="link_name">Fournisseurs</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Fournisseurs</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fas fa-cubes"></i>
-                    <span class="link_name">Services</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Services</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fa fa-door-open"></i>
-                    <span class="link_name">Salles</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Salles</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fa fa-user-injured"></i>
-                    <span class="link_name">Patients</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Patients</a></li>
-                </ul>
-            </li>
-        </ul>
-    </div>
+                    <ul class="sub-menu blank">
+                        <li><a class="link_name" href="#">Ressources humaines</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fa fa-calendar-alt"></i>
+                        <span class="link_name">Planning</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a class="link_name" href="#">Planning</a></li>
+                    </ul>
+                </li>
+                <li id="accountent">
+                    <div class="icon-link">
+                        <a href="#">
+                            <i class="fa fa-money-check-alt"></i>
+                            <span class="link_name">Comptabilité</span>
+                        </a>
+                        <i class="fa fa-angle-right arrow"></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name" href="#">Comptabilité</a></li>
+                        <li><a href="#">Factures</a></li>
+                        <li><a href="#">Commandes d'achats</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fa fa-truck"></i>
+                        <span class="link_name">Fournisseurs</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a class="link_name" href="#">Fournisseurs</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fas fa-cubes"></i>
+                        <span class="link_name">Services</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a class="link_name" href="#">Services</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fa fa-door-open"></i>
+                        <span class="link_name">Salles</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a class="link_name" href="#">Salles</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fa fa-user-injured"></i>
+                        <span class="link_name">Patients</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a class="link_name" href="#">Patients</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
 
-    <div class="topbar">
-        <div class="wrapper">
-            <i class="fas fa-bars"></i>
-            <div class="profile">
-                <div class="profile-left">
-                    <img class="profile-img"
-                         src="https://cdn.pixabay.com/photo/2015/03/03/08/55/portrait-657116_960_720.jpg" alt="">
-                </div>
-                <div class="profile-right">
-                    <span class="profile-username">John Doe</span>
-                    <small class="profile-role">Médecin</small>
-                </div>
-                <div class="sub-menu-profile">
-                    <span class="sub-menu-profile-title">Bienvenue !</span>
-                    <div class="sub-menu-container-link">
-                        <a href="#" class="sub-menu-profile-link"><i class="fa fa-user"></i>Mon profil</a>
-                        <a href="#" class="sub-menu-profile-link"><i class="fas fa-sign-out-alt"></i>Déconnexion</a>
+        <div class="topbar">
+            <div class="wrapper">
+                <i class="fas fa-bars"></i>
+                <div class="profile">
+                    <div class="profile-left">
+
+                        {% if app.user.avatar is not null %}
+                            <img class="avatar" src="https://cdn.pixabay.com/photo/2015/03/03/08/55/portrait-657116_960_720.jpg" />
+                            {# Todo : Affichage de l'avatar de l'utilisateur #}
+                        {% else %}
+                            <div class="avatar">
+                                {{ app.user.firstName|first|upper ~ app.user.lastName|first|upper }}
+                            </div>
+                        {% endif %}
+
+                    </div>
+                    <div class="profile-right">
+                        <span class="profile-username">{{ app.user.firstName ~ " " ~ app.user.lastName }}</span>
+                        <small class="profile-role">{{ app.user.profession }}</small>
+                    </div>
+                    <div class="sub-menu-profile">
+                        <span class="sub-menu-profile-title">Bienvenue !</span>
+                        <div class="sub-menu-container-link">
+                            <a href="#" class="sub-menu-profile-link"><i class="fa fa-user"></i>Mon profil</a>
+                            <a href="#" class="sub-menu-profile-link"><i class="fas fa-sign-out-alt"></i>Déconnexion</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <main class="dashboard-section">
-        <div class="dashboard-content">
-            {% block body %}{% endblock %}
-        </div>
-    </main>
-</body>
+        <main class="dashboard-section">
+            <div class="dashboard-content">
+                {% block body %}{% endblock %}
+            </div>
+        </main>
+    </body>
 </html>

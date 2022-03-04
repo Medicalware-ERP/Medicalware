@@ -31,11 +31,24 @@
         display: flex;
         align-items: center;
 
-        img.profile-img {
+        .avatar {
           height: 50px;
           width: 50px;
           border-radius: 50%;
+        }
+
+        img.avatar {
           object-fit: cover;
+        }
+
+        div.avatar {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          background-color: var(--color-white);
+          color: var(--color-black);
+          font-size: 1.4em;
         }
       }
 
