@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -51,5 +52,20 @@ class HumanResourcesController extends AbstractController
         return $this->renderForm('human_resources/edit.html.twig', [
             'form' => $form
         ]);
+    }
+
+    #[Route('/user/disable/{id}', name: 'app_toggle_active_user')]
+    public function toggleActiveUser(Request $request, int $id): RedirectResponse
+    {
+        $user = $this->manager->find(User::class, $id) ?? throw new NotFoundHttpException("Utilisateur non trouvée");
+
+        $user->setIsActive(!$user->isActive());
+
+        $this->manager->persist($user);
+        $this->manager->flush();
+
+        $referer = $request->headers->get('referer');
+
+        return $this->redirect($referer);
     }
 }

@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.4",
-        "normalize.css": "^8.0.1"
+        "normalize.css": "^8.0.1",
+        "sweetalert2": "^11.4.4"
     }
 }

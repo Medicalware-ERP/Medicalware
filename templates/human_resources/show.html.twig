@@ -3,6 +3,7 @@
 {% block title %}Ressources humaine{% endblock %}
 
 {% block body %}
+    <input type="hidden" id="user-id" data-user="{{ user.id }}">
     <div id="user-details-container">
         <div class="card">
 
@@ -141,11 +142,11 @@
                     </a>
 
                     {% if (user.isActive)%}
-                        <a class="btn-danger" href="#">
+                        <a id="user-disable" class="btn-danger" href="#">
                             Désactiver
                         </a>
                     {% else %}
-                        <a class="btn-success" href="#">
+                        <a id="user-enable" class="btn-success" href="#">
                             Activer
                         </a>
                     {% endif %}
@@ -160,5 +161,6 @@
 
 {% block javascripts %}
     {{ parent() }}
+    {{ encore_entry_script_tags('human_resources.show') }}
 {% endblock %}
 

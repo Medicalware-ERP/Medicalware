@@ -22,6 +22,8 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
     .addEntry('sidebar', './assets/js/sidebar/sidebar.js')
+    .addEntry('human_resources.show', './assets/js/human_resources/show.js')
+    .addEntry('human_resources.datatable', './assets/js/human_resources/datatable.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

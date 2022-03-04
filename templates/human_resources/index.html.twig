@@ -56,7 +56,7 @@
                         <td>
                             {% if user.isActive %}
                                 <label class="switch">
-                                    <input type="checkbox" checked>
+                                    <input type="checkbox" checked data-user="{{ user.id }}">
                                     <span class="slider round"></span>
                                 </label>
                             {% else %}
@@ -79,5 +79,6 @@
 
 {% block javascripts %}
     {{ parent() }}
+    {{ encore_entry_script_tags('human_resources.datatable') }}
 {% endblock %}
 

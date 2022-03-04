@@ -110,7 +110,7 @@ class User extends Person implements UserInterface, PasswordAuthenticatedUserInt
         // $this->plainPassword = null;
     }
 
-    public function getIsActive(): ?bool
+    public function isActive(): ?bool
     {
         return $this->isActive;
     }
