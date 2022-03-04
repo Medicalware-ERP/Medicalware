@@ -4,18 +4,19 @@
 @import "./topbar/topbar";
 @import "./login/login";
 @import "./human_resources/details";
+@import "./human_resources/datatable";
 
 /* GlobalStyles de l'application */
 
 :root {
-  --bg-color-body: #f6f7fa;
+  --bg-color-body: #F6F7FA;
   --color-white: #FFFFFF;
   --color-pink: #FA5C7C;
   --color-orange: #FCAD73;
-  --color-grey: #B2bBC0;
+  --color-grey: #B2BBC0;
   --width-side-bar: 300px;
   --width-side-bar-close: 78px;
-  --bg-color-nav-links: #1d1b31;
+  --bg-color-nav-links: #1D1B31;
   --color-black: #000;
   --color-primary: #0F2544;
   --color-danger: #dc3545;

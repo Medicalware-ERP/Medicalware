@@ -1,17 +1,28 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Ressources humaine{% endblock %}
 
 {% block body %}
 
+    <div class="container-list-users">
+        <h4 class="title-list-users">
+            Utilisateurs
+        </h4>
+        <div class="card">
+            <div class="row">
+                <form class="form-datatable">
+                    <input class="form-input-datatable" type="text" placeholder="Chercher ..." name="search" />
+                    <select class="form-select" name="show-data">
+                        <option selected>Afficher ...</option>
+                        <option value="10">10</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </form>
+                <button class="btn btn-success"><i class="fa fa-plus"></i>Ajouter un utilisateur</button>
+            </div>
 
-    <div class="card" style="margin-top: 20px ">
-        <div class="p-5">
-            Ressources humaine
-        </div>
-        <hr>
-        <table>
-            <thead>
+            <table class="table-users">
+                <thead>
                 <tr>
                     <th>Avatar</th>
                     <th>Nom</th>
@@ -19,24 +30,50 @@
                     <th>Tél.</th>
                     <th>Email</th>
                     <th>Profession</th>
-                    <th>Action</th>
+                    <th>Actif</th>
+                    <th>Détails</th>
                 </tr>
-            </thead>
-            <tbody>
-            {% for user in users %}
-                <td>{{ user.id }}</td>
-                <td>{{ user.lastName }}</td>
-                <td>{{ user.firstName }}</td>
-                <td>{{ user.phoneNumber }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.profession }}</td>
-                <td>
-                    <a href="{{ path('app_show_user', {'id': user.id }) }}">Voir</a>
-                    <button>Desactiver</button>
-                </td>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    {% set splitPhoneNumber = user.phoneNumber  |split('', 2) %}
+                    {% set formattedPhoneNumber = splitPhoneNumber|join('.') %}
+                    <tr>
+                        <td>
+                            {% if user.avatar is not null %}
+                                {{ user.avatar }}
+                            {% else %}
+                                <div class="avatar-default">
+                                    <span>{{ user.firstName|slice(0,1)|upper ~ user.lastName|slice(0,1)|upper }}</span>
+                                </div>
+                            {% endif %}
+                        </td>
+                        <td>{{ user.lastName }}</td>
+                        <td>{{ user.firstName }}</td>
+                        <td>{{ formattedPhoneNumber }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.profession }}</td>
+                        <td>
+                            {% if user.isActive == true %}
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            {% else %}
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a class="btn-xs btn-primary" href="{{ path('app_show_user', {'id': user.id }) }}"><i class="fa fa-eye"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 {% endblock %}
 
