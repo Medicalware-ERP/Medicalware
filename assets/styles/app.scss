@@ -14,15 +14,21 @@
   --color-pink: #FA5C7C;
   --color-orange: #FCAD73;
   --color-grey: #B2BBC0;
-  --width-side-bar: 300px;
-  --width-side-bar-close: 78px;
-  --height-top-bar: 80px;
   --bg-color-nav-links: #1D1B31;
   --color-black: #000;
   --color-primary: #0F2544;
-  --color-danger: #dc3545;
-  --color-success: #59b22f;
-  --color-warning: #ffbc00;
+  --color-primary-light: #0F2544BD;
+  --color-secondary: #808080;
+  --color-secondary-light: #808080BD;
+  --color-danger: #DC3545;
+  --color-danger-light: #DC3545BD;
+  --color-success: #59B22F;
+  --color-success-light: #59B22FBD;
+  --color-warning: #FFBC00;
+  --color-warning-light: #FFBC00BD;
+  --width-side-bar: 300px;
+  --width-side-bar-close: 78px;
+  --height-top-bar: 80px;
 }
 
 * {
