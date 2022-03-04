@@ -46,5 +46,47 @@ class UserFixtures extends Fixture
         $manager->persist($profession);
         $manager->persist($user);
         $manager->flush();
+
+        $user1       = new User();
+        $address1    = new Address("50 rue de la rue", "Marseisdlle", "13015");
+        $profession1 = new UserType("Médecin", "medecin");
+
+        $user1
+            ->setLastName('Quetglas')
+            ->setFirstName('Loris')
+            ->setPhoneNumber('0713124578')
+            ->setProfession($profession1)
+            ->setAddress($address1)
+            ->setBirthdayDate(new DateTimeImmutable())
+            ->setEmail('admin@medicfdfalware.fr')
+            ->setIsActive(false)
+            ->setRoles(["ROLE_ADMIN"])
+            ->setPassword($this->userPasswordHasher->hashPassword($user1, 'admin1'))
+        ;
+
+        $manager->persist($profession1);
+        $manager->persist($user1);
+        $manager->flush();
+
+        $user2       = new User();
+        $address2    = new Address("50 rue de la rue", "Marssaaeille", "13015");
+        $profession2 = new UserType("Professeur", "professeur");
+
+        $user2
+            ->setLastName('fsfsd')
+            ->setFirstName('adfsdfsdfsmin')
+            ->setPhoneNumber('0712454578')
+            ->setProfession($profession2)
+            ->setAddress($address2)
+            ->setBirthdayDate(new DateTimeImmutable())
+            ->setEmail('admin@medicalwafsdfsdre.fr')
+            ->setIsActive(true)
+            ->setRoles(["ROLE_ADMIN"])
+            ->setPassword($this->userPasswordHasher->hashPassword($user2, 'admin22'))
+        ;
+
+        $manager->persist($profession2);
+        $manager->persist($user2);
+        $manager->flush();
     }
 }

@@ -30,8 +30,8 @@ abstract class Person
     #[ORM\Column(type: 'string', length: 14)]
     private ?string $phoneNumber = null;
 
-    #[ORM\Column(type: 'datetime')]
-    private ?DateTime $birthdayDate = null;
+    #[ORM\Column(type: 'datetime_immutable')]
+    private ?DateTimeImmutable $birthdayDate = null;
 
     /**
      * @return int|null
@@ -100,12 +100,12 @@ abstract class Person
         return $this;
     }
 
-    public function getBirthdayDate(): ?DateTime
+    public function getBirthdayDate(): ?DateTimeImmutable
     {
         return $this->birthdayDate;
     }
 
-    public function setBirthdayDate(?DateTime $birthdayDate): self
+    public function setBirthdayDate(?DateTimeImmutable $birthdayDate): self
     {
         $this->birthdayDate = $birthdayDate;
 

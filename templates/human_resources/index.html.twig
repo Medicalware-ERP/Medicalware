@@ -54,14 +54,14 @@
                         <td>{{ user.email }}</td>
                         <td>{{ user.profession }}</td>
                         <td>
-                            {% if user.isActive == true %}
+                            {% if user.isActive %}
                                 <label class="switch">
                                     <input type="checkbox" checked>
                                     <span class="slider round"></span>
                                 </label>
                             {% else %}
                                 <label class="switch">
-                                    <input type="checkbox" checked>
+                                    <input type="checkbox">
                                     <span class="slider round"></span>
                                 </label>
                             {% endif %}
