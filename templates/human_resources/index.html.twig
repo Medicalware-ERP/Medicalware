@@ -68,7 +68,10 @@
                             {% endif %}
                         </td>
                         <td>
-                            <a class="btn-xs btn-primary" href="{{ path('app_show_user', {'id': user.id }) }}"><i class="fa fa-eye"></i></a>
+                            <div class="d-flex justify-content-center">
+                                <a class="btn-xs btn-primary margin-right-1" href="{{ path('app_show_user', {'id': user.id }) }}"><i class="fa fa-eye"></i></a>
+                                <a class="btn-xs btn-primary" href="{{ path('app_edit_user', {'id': user.id }) }}"><i class="fa fa-pen"></i></a>
+                            </div>
                         </td>
                     </tr>
                 {% endfor %}
