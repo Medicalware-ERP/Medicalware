@@ -42,7 +42,6 @@ export const toggleActive = ()  => {
     };
 
     $(".switch [type=checkbox]", (elem) => {
-        console.log("ékfslfkd")
         elem.addEventListener('click', callback)
     })
 }

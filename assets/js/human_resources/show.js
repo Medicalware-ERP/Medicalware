@@ -3,7 +3,7 @@ import { $, colors } from '../utils'
 import Routing from "../Routing";
 
 const url = Routing.generate('app_toggle_active_user', {
-    id: $('#user-id').database.user
+    id: $('#user-id').dataset.user
 });
 
 const userDisable = $("#user-disable");
