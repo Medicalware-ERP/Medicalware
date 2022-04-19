@@ -4,8 +4,11 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Util\Json;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,17 +17,49 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HumanResourcesController extends AbstractController
 {
+    public const LIMIT = 2;
     public function __construct(private EntityManagerInterface $manager)
     {
     }
 
     #[Route('/humanResources', name: 'app_human_resources')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $limit = self::LIMIT;
+        $count = $this->manager->getRepository(User::class)->getTotalUsers();
         return $this->render('human_resources/index.html.twig', [
-            'users' => $this->manager->getRepository(User::class)->findAll()
+            'limit' => $limit,
+            'total' => $count
         ]);
     }
+
+    public function iterateUsers($data) {
+        $users_array = array();
+        foreach ($data as $user)
+        {
+            $users_array[] = array(
+                'id' => $user->getId(),
+                'avatar' => $user->getAvatar(),
+                'first_name' => $user->getFirstName(),
+                'last_name' => $user->getLastName(),
+                'phone_number' => $user->getPhoneNumber(),
+                'email' => $user->getEmail(),
+                'profession' => $user->getProfession()->getName(),
+                'is_active' => $user->isActive()
+            );
+        }
+        return $users_array;
+    }
+
+    #[Route('/usersJson', name: 'users_json')]
+    public function getUsersJSON(Request $request): JsonResponse
+    {
+        $page = $request->query->get("page") ?? 1;
+        $query = $request->query->get("query") ?? null;
+        $users = $this->manager->getRepository(User::class)->getAllUsersPaginated($page,self::LIMIT,$query);
+        return new JsonResponse($this->iterateUsers($users), 200);
+    }
+
 
     #[Route('/user/{id}', name: 'app_show_user')]
     public function show(int $id): Response
@@ -63,6 +98,7 @@ class HumanResourcesController extends AbstractController
 
         $this->manager->persist($user);
         $this->manager->flush();
+
 
         $referer = $request->headers->get('referer');
 

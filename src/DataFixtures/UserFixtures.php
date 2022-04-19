@@ -31,8 +31,8 @@ class UserFixtures extends Fixture
         $profession = new UserType("Admin", "admin");
 
         $user
-            ->setLastName('admin')
-            ->setFirstName('admin')
+            ->setLastName('Boulakhlas')
+            ->setFirstName('Kais')
             ->setPhoneNumber('0712124578')
             ->setProfession($profession)
             ->setAddress($address)
@@ -73,8 +73,8 @@ class UserFixtures extends Fixture
         $profession2 = new UserType("Professeur", "professeur");
 
         $user2
-            ->setLastName('fsfsd')
-            ->setFirstName('adfsdfsdfsmin')
+            ->setLastName('Waskar')
+            ->setFirstName('Said')
             ->setPhoneNumber('0712454578')
             ->setProfession($profession2)
             ->setAddress($address2)

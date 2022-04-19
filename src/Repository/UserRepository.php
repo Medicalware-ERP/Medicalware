@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -20,6 +21,30 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
+    }
+
+    public function getAllUsersPaginated( int $currentPage,
+                                     int $limit, string $query = null) :Paginator
+    {
+        $queryBuilder = $this->createQueryBuilder('u')
+            ->join('u.profession', 'ut')
+            ->andWhere('u.lastName LIKE :query OR u.firstName LIKE :query OR u.email LIKE :query OR u.phoneNumber LIKE :query OR ut.name LIKE :query')
+            ->setParameter('query', '%'.$query.'%')
+            ->setFirstResult(($currentPage - 1) * $limit)
+            ->setMaxResults($limit)
+            ->orderBy("u.lastName", "asc");
+
+        return new Paginator($queryBuilder);
+    }
+
+    /**
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\NoResultException
+     */
+    public function getTotalUsers(){
+        $queryBuilder = $this->createQueryBuilder('c')
+            ->select('COUNT(c)');
+        return $queryBuilder->getQuery()->getSingleScalarResult();
     }
 
     /**
