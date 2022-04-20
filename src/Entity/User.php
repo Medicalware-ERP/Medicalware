@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User extends Person implements UserInterface, PasswordAuthenticatedUserInterface
+class User extends Person implements UserInterface, PasswordAuthenticatedUserInterface, EntityInterface
 {
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private ?string $email = null;

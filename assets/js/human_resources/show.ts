@@ -2,14 +2,16 @@ import Swal from 'sweetalert2'
 import { $, colors } from '../utils'
 import Routing from "../Routing";
 
+let userIdElement = $('#user-id') as HTMLInputElement;
+
 const url = Routing.generate('app_toggle_active_user', {
-    id: $('#user-id').dataset.user
+    id: userIdElement.dataset.user
 });
 
 const userDisable = $("#user-disable");
 const userEnable  = $("#user-enable");
 
-if (userDisable !== null) {
+if (userDisable instanceof HTMLInputElement) {
     userDisable.addEventListener('click', function () {
         Swal.fire({
             title: 'Êtes vous sûr de continuer ?',
@@ -28,7 +30,7 @@ if (userDisable !== null) {
     });
 }
 
-if (userEnable !== null) {
+if (userEnable  instanceof HTMLInputElement) {
     userEnable.addEventListener('click', function () {
         Swal.fire({
             title: 'Êtes vous sûr de continuer ?',

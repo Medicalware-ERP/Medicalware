@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -23,13 +25,12 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         parent::__construct($registry, User::class);
     }
 
-    public function getAllUsersPaginated( int $currentPage,
-                                     int $limit, string $query = null) :Paginator
+    public function getAllUsersPaginated(int $currentPage, int $limit, string $query = null): Paginator
     {
         $queryBuilder = $this->createQueryBuilder('u')
             ->join('u.profession', 'ut')
             ->andWhere('u.lastName LIKE :query OR u.firstName LIKE :query OR u.email LIKE :query OR u.phoneNumber LIKE :query OR ut.name LIKE :query')
-            ->setParameter('query', '%'.$query.'%')
+            ->setParameter('query', '%' . $query . '%')
             ->setFirstResult(($currentPage - 1) * $limit)
             ->setMaxResults($limit)
             ->orderBy("u.lastName", "asc");
@@ -38,13 +39,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\NoResultException
+     * @return int
      */
-    public function getTotalUsers(){
-        $queryBuilder = $this->createQueryBuilder('c')
-            ->select('COUNT(c)');
-        return $queryBuilder->getQuery()->getSingleScalarResult();
+    public function getTotalUsers(): int
+    {
+        return $this->count([]);
     }
 
     /**
@@ -60,33 +59,4 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->persist($user);
         $this->_em->flush();
     }
-
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?User
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

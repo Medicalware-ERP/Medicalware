@@ -1,0 +1,60 @@
+.form-input-datatable {
+  border: 1px solid #80bdff;
+  padding: 0.45rem 0.9rem;
+  font-weight: 100;
+  color: #6c757d;
+  border-radius: 0.25rem;
+  margin-right: 15px;
+  outline: 0;
+  transition: all .15s ease-in-out;
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
+  }
+}
+
+.form-select {
+  outline: none;
+  border: 1px solid #80bdff;
+  font-weight: 100;
+  color: #6c757d;
+  border-radius: 0.25rem;
+  padding: 0.3rem 0.9rem;
+  outline: 0;
+  transition: all .15s ease-in-out;
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
+  }
+}
+
+.datatable {
+  width: 100%;
+  border-collapse: collapse;
+
+  thead {
+    background-color: #eef2f7;
+  }
+
+  th {
+    color: #313a46;
+    font-weight: 500;
+    text-align: left;
+    border-bottom: 1px solid #edeff1;
+    padding: 0.95rem;
+  }
+
+  td {
+    color: #9a898f;
+    font-weight: 100;
+    text-align: left;
+    border-bottom: 1px solid #edeff1;
+    padding: 0.95rem;
+  }
+
+  tr {
+    &:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+  }
+}
