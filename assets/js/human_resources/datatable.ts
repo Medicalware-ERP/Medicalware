@@ -1,14 +1,16 @@
 import Swal from 'sweetalert2'
 import { $, colors } from '../utils'
 import Routing from "../Routing";
+import generateDatable from "../datatable/datatableGeneric";
 
-export const toggleActive = ()  => {
-    const callback = e => {
+const toggleActive = ()  => {
+    const callback = (e: Event) => {
+        let checkbox = <HTMLInputElement> e.target;
         const url = Routing.generate('app_toggle_active_user', {
-            id: e.target.dataset.user
+            id: checkbox.dataset.user
         });
 
-        if (e.checked) {
+        if (checkbox.checked) {
             Swal.fire({
                 title: 'Êtes vous sûr de continuer ?',
                 text: "Vous êtes sur le point de désactiver l'accés au compte pour l'utilisateur",
@@ -41,8 +43,13 @@ export const toggleActive = ()  => {
         }
     };
 
-    $(".switch [type=checkbox]", (elem) => {
+    $(".switch [type=checkbox]", (elem: Node) => {
         elem.addEventListener('click', callback)
     })
 }
 
+const table = $("#table-users")
+
+if (table instanceof HTMLTableElement) {
+    generateDatable(table, toggleActive);
+}

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ app.request.locale }}">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
@@ -11,8 +11,6 @@
     {% endblock %}
 
     {% block javascripts %}
-        <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
-        <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
         {{ encore_entry_script_tags('app') }}
         {{ encore_entry_script_tags('sidebar') }}
     {% endblock %}
@@ -20,7 +18,7 @@
     <body>
         <div class="sidebar">
             <div class="logo-details">
-                <img src={{ asset('build/images/logo.png') }} alt="" />
+                <img src={{ asset('build/images/logo.png') }} alt="logo" />
                 <span class="logo_name">MedicalWare</span>
             </div>
             <ul class="nav-links">
@@ -102,7 +100,7 @@
                     <div class="profile-left">
 
                         {% if app.user.avatar is not null %}
-                            <img class="avatar" src="https://cdn.pixabay.com/photo/2015/03/03/08/55/portrait-657116_960_720.jpg" />
+                            <img class="avatar" src="https://cdn.pixabay.com/photo/2015/03/03/08/55/portrait-657116_960_720.jpg"  alt="avatar"/>
                             {# Todo : Affichage de l'avatar de l'utilisateur #}
                         {% else %}
                             <div class="avatar">

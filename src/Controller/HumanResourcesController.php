@@ -4,9 +4,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
-use App\Repository\UserRepository;
+use App\Service\User\UserDataFormatter;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Util\Json;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -14,6 +13,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class HumanResourcesController extends AbstractController
 {
@@ -23,7 +25,7 @@ class HumanResourcesController extends AbstractController
     }
 
     #[Route('/humanResources', name: 'app_human_resources')]
-    public function index(Request $request): Response
+    public function index(): Response
     {
         $limit = self::LIMIT;
         $count = $this->manager->getRepository(User::class)->getTotalUsers();
@@ -33,31 +35,25 @@ class HumanResourcesController extends AbstractController
         ]);
     }
 
-    public function iterateUsers($data) {
-        $users_array = array();
-        foreach ($data as $user)
-        {
-            $users_array[] = array(
-                'id' => $user->getId(),
-                'avatar' => $user->getAvatar(),
-                'first_name' => $user->getFirstName(),
-                'last_name' => $user->getLastName(),
-                'phone_number' => $user->getPhoneNumber(),
-                'email' => $user->getEmail(),
-                'profession' => $user->getProfession()->getName(),
-                'is_active' => $user->isActive()
-            );
-        }
-        return $users_array;
-    }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     #[Route('/usersJson', name: 'users_json')]
-    public function getUsersJSON(Request $request): JsonResponse
+    public function getUsersJSON(Request $request, UserDataFormatter $userManager): JsonResponse
     {
         $page = $request->query->get("page") ?? 1;
         $query = $request->query->get("query") ?? null;
         $users = $this->manager->getRepository(User::class)->getAllUsersPaginated($page,self::LIMIT, $query);
-        return new JsonResponse($this->iterateUsers($users), 200);
+        $data = [];
+
+        foreach ($users as $user) {
+            $data[] = $userManager->format($user);
+        }
+
+        return new JsonResponse($data, Response::HTTP_OK);
     }
 
 

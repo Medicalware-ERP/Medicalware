@@ -1,11 +1,12 @@
-export function $(selector, f) {
-    if (f === undefined)
+export function $(selector: string, f: any = null) {
+    if (f === null)
         return document.querySelector(selector)
-    else
+    else {
         document.querySelectorAll(selector).forEach(f)
+    }
 }
 
-export function getCssVariableValue(variable) {
+export function getCssVariableValue(variable: string): string {
     return getComputedStyle(document.documentElement).getPropertyValue(variable);
 }
 

@@ -43,6 +43,7 @@ class UserTest extends WebTestCase
             'user[birthdayDate]' => '2022-04-19',
             'user[email]' => 'admin@medicalware.fr',
             'user[isActive]' => '1',
+            'user[profession]' => '3',
             'user[address][street]' => '50 rue de la rue',
             'user[address][complementaryInfo]' => '',
             'user[address][postalCode]' => '13015',
