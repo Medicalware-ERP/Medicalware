@@ -31,7 +31,7 @@ class UserTest extends WebTestCase
 
         $client = $client->loginUser($user);
 
-        $crawler = $client->request(Request::METHOD_GET, $router->generate("app_edit_user", ['id' => $user->getId()]));
+        $crawler = $client->request(Request::METHOD_POST, $router->generate("app_edit_user", ['id' => $user->getId()]));
 
         $formId = UserType::FORM_ID;
         $selector = sprintf("#%s", $formId);
