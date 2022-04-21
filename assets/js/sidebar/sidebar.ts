@@ -6,7 +6,7 @@ const toggleButton = $(".fa-bars");
 const topbar = $(".topbar");
 
 
-if (toggleButton instanceof HTMLButtonElement &&
+if (toggleButton instanceof HTMLElement &&
     sidebar instanceof HTMLElement &&
     topbar instanceof HTMLElement &&
     li instanceof HTMLLIElement

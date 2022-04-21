@@ -20,6 +20,7 @@ use Twig\Error\SyntaxError;
 class HumanResourcesController extends AbstractController
 {
     public const LIMIT = 2;
+
     public function __construct(private EntityManagerInterface $manager)
     {
     }
@@ -46,7 +47,7 @@ class HumanResourcesController extends AbstractController
     {
         $page = $request->query->get("page") ?? 1;
         $query = $request->query->get("query") ?? null;
-        $users = $this->manager->getRepository(User::class)->getAllUsersPaginated($page,self::LIMIT, $query);
+        $users = $this->manager->getRepository(User::class)->getAllUsersPaginated($page, self::LIMIT, $query);
         $data = [];
 
         foreach ($users as $user) {
