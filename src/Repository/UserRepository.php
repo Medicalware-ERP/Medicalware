@@ -3,14 +3,18 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
+use App\Repository\Datatable\DatatableConfigColumn;
+use App\Repository\Datatable\DatatableConfigJoin;
+use App\Repository\Datatable\DatatableConfigSearch;
+use App\Repository\Datatable\DatatableRepository;
+use Doctrine;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use function get_class;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -18,33 +22,13 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class UserRepository extends DatatableRepository implements PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
     }
 
-    public function getAllUsersPaginated(int $currentPage, int $limit, string $query = null): Paginator
-    {
-        $queryBuilder = $this->createQueryBuilder('u')
-            ->join('u.profession', 'ut')
-            ->andWhere('u.lastName LIKE :query OR u.firstName LIKE :query OR u.email LIKE :query OR u.phoneNumber LIKE :query OR ut.name LIKE :query')
-            ->setParameter('query', '%' . $query . '%')
-            ->setFirstResult(($currentPage - 1) * $limit)
-            ->setMaxResults($limit)
-            ->orderBy("u.lastName", "asc");
-
-        return new Paginator($queryBuilder);
-    }
-
-    /**
-     * @return int
-     */
-    public function getTotalUsers(): int
-    {
-        return $this->count([]);
-    }
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
@@ -52,11 +36,36 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
 
         $user->setPassword($newHashedPassword);
         $this->_em->persist($user);
         $this->_em->flush();
+    }
+
+    #[Pure] public function configureDatableJoin(): array
+    {
+        return [
+            new DatatableConfigJoin('profession')
+        ];
+    }
+
+    #[Pure] public function configureDatableSearch(): array
+    {
+        return [
+            new DatatableConfigSearch('lastName'),
+            new DatatableConfigSearch('firstName'),
+            new DatatableConfigSearch('email'),
+            new DatatableConfigSearch('phoneNumber'),
+            new DatatableConfigSearch('name', 'profession'),
+        ];
+    }
+
+    #[Pure] public function configureDatableColumns(): array
+    {
+        return [
+            new DatatableConfigColumn('lastName'),
+        ];
     }
 }

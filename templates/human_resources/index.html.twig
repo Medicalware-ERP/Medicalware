@@ -27,13 +27,6 @@
                 </tr>
                 </thead>
             </table>
-            <ul class="pagination">
-                {% for item in 1..((total / limit)|round(0, 'ceil')) %}
-                    <a class="link" data-id={{ item }}>
-                        <li>{{ item }}</li>
-                    </a>
-                {% endfor %}
-            </ul>
         </div>
     </div>
 {% endblock %}

@@ -6,20 +6,17 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Service\User\UserDataFormatter;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 
-class HumanResourcesController extends AbstractController
+class HumanResourcesController extends BaseController
 {
-    public const LIMIT = 2;
 
     public function __construct(private EntityManagerInterface $manager)
     {
@@ -28,33 +25,21 @@ class HumanResourcesController extends AbstractController
     #[Route('/humanResources', name: 'app_human_resources')]
     public function index(): Response
     {
-        $limit = self::LIMIT;
-        $count = $this->manager->getRepository(User::class)->getTotalUsers();
-        return $this->render('human_resources/index.html.twig', [
-            'limit' => $limit,
-            'total' => $count
-        ]);
+        return $this->render('human_resources/index.html.twig');
     }
 
 
     /**
-     * @throws SyntaxError
-     * @throws RuntimeError
-     * @throws LoaderError
+     * @param Request $request
+     * @param UserDataFormatter $userDataFormatter
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/usersJson', name: 'users_json')]
-    public function getUsersJSON(Request $request, UserDataFormatter $userManager): JsonResponse
+    public function paginate(Request $request, UserDataFormatter $userDataFormatter): JsonResponse
     {
-        $page = $request->query->get("page") ?? 1;
-        $query = $request->query->get("query") ?? null;
-        $users = $this->manager->getRepository(User::class)->getAllUsersPaginated($page, self::LIMIT, $query);
-        $data = [];
-
-        foreach ($users as $user) {
-            $data[] = $userManager->format($user);
-        }
-
-        return new JsonResponse($data, Response::HTTP_OK);
+        return $this->paginateRequest(User::class, $request, $userDataFormatter);
     }
 
 
