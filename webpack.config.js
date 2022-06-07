@@ -24,6 +24,7 @@ Encore
     .addEntry('sidebar', './assets/js/sidebar/sidebar.ts')
     .addEntry('human_resources.show', './assets/js/human_resources/show.ts')
     .addEntry('human_resources.datatable', './assets/js/human_resources/datatable.ts')
+    .addEntry('room.index', './assets/js/room/index.ts')
     .addEntry('datatableGeneric', './assets/js/datatable/datatableGeneric.ts')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)

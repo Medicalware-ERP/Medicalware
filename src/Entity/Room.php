@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 // TODO : Rajouter liaison au service
 
 #[ORM\Entity(repositoryClass: RoomRepository::class)]
-class Room
+class Room implements EntityInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

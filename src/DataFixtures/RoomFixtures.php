@@ -52,7 +52,7 @@ public function load(ObjectManager $manager): void
     $room3 = new Room();
 
     $room3
-        ->setLabel("Bureaux de la ocmpta")
+        ->setLabel("Bureaux de la compta")
         ->setCapacity(1)
         ->setType($office);
     ;

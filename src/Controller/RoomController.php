@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Service\User\UserDataFormatter;
+use App\Entity\Room;
+use App\Service\Room\RoomDataFormatter;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,14 +23,14 @@ class RoomController extends BaseController
 
     /**
      * @param Request $request
-     * @param UserDataFormatter $userDataFormatter
+     * @param RoomDataFormatter $roomDataFormatter
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     #[Route('/roomsJson', name: 'rooms_json')]
-    public function paginate(Request $request, UserDataFormatter $userDataFormatter): JsonResponse
+    public function paginate(Request $request, RoomDataFormatter $roomDataFormatter): JsonResponse
     {
-        return $this->paginateRequest(User::class, $request, $userDataFormatter);
+        return $this->paginateRequest(Room::class, $request, $roomDataFormatter);
     }
 }
