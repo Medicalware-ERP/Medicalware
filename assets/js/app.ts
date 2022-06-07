@@ -13,3 +13,12 @@ import '@fortawesome/fontawesome-free/css/all.css';
 
 // start the Stimulus application
 import '../bootstrap';
+
+
+if (Array.from(document.querySelectorAll('select[multiple]')).length > 0) {
+    import('jquery').then(jq => {
+        import('select2').then(() => {
+            jq.default('select[multiple]').select2()
+        });
+    });
+}
