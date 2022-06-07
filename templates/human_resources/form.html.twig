@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ressources humaine{% endblock %}
+
+{% block body %}
+    <div class="card">
+        {{ form_start(form) }}
+            {{ form_row(form.lastName) }}
+            {{ form_row(form.firstName) }}
+            {{ form_row(form.phoneNumber) }}
+            {{ form_row(form.birthdayDate) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.isActive) }}
+            {{ form_row(form.address) }}
+            {{ form_row(form.profession) }}
+
+            <input type="submit" value="Enregistrer">
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+

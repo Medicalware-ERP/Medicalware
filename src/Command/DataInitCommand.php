@@ -43,10 +43,25 @@ class DataInitCommand extends Command
 
                 $io->info("Generating $class ...");
 
-                $this->clearTable($class);
+                $this->resetAutoIncrement($class);
 
+                //Recreate All
+                /** @var EnumEntity $dataValue */
                 foreach ($enum->getData() as $dataValue) {
-                    $this->manager->persist($dataValue);
+
+                  $alreadyExist = $this->manager->getRepository($class)->findOneBy(['slug' => $dataValue->getSlug()]);
+
+                  if ($alreadyExist instanceof EnumEntity) {
+                      $alreadyExist->setName($dataValue->getName());
+                      $alreadyExist->setDescription($dataValue->getDescription());
+                      $alreadyExist->setColor($dataValue->getColor());
+
+                      $this->manager->persist($alreadyExist);
+
+                  } else {
+                      $this->manager->persist($dataValue);
+                  }
+
                 }
 
                 $this->manager->flush();
@@ -66,17 +81,9 @@ class DataInitCommand extends Command
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    private function clearTable(string $class) {
-        $values = $this->manager->getRepository($class)->findAll();
-
-        foreach ($values as $value) {
-            $this->manager->remove($value);
-        }
-
-        $this->manager->flush();
+    private function resetAutoIncrement(string $class) {
 
          /** Table always starting to id 1 */
-
         $tableName= $this->manager->getClassMetadata($class)->getTableName();
         $connection = $this->manager->getConnection();
         $connection->executeStatement("ALTER TABLE " . $tableName . " AUTO_INCREMENT = 1;");

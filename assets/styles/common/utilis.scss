@@ -1,0 +1,87 @@
+$spaces: 20;
+@mixin margin($size) {
+  margin: $size + rem;
+}
+@mixin margin-top($size) {
+  margin-top: $size + rem;
+}
+@mixin margin-left($size) {
+  margin-left: $size + rem;
+}
+@mixin margin-right($size) {
+  margin-right: $size + rem;
+}
+@mixin margin-bottom($size) {
+  margin-bottom: $size + rem;
+}
+@mixin padding($size) {
+  padding: $size + rem;
+}
+@mixin padding-top($size) {
+  padding-top: $size + rem;
+}
+@mixin padding-left($size) {
+  padding-left: $size + rem;
+}
+@mixin padding-right($size) {
+  padding-right: $size + rem;
+}
+@mixin padding-bottom($size) {
+  padding-bottom: $size + rem;
+}
+@for $i from 1 through $spaces {
+  .margin-#{$i} {
+    @include margin($i);
+  }
+  .margin-top-#{$i} {
+    @include margin-top($i);
+  }
+  .margin-left-#{$i} {
+    @include margin-left($i);
+  }
+  .margin-right-#{$i} {
+    @include margin-right($i);
+  }
+  .margin-bottom-#{$i} {
+    @include margin-bottom($i);
+  }
+  .padding-#{$i} {
+    @include padding($i);
+  }
+  .padding-top-#{$i} {
+    @include padding-top($i);
+  }
+  .padding-left-#{$i} {
+    @include padding-left($i);
+  }
+  .padding-right-#{$i} {
+    @include padding-right($i);
+  }
+  .padding-bottom-#{$i} {
+    @include padding-bottom($i);
+  }
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.justify-content-around {
+  justify-content: space-around;
+}
+
+.justify-content-start {
+  justify-content: flex-start;
+}
+
+.justify-content-end {
+  justify-content: flex-end;
+}
+
+.justify-content-center {
+  justify-content: center;
+}

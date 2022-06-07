@@ -3,20 +3,34 @@
 @import "./dashboard/dashboard";
 @import "./topbar/topbar";
 @import "./login/login";
+@import "./common/datatable";
+@import "./human_resources/details";
+@import "./human_resources/datatable";
+@import "./common/utilis";
 
 /* GlobalStyles de l'application */
 
 :root {
-  --bg-color-body: #FAFBFE;
-  --color-white: #ffffff;
+  --bg-color-body: #F6F7FA;
+  --color-white: #FFFFFF;
   --color-pink: #FA5C7C;
   --color-orange: #FCAD73;
-  --color-grey: #B2bBC0;
-  --color-blue: #0F2544;
+  --color-grey: #B2BBC0;
+  --bg-color-nav-links: #1D1B31;
+  --color-black: #000;
+  --color-primary: #0F2544;
+  --color-primary-light: #0F2544BD;
+  --color-secondary: #808080;
+  --color-secondary-light: #808080BD;
+  --color-danger: #DC3545;
+  --color-danger-light: #DC3545BD;
+  --color-success: #59B22F;
+  --color-success-light: #59B22FBD;
+  --color-warning: #FFBC00;
+  --color-warning-light: #FFBC00BD;
   --width-side-bar: 300px;
   --width-side-bar-close: 78px;
-  --bg-color-nav-links: #1d1b31;
-  --color-black: #000;
+  --height-top-bar: 80px;
 }
 
 * {
@@ -38,3 +52,15 @@ ul li {
 a {
   text-decoration: none;
 }
+
+.card {
+  background-color: #FFFFFF;
+  width: 100%;
+  padding: 1em;
+  box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
+}
+
+.p-5 {
+  padding: 5px;
+}
+

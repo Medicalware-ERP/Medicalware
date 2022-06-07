@@ -1,0 +1,4 @@
+
+{% apply spaceless %}
+    {{ user.phoneNumber | split('', 2) |join('.') }}
+{% endapply %}

@@ -1,5 +1,5 @@
 .topbar {
-  height: 10%;
+  height: var(--height-top-bar);
   background-color: var(--color-white);
   box-shadow: 0 0 9px -1px var(--color-black);
   width: calc(100% - var(--width-side-bar));
@@ -16,7 +16,7 @@
     height: 100%;
 
     .profile {
-      background: var(--color-blue);
+      background: var(--color-primary);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -31,11 +31,24 @@
         display: flex;
         align-items: center;
 
-        img.profile-img {
+        .avatar {
           height: 50px;
           width: 50px;
           border-radius: 50%;
+        }
+
+        img.avatar {
           object-fit: cover;
+        }
+
+        div.avatar {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          background-color: var(--color-white);
+          color: var(--color-black);
+          font-size: 1.4em;
         }
       }
 
