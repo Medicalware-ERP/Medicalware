@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class HumanResourcesController extends BaseController
 {
 
-    public function __construct(private EntityManagerInterface $manager)
+    public function __construct(private readonly EntityManagerInterface $manager)
     {
     }
 
