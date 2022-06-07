@@ -20,8 +20,11 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addEntry('app', './assets/js/app.js')
-    .addEntry('sidebar', './assets/js/sidebar/sidebar.js')
+    .addEntry('app', './assets/js/app.ts')
+    .addEntry('sidebar', './assets/js/sidebar/sidebar.ts')
+    .addEntry('human_resources.show', './assets/js/human_resources/show.ts')
+    .addEntry('human_resources.datatable', './assets/js/human_resources/datatable.ts')
+    .addEntry('datatableGeneric', './assets/js/datatable/datatableGeneric.ts')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
@@ -86,7 +89,7 @@ Encore
     })
 
     // uncomment if you use TypeScript
-    //.enableTypeScriptLoader()
+    .enableTypeScriptLoader()
 
     // uncomment if you use React
     //.enableReactPreset()

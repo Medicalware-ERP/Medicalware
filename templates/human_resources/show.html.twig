@@ -1,0 +1,165 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ressources humaine{% endblock %}
+
+{% block body %}
+    <input type="hidden" id="user-id" data-user="{{ user.id }}">
+    <div id="user-details-container">
+        <div class="card">
+            <div class="row">
+                {% if user.avatar is not null %}
+                    <img class="avatar" src="https://cdn.pixabay.com/photo/2015/03/03/08/55/portrait-657116_960_720.jpg" />
+                    {# Todo : mettre l'image #}
+                {% else %}
+                    <div class="avatar avatar-text">
+                        <span>
+                            {{ user.firstName|first|upper ~ user.lastName|first|upper }}
+                        </span>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Nom :
+                </div>
+
+                <div class="right-item">
+                    {{ user.lastName }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Prénom :
+                </div>
+
+                <div class="right-item">
+                    {{ user.firstName }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Adresse :
+                </div>
+
+                <div class="right-item">
+                    {{ user.address }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Email :
+                </div>
+
+                <div class="right-item">
+                    {{ user.email }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Téléphone :
+                </div>
+
+                <div class="right-item">
+                    {{ user.phoneNumber }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Âge :
+                </div>
+
+                <div class="right-item">
+                    {{ date().diff(date(user.birthdayDate)).y }} ans ({{ user.birthdayDate|date('d/m/Y') }})
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Rejoins l'entreprise le :
+                </div>
+
+                <div class="right-item">
+                    {{ user.createdAt | date('d/m/Y') }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Quitter l'entreprise le :
+                </div>
+
+                <div class="right-item">
+                    {{ user.leftAt is null ? "-" : user.leftAt | date('d/m/Y') }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Compte actif :
+                </div>
+
+                <div class="right-item">
+                    {{ user.isActive ? 'Oui' : 'Non' }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Profession :
+                </div>
+
+                <div class="right-item">
+                    {{ user.profession }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Rôle(s) :
+                </div>
+
+                <div class="right-item">
+                    {{ user.roles | join(', ', ' et ') }}
+                </div>
+            </div>
+
+            <div class="row row-actions">
+                <div class="left-item">
+                    #{{ user.id }}
+                </div>
+
+                <div class="right-item">
+
+                    <a class="btn-primary" href="{{ path('app_edit_user', {'id': user.id}) }}">
+                        Éditer
+                    </a>
+
+                    {% if (user.isActive)%}
+                        <a id="user-disable" class="btn-danger" href="#">
+                            Désactiver
+                        </a>
+                    {% else %}
+                        <a id="user-enable" class="btn-success" href="#">
+                            Activer
+                        </a>
+                    {% endif %}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('human_resources.show') }}
+{% endblock %}
+

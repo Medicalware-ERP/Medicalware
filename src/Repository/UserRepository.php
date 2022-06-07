@@ -3,11 +3,18 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Repository\Datatable\DatatableConfigColumn;
+use App\Repository\Datatable\DatatableConfigJoin;
+use App\Repository\Datatable\DatatableConfigSearch;
+use App\Repository\Datatable\DatatableRepository;
+use Doctrine;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use function get_class;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -15,12 +22,13 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class UserRepository extends DatatableRepository implements PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
     }
+
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
@@ -28,7 +36,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
 
         $user->setPassword($newHashedPassword);
@@ -36,32 +44,28 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    #[Pure] public function configureDatableJoin(): array
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        return [
+            new DatatableConfigJoin('profession')
+        ];
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?User
+    #[Pure] public function configureDatableSearch(): array
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return [
+            new DatatableConfigSearch('lastName'),
+            new DatatableConfigSearch('firstName'),
+            new DatatableConfigSearch('email'),
+            new DatatableConfigSearch('phoneNumber'),
+            new DatatableConfigSearch('name', 'profession'),
+        ];
     }
-    */
+
+    #[Pure] public function configureDatableColumns(): array
+    {
+        return [
+            new DatatableConfigColumn('lastName'),
+        ];
+    }
 }

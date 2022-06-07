@@ -24,3 +24,12 @@ prepare-test:
 	php bin/console doctrine:database:create --env=test
 	php bin/console doctrine:schema:update -f --env=test
 	php bin/console doctrine:fixtures:load -n --env=test
+
+resetDbDev:
+	php bin/console doctrine:database:drop --if-exists -f --env=dev
+	php bin/console doctrine:database:create --env=dev
+	php bin/console doctrine:schema:update -f --env=dev
+	php bin/console doctrine:fixtures:load -n --env=dev
+
+dumpRoutes:
+	php bin/console fos:js-routing:dump --format=json --target=assets/js/fos_js_routes.json
