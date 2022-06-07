@@ -1,10 +1,11 @@
 import {$} from '../utils'
 import {isText} from "../utilis/stringUtilis";
 
-let query: string = '';
-let page: number = 1;
-let limit: number = 2;
-const inputSearch = $('#input-search');
+let query: string   = '';
+let page: number    = 1;
+let limitSelect     = $('#datatable-limit') as HTMLSelectElement;
+let limit: number   = parseInt(limitSelect?.value ?? 2) ;
+const inputSearch   = $('#input-search');
 
 type JSONResponse = {
     data: JSONDataCollection,
@@ -97,6 +98,13 @@ export default function generateDatable(table: HTMLTableElement, callback: any =
     if (inputSearch instanceof HTMLInputElement) {
         inputSearch.addEventListener('keyup', async function () {
             query = this.value;
+            await getData();
+        });
+    }
+
+    if (limitSelect instanceof HTMLSelectElement) {
+        limitSelect.addEventListener('change', async function() {
+            limit = parseInt(this.value);
             await getData();
         });
     }

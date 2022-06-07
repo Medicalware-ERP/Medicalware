@@ -7,9 +7,18 @@
             Utilisateurs
         </h4>
         <div class="card">
+
             <div class="row">
-                <input class="form-input-datatable" type="text" placeholder="Chercher ..." id="input-search"
-                       name="search"/>
+                <div>
+                    <label for="input-search"></label>
+                    <input class="form-input-datatable" type="text" placeholder="Chercher ..." id="input-search" name="search"/>
+
+                    <label for="datatable-limit"></label><select name="limit" id="datatable-limit">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                    </select>
+                </div>
                 <a class="btn btn-success" href="{{ path('app_add_user') }}">
                     <i class="fa fa-plus"></i>
                     Ajouter un utilisateur
