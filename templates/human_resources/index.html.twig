@@ -2,27 +2,21 @@
 {% block title %}Ressources humaine{% endblock %}
 
 {% block body %}
-
     <div class="container-list-users">
         <h4 class="title-list-users">
             Utilisateurs
         </h4>
         <div class="card">
             <div class="row">
-                <form class="form-datatable">
-                    <input class="form-input-datatable" type="text" placeholder="Chercher ..." id="input-search" name="search"/>
-                    <span class="label-search">Chercher par :</span><select class="form-select" name="show-search-options" id="show-search-options">
-                        <option value="user-last-name" selected>Nom</option>
-                        <option value="user-first-name">Prénom</option>
-                        <option value="user-phone-number">Téléphone</option>
-                        <option value="user-email">Email</option>
-                        <option value="user-role">Profession</option>
-                    </select>
-                </form>
-                <button class="btn btn-success"><i class="fa fa-plus"></i>Ajouter un utilisateur</button>
+                <input class="form-input-datatable" type="text" placeholder="Chercher ..." id="input-search"
+                       name="search"/>
+                <a class="btn btn-success" href="{{ path('app_add_user') }}">
+                    <i class="fa fa-plus"></i>
+                    Ajouter un utilisateur
+                </a>
             </div>
 
-            <table class="table-users">
+            <table id="table-users" class="datatable" data-url="{{ path('users_json') }}">
                 <thead>
                 <tr>
                     <th>Avatar</th>
@@ -35,44 +29,6 @@
                     <th>Détails</th>
                 </tr>
                 </thead>
-                <tbody>
-                {% for user in users %}
-                    {% set splitPhoneNumber = user.phoneNumber  |split('', 2) %}
-                    {% set formattedPhoneNumber = splitPhoneNumber|join('.') %}
-                    <tr>
-                        <td>
-                            {% if user.avatar is not null %}
-                                {{ user.avatar }}
-                            {% else %}
-                                <div class="avatar-default">
-                                    <span>{{ user.firstName|slice(0,1)|upper ~ user.lastName|slice(0,1)|upper }}</span>
-                                </div>
-                            {% endif %}
-                        </td>
-                        <td class="user-last-name">{{ user.lastName }}</td>
-                        <td class="user-first-name">{{ user.firstName }}</td>
-                        <td class="user-phone-number">{{ formattedPhoneNumber }}</td>
-                        <td class="user-email">{{ user.email }}</td>
-                        <td class="user-role">{{ user.profession }}</td>
-                        <td>
-                            {% if user.isActive %}
-                                <label class="switch">
-                                    <input type="checkbox" checked data-user="{{ user.id }}">
-                                    <span class="slider round"></span>
-                                </label>
-                            {% else %}
-                                <label class="switch">
-                                    <input type="checkbox" data-user="{{ user.id }}">
-                                    <span class="slider round"></span>
-                                </label>
-                            {% endif %}
-                        </td>
-                        <td>
-                            <a class="btn-xs btn-primary" href="{{ path('app_show_user', {'id': user.id }) }}"><i class="fa fa-eye"></i></a>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
             </table>
         </div>
     </div>

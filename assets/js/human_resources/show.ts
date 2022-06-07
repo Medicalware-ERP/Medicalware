@@ -2,13 +2,17 @@ import Swal from 'sweetalert2'
 import { $, colors } from '../utils'
 import Routing from "../Routing";
 
+let userIdElement = $('#user-id') as HTMLInputElement;
 
-const callback = e => {
-    const url = Routing.generate('app_toggle_active_user', {
-        id: e.target.dataset.user
-    });
+const url = Routing.generate('app_toggle_active_user', {
+    id: userIdElement.dataset.user
+});
 
-    if (e.checked) {
+const userDisable = $("#user-disable");
+const userEnable  = $("#user-enable");
+
+if (userDisable instanceof HTMLInputElement) {
+    userDisable.addEventListener('click', function () {
         Swal.fire({
             title: 'Êtes vous sûr de continuer ?',
             text: "Vous êtes sur le point de désactiver l'accés au compte pour l'utilisateur",
@@ -23,7 +27,11 @@ const callback = e => {
                 location.href = url
             }
         })
-    } else {
+    });
+}
+
+if (userEnable  instanceof HTMLInputElement) {
+    userEnable.addEventListener('click', function () {
         Swal.fire({
             title: 'Êtes vous sûr de continuer ?',
             text: "Vous êtes sur le point de d'activer l'accés au compte pour l'utilisateur",
@@ -38,9 +46,5 @@ const callback = e => {
                 location.href = url
             }
         })
-    }
-};
-
-$(".switch [type=checkbox]", (elem) => {
-   elem.addEventListener('click', callback)
-})
+    });
+}

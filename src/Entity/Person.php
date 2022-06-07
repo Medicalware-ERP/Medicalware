@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Repository\PersonRepository;
 use DateTime;
 use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\MappedSuperclass]
@@ -30,8 +31,8 @@ abstract class Person
     #[ORM\Column(type: 'string', length: 14)]
     private ?string $phoneNumber = null;
 
-    #[ORM\Column(type: 'datetime_immutable')]
-    private ?DateTimeImmutable $birthdayDate = null;
+    #[ORM\Column(type: 'datetime')]
+    private ?DateTimeInterface $birthdayDate = null;
 
     /**
      * @return int|null
@@ -100,12 +101,12 @@ abstract class Person
         return $this;
     }
 
-    public function getBirthdayDate(): ?DateTimeImmutable
+    public function getBirthdayDate(): ?DateTimeInterface
     {
         return $this->birthdayDate;
     }
 
-    public function setBirthdayDate(?DateTimeImmutable $birthdayDate): self
+    public function setBirthdayDate(?DateTimeInterface $birthdayDate): self
     {
         $this->birthdayDate = $birthdayDate;
 

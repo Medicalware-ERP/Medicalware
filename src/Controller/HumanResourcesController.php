@@ -4,16 +4,21 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Service\User\UserDataFormatter;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HumanResourcesController extends AbstractController
+class HumanResourcesController extends BaseController
 {
+
     public function __construct(private EntityManagerInterface $manager)
     {
     }
@@ -21,18 +26,41 @@ class HumanResourcesController extends AbstractController
     #[Route('/humanResources', name: 'app_human_resources')]
     public function index(): Response
     {
-        return $this->render('human_resources/index.html.twig', [
-            'users' => $this->manager->getRepository(User::class)->findAll()
-        ]);
+        return $this->render('human_resources/index.html.twig');
     }
 
-    #[Route('/user/{id}', name: 'app_show_user')]
-    public function show(int $id): Response
-    {
-        $user = $this->manager->find(User::class, $id) ?? throw new NotFoundHttpException("Utilisateur non trouvée");
 
-        return $this->render('human_resources/show.html.twig', [
-            'user' => $user
+    /**
+     * @param Request $request
+     * @param UserDataFormatter $userDataFormatter
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/usersJson', name: 'users_json')]
+    public function paginate(Request $request, UserDataFormatter $userDataFormatter): JsonResponse
+    {
+        return $this->paginateRequest(User::class, $request, $userDataFormatter);
+    }
+
+    #[Route('/user/add', name: 'app_add_user')]
+    public function add(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
+    {
+        $user = new User();
+
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword($userPasswordHasher->hashPassword($user, 'admin'));
+            $this->manager->persist($user);
+            $this->manager->flush();
+
+            return $this->redirectToRoute("app_human_resources");
+        }
+
+        return $this->renderForm('human_resources/form.html.twig', [
+            'form' => $form
         ]);
     }
 
@@ -49,7 +77,7 @@ class HumanResourcesController extends AbstractController
             $this->manager->flush();
         }
 
-        return $this->renderForm('human_resources/edit.html.twig', [
+        return $this->renderForm('human_resources/form.html.twig', [
             'form' => $form
         ]);
     }
@@ -64,8 +92,19 @@ class HumanResourcesController extends AbstractController
         $this->manager->persist($user);
         $this->manager->flush();
 
+
         $referer = $request->headers->get('referer');
 
         return $this->redirect($referer);
+    }
+
+    #[Route('/user/{id}', name: 'app_show_user')]
+    public function show(int $id): Response
+    {
+        $user = $this->manager->find(User::class, $id) ?? throw new NotFoundHttpException("Utilisateur non trouvée");
+
+        return $this->render('human_resources/show.html.twig', [
+            'user' => $user
+        ]);
     }
 }
