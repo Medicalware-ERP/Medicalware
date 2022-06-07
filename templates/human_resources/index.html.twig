@@ -10,7 +10,10 @@
             <div class="row">
                 <input class="form-input-datatable" type="text" placeholder="Chercher ..." id="input-search"
                        name="search"/>
-                <button class="btn btn-success"><i class="fa fa-plus"></i>Ajouter un utilisateur</button>
+                <a class="btn btn-success" href="{{ path('app_add_user') }}">
+                    <i class="fa fa-plus"></i>
+                    Ajouter un utilisateur
+                </a>
             </div>
 
             <table id="table-users" class="datatable" data-url="{{ path('users_json') }}">
