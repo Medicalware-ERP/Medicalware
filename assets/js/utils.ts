@@ -24,3 +24,5 @@ export let colors = {
     navLinks :  getCssVariableValue('--bg-color-nav-links'),
     black :     getCssVariableValue('--color-black'),
 }
+
+export const simpleLoader = () => '<i class="fas fa-circle-notch fa-spin text-primary fz-16"></i>';

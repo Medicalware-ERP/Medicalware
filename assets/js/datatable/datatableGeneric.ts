@@ -1,4 +1,4 @@
-import {$} from '../utils'
+import {$, simpleLoader} from '../utils'
 import {isText} from "../utilis/stringUtilis";
 
 let query: string = '';
@@ -36,19 +36,37 @@ export default function generateDatable(table: HTMLTableElement) {
         return await fetch(url.href).then(res => res.json())
     };
 
-    const getData = async () => {
-        const datas: JSONResponse = await fetchData();
+    const insertCenterCellData = (text: string) => {
         table.tBodies.item(0)?.remove()
+        const nbCol = table.tHead?.children.item(0)?.children.length;
         let tbody = table.createTBody();
+        let row = tbody.insertRow();
+        let cell =row.insertCell();
+        cell.setAttribute('colspan', String(nbCol))
+        cell.style.textAlign = 'center';
+        cell.innerHTML = text;
+    }
 
-        for (let data of datas.data) {
-            let row = tbody.insertRow();
+    const getData = async () => {
+        insertCenterCellData(simpleLoader());
 
-            Object.keys(data).forEach(key => {
-                let cell = row.insertCell();
-                cell.innerHTML = data[key];
-            });
+        const datas: JSONResponse = await fetchData();
+        table.tBodies.item(0)?.remove();
+
+        if (datas.data.length > 0) {
+            let tbody = table.createTBody();
+            for (let data of datas.data) {
+                let row = tbody.insertRow();
+
+                Object.keys(data).forEach(key => {
+                    let cell = row.insertCell();
+                    cell.innerHTML = data[key];
+                });
+            }
+        } else {
+            insertCenterCellData('Aucunes données');
         }
+
 
         const event = new CustomEvent('datatable.loaded', {
             detail: {
@@ -98,9 +116,18 @@ export default function generateDatable(table: HTMLTableElement) {
     getData().then(r => r);
 
     if (inputSearch instanceof HTMLInputElement) {
-        inputSearch.addEventListener('keyup', async function () {
+        let debounceGeneralSearch: number | undefined = undefined;
+
+        inputSearch.addEventListener('keyup', function () {
             query = this.value;
-            await getData();
+
+            window.clearTimeout(debounceGeneralSearch);
+            debounceGeneralSearch = window.setTimeout(
+                async () => {
+                    await getData()
+                },
+                300
+            );
         });
     }
 
