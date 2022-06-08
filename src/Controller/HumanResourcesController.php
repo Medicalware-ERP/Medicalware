@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class HumanResourcesController extends BaseController
 {
 
-    public function __construct(private EntityManagerInterface $manager)
+    public function __construct(private readonly EntityManagerInterface $manager)
     {
     }
 
@@ -78,12 +78,13 @@ class HumanResourcesController extends BaseController
         }
 
         return $this->renderForm('human_resources/form.html.twig', [
-            'form' => $form
+            'form' => $form,
+            'user' => $user
         ]);
     }
 
     #[Route('/user/disable/{id}', name: 'app_toggle_active_user')]
-    public function toggleActiveUser(Request $request, int $id): RedirectResponse
+    public function toggleActiveUser(Request $request, int $id): Response
     {
         $user = $this->manager->find(User::class, $id) ?? throw new NotFoundHttpException("Utilisateur non trouvée");
 
@@ -92,10 +93,9 @@ class HumanResourcesController extends BaseController
         $this->manager->persist($user);
         $this->manager->flush();
 
-
         $referer = $request->headers->get('referer');
 
-        return $this->redirect($referer);
+        return $request->isXmlHttpRequest() ? $this->json('ok') : $this->redirect($referer);
     }
 
     #[Route('/user/{id}', name: 'app_show_user')]

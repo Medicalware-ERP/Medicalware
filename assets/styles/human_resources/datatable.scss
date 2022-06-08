@@ -17,7 +17,7 @@
   box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
 }
 
-.row {
+.row__datatable {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -44,7 +44,7 @@
   }
 }
 
-.btn.btn-success {
+.btn {
   border: 1px solid transparent;
   padding: 0.45rem 0.9rem;
   font-size: .9rem;
@@ -57,9 +57,12 @@
   line-height: 1.5;
   text-align: center;
   border-radius: 0.15rem;
-  background-color: #5ab32f;
   box-shadow: 0 2px 6px 0 rgb(23 34 23 / 50%);
   transition: all .15s ease-in-out;
+
+  &.btn-success {
+    background-color: #5ab32f;
+  }
 
   &:hover {
     background-color: #63bb38;
