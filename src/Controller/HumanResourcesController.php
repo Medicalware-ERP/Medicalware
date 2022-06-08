@@ -82,7 +82,8 @@ class HumanResourcesController extends AbstractController
         }
 
         return $this->renderForm('human_resources/edit.html.twig', [
-            'form' => $form
+            'form' => $form,
+            'user' => $user
         ]);
     }
 

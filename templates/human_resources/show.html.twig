@@ -136,16 +136,16 @@
 
                 <div class="right-item">
 
-                    <a class="btn-primary" href="{{ path('app_edit_user', {'id': user.id}) }}">
+                    <a class="btn btn-warning" href="{{ path('app_edit_user', {'id': user.id}) }}">
                         Éditer
                     </a>
 
                     {% if (user.isActive)%}
-                        <a id="user-disable" class="btn-danger" href="#">
+                        <a id="user-disable" class="btn btn-danger" href="#">
                             Désactiver
                         </a>
                     {% else %}
-                        <a id="user-enable" class="btn-success" href="#">
+                        <a id="user-enable" class="btn btn-success" href="#">
                             Activer
                         </a>
                     {% endif %}
