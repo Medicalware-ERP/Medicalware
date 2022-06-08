@@ -16,23 +16,26 @@ abstract class Person
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    protected ?int $id = null;
     
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $lastName = null;
+    protected ?string $lastName = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $firstName = null;
+    protected ?string $firstName = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    protected ?string $avatar = null;
 
     #[ORM\OneToOne(targetEntity: Address::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Address $address = null;
+    protected ?Address $address = null;
 
     #[ORM\Column(type: 'string', length: 14)]
-    private ?string $phoneNumber = null;
+    protected ?string $phoneNumber = null;
 
     #[ORM\Column(type: 'datetime')]
-    private ?DateTimeInterface $birthdayDate = null;
+    protected ?DateTimeInterface $birthdayDate = null;
 
     /**
      * @return int|null
@@ -73,7 +76,6 @@ abstract class Person
     public function setFirstName(string $firstName): self
     {
         $this->firstName = $firstName;
-
         return $this;
     }
 
@@ -85,7 +87,6 @@ abstract class Person
     public function setAddress(Address $address): self
     {
         $this->address = $address;
-
         return $this;
     }
 
@@ -109,6 +110,18 @@ abstract class Person
     public function setBirthdayDate(?DateTimeInterface $birthdayDate): self
     {
         $this->birthdayDate = $birthdayDate;
+
+        return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): self
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }

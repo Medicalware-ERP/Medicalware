@@ -40,9 +40,6 @@ class User extends Person implements UserInterface, PasswordAuthenticatedUserInt
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?DateTimeImmutable $leftAt = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $avatar = null;
-
     #[ORM\ManyToOne(targetEntity: UserType::class, inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
     private ?UserType $profession = null;
@@ -142,18 +139,6 @@ class User extends Person implements UserInterface, PasswordAuthenticatedUserInt
     public function setLeftAt(?\DateTimeImmutable $leftAt): self
     {
         $this->leftAt = $leftAt;
-
-        return $this;
-    }
-
-    public function getAvatar(): ?string
-    {
-        return $this->avatar;
-    }
-
-    public function setAvatar(?string $avatar): self
-    {
-        $this->avatar = $avatar;
 
         return $this;
     }

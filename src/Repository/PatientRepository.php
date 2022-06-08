@@ -3,10 +3,15 @@
 namespace App\Repository;
 
 use App\Entity\Patient;
+use App\Repository\Datatable\DatatableConfigColumn;
+use App\Repository\Datatable\DatatableConfigJoin;
+use App\Repository\Datatable\DatatableConfigSearch;
+use App\Repository\Datatable\DatatableRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * @method Patient|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,7 +19,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Patient[]    findAll()
  * @method Patient[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PatientRepository extends ServiceEntityRepository
+class PatientRepository extends DatatableRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -73,4 +78,26 @@ class PatientRepository extends ServiceEntityRepository
         ;
     }
     */
+    #[Pure] public function configureDatableJoin(): array
+    {
+        return [];
+    }
+
+    #[Pure] public function configureDatableSearch(): array
+    {
+        return [
+            new DatatableConfigSearch('lastName'),
+            new DatatableConfigSearch('firstName'),
+            new DatatableConfigSearch('email'),
+            new DatatableConfigSearch('phoneNumber'),
+            new DatatableConfigSearch('numberSocialSecurity'),
+        ];
+    }
+
+    #[Pure] public function configureDatableColumns(): array
+    {
+        return [
+            new DatatableConfigColumn('lastName'),
+        ];
+    }
 }
