@@ -26,7 +26,7 @@ class Address
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $city = null;
 
-    public function __construct(string $street, string $city, string $postalCode)
+    public function __construct(string $street = null, string $city = null, string $postalCode = null)
     {
         $this->street = $street;
         $this->city  = $city;

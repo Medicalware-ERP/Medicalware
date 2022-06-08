@@ -6,65 +6,61 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Service\User\UserDataFormatter;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 
-class HumanResourcesController extends AbstractController
+class HumanResourcesController extends BaseController
 {
-    public const LIMIT = 2;
 
-    public function __construct(private EntityManagerInterface $manager)
+    public function __construct(private readonly EntityManagerInterface $manager)
     {
     }
 
     #[Route('/humanResources', name: 'app_human_resources')]
     public function index(): Response
     {
-        $limit = self::LIMIT;
-        $count = $this->manager->getRepository(User::class)->getTotalUsers();
-        return $this->render('human_resources/index.html.twig', [
-            'limit' => $limit,
-            'total' => $count
-        ]);
+        return $this->render('human_resources/index.html.twig');
     }
 
 
     /**
-     * @throws SyntaxError
-     * @throws RuntimeError
-     * @throws LoaderError
+     * @param Request $request
+     * @param UserDataFormatter $userDataFormatter
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     #[Route('/usersJson', name: 'users_json')]
-    public function getUsersJSON(Request $request, UserDataFormatter $userManager): JsonResponse
+    public function paginate(Request $request, UserDataFormatter $userDataFormatter): JsonResponse
     {
-        $page = $request->query->get("page") ?? 1;
-        $query = $request->query->get("query") ?? null;
-        $users = $this->manager->getRepository(User::class)->getAllUsersPaginated($page, self::LIMIT, $query);
-        $data = [];
-
-        foreach ($users as $user) {
-            $data[] = $userManager->format($user);
-        }
-
-        return new JsonResponse($data, Response::HTTP_OK);
+        return $this->paginateRequest(User::class, $request, $userDataFormatter);
     }
 
-
-    #[Route('/user/{id}', name: 'app_show_user')]
-    public function show(int $id): Response
+    #[Route('/user/add', name: 'app_add_user')]
+    public function add(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
     {
-        $user = $this->manager->find(User::class, $id) ?? throw new NotFoundHttpException("Utilisateur non trouvée");
+        $user = new User();
 
-        return $this->render('human_resources/show.html.twig', [
-            'user' => $user
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword($userPasswordHasher->hashPassword($user, 'admin'));
+            $this->manager->persist($user);
+            $this->manager->flush();
+
+            return $this->redirectToRoute("app_human_resources");
+        }
+
+        return $this->renderForm('human_resources/form.html.twig', [
+            'form' => $form
         ]);
     }
 
@@ -81,7 +77,7 @@ class HumanResourcesController extends AbstractController
             $this->manager->flush();
         }
 
-        return $this->renderForm('human_resources/edit.html.twig', [
+        return $this->renderForm('human_resources/form.html.twig', [
             'form' => $form,
             'user' => $user
         ]);
@@ -101,5 +97,15 @@ class HumanResourcesController extends AbstractController
         $referer = $request->headers->get('referer');
 
         return $this->redirect($referer);
+    }
+
+    #[Route('/user/{id}', name: 'app_show_user')]
+    public function show(int $id): Response
+    {
+        $user = $this->manager->find(User::class, $id) ?? throw new NotFoundHttpException("Utilisateur non trouvée");
+
+        return $this->render('human_resources/show.html.twig', [
+            'user' => $user
+        ]);
     }
 }

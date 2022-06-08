@@ -13,7 +13,7 @@ const toggleActive = ()  => {
         if (checkbox.checked) {
             Swal.fire({
                 title: 'Êtes vous sûr de continuer ?',
-                text: "Vous êtes sur le point de désactiver l'accés au compte pour l'utilisateur",
+                text: "Vous êtes sur le point d'activer l'accés au compte pour l'utilisateur",
                 icon: 'warning',
                 confirmButtonText: 'Oui',
                 confirmButtonColor: colors.primary,
@@ -28,7 +28,7 @@ const toggleActive = ()  => {
         } else {
             Swal.fire({
                 title: 'Êtes vous sûr de continuer ?',
-                text: "Vous êtes sur le point de d'activer l'accés au compte pour l'utilisateur",
+                text: "Vous êtes sur le point de désactiver l'accés au compte pour l'utilisateur",
                 icon: 'warning',
                 confirmButtonText: 'Oui',
                 confirmButtonColor: colors.primary,
