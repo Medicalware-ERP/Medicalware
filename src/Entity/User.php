@@ -5,11 +5,18 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\DiscriminatorColumn;
+use Doctrine\ORM\Mapping\DiscriminatorMap;
+use Doctrine\ORM\Mapping\InheritanceType;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[InheritanceType("JOINED")]
+#[DiscriminatorColumn(name : "discr", type : "string")]
+#[DiscriminatorMap(["doctor" => "Doctor", "user" => "User"])]
+
 class User extends Person implements UserInterface, PasswordAuthenticatedUserInterface, EntityInterface
 {
     #[ORM\Column(type: 'string', length: 180, unique: true)]
@@ -32,9 +39,6 @@ class User extends Person implements UserInterface, PasswordAuthenticatedUserInt
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?DateTimeImmutable $leftAt = null;
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $avatar = null;
 
     #[ORM\ManyToOne(targetEntity: UserType::class, inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
@@ -135,18 +139,6 @@ class User extends Person implements UserInterface, PasswordAuthenticatedUserInt
     public function setLeftAt(?\DateTimeImmutable $leftAt): self
     {
         $this->leftAt = $leftAt;
-
-        return $this;
-    }
-
-    public function getAvatar(): ?string
-    {
-        return $this->avatar;
-    }
-
-    public function setAvatar(?string $avatar): self
-    {
-        $this->avatar = $avatar;
 
         return $this;
     }

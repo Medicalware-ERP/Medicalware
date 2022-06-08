@@ -38,7 +38,6 @@ export default function generateDatable(table: HTMLTableElement) {
 
     const getData = async () => {
         const datas: JSONResponse = await fetchData();
-
         table.tBodies.item(0)?.remove()
         let tbody = table.createTBody();
 
