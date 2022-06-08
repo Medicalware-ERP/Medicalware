@@ -2,6 +2,7 @@
   .card {
     display: flex;
     flex-direction: column;
+    gap:10px;
 
     .row {
       display: flex;
@@ -23,7 +24,7 @@
           height: 100%;
 
           a {
-            margin-right: .3em;
+            margin-right: 1em;
           }
         }
       }
@@ -39,14 +40,12 @@
       .left-item {
         width: 20%;
         min-width: 200px;
-        font-weight: bold;
+        color: #313a46;
+        font-weight: 500;
       }
 
       .right-item {
         width: 80%;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
       }
 
       .avatar {

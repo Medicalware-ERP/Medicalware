@@ -78,7 +78,8 @@ class HumanResourcesController extends BaseController
         }
 
         return $this->renderForm('human_resources/form.html.twig', [
-            'form' => $form
+            'form' => $form,
+            'user' => $user
         ]);
     }
 
