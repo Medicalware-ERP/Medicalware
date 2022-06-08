@@ -1,11 +1,11 @@
 import {$} from '../utils'
 import {isText} from "../utilis/stringUtilis";
 
-let query: string   = '';
-let page: number    = 1;
-let limitSelect     = $('#datatable-limit') as HTMLSelectElement;
-let limit: number   = parseInt(limitSelect?.value ?? 2) ;
-const inputSearch   = $('#input-search');
+let query: string = '';
+let page: number = 1;
+let limitSelect = $('#datatable-limit') as HTMLSelectElement;
+let limit: number = parseInt(limitSelect?.value ?? 2);
+const inputSearch = $('#input-search');
 
 type JSONResponse = {
     data: JSONDataCollection,
@@ -20,7 +20,7 @@ type JSONData = {
 type JSONDataCollection = Array<JSONData>;
 
 
-export default function generateDatable(table: HTMLTableElement, callback: any = null) {
+export default function generateDatable(table: HTMLTableElement) {
     const fetchData = async (): Promise<JSONResponse> => {
         const dataUrl = table.dataset.url;
 
@@ -51,10 +51,13 @@ export default function generateDatable(table: HTMLTableElement, callback: any =
             });
         }
 
-        if (callback != null) {
-            callback();
-        }
-
+        const event = new CustomEvent('datatable.loaded', {
+            detail: {
+                datas,
+                table
+            }
+        });
+        document.dispatchEvent(event);
 
         $('.pagination')?.remove()
 
@@ -63,10 +66,10 @@ export default function generateDatable(table: HTMLTableElement, callback: any =
         for (let i = 0; i < datas.filteredCount / limit; i++) {
             let a = document.createElement('a');
             let li = document.createElement('li');
-            li.appendChild(document.createTextNode((i+1).toString()))
-            a.dataset.id = (i+1).toString()
+            li.appendChild(document.createTextNode((i + 1).toString()))
+            a.dataset.id = (i + 1).toString()
             a.classList.add('link')
-            if (page === i+1) {
+            if (page === i + 1) {
                 a.classList.add('active')
             }
             a.appendChild(li);
@@ -103,7 +106,7 @@ export default function generateDatable(table: HTMLTableElement, callback: any =
     }
 
     if (limitSelect instanceof HTMLSelectElement) {
-        limitSelect.addEventListener('change', async function() {
+        limitSelect.addEventListener('change', async function () {
             limit = parseInt(this.value);
             await getData();
         });

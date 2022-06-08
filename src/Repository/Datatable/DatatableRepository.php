@@ -15,11 +15,6 @@ abstract class DatatableRepository extends ServiceEntityRepository implements Da
     public const DEFAULT_ENTITY_ALIAS = 'e';
     protected static ?DatatableConfig $datatableConfig = null;
 
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, User::class);
-    }
-
     /**
      * @param int $currentPage
      * @param int $limit
