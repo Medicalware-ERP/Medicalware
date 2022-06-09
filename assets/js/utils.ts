@@ -25,4 +25,4 @@ export let colors = {
     black :     getCssVariableValue('--color-black'),
 }
 
-export const simpleLoader = () => '<i class="fas fa-circle-notch fa-spin text-primary fz-16"></i>';
+export const simpleLoader = () => '<i class="fas fa-circle-notch fa-spin text-primary fz-32"></i>';

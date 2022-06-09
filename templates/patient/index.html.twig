@@ -11,16 +11,16 @@
             <div class="row__datatable">
                 <div>
                     <label for="input-search"></label>
-                    <input class="form-input-datatable" type="text" placeholder="Chercher ..." id="input-search" name="search"/>
+                    <input class="form-input" type="text" placeholder="Chercher ..." id="input-search" name="search"/>
 
                     <label for="datatable-limit"></label>
-                    <select name="limit" id="datatable-limit" class="form-input-datatable">
+                    <select name="limit" id="datatable-limit" class="form-input">
                         <option value="10">10</option>
                         <option value="20">20</option>
                         <option value="30">30</option>
                     </select>
                 </div>
-                <a class="btn btn-success" href="#">
+                <a class="btn btn-success" href="{{ path("app_add_patient") }}">
                     <i class="fa fa-plus"></i>
                     Ajouter un patient
                 </a>

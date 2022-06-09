@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ressources humaine{% endblock %}
+{% block title %}{{ patient is defined ? "Ajouter un patient" : "Modifier un patient"}} {% endblock %}
 
 {% block body %}
     <h4 class="title-list-users">
-        {% if user is defined %}
-            Modifier {{ user.firstName }}
+        {% if patient is defined %}
+            Modifier {{ patient.firstName }}
         {% else %}
             Ajouter
         {% endif %}
@@ -14,7 +14,7 @@
         <div class="wrapper">
             {{ form_start(form) }}
             {{ form_rest(form) }}
-            <input type="submit" class="btn btn-success" value="{{ user is defined ? "Modifier" : "Ajouter" }}">
+            <input type="submit" class="btn btn-success" value="{{ patient is defined ? "Modifier" : "Ajouter" }}">
             {{ form_end(form) }}
         </div>
     </div>
