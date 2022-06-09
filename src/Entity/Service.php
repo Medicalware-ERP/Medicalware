@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Stock\Equipment;
 use App\Repository\ServiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -26,9 +27,13 @@ class Service
     #[ORM\OneToMany(mappedBy: 'service', targetEntity: MedicalFileLine::class)]
     private Collection $medicalFileLines;
 
+    #[ORM\ManyToMany(targetEntity: Equipment::class, mappedBy: 'service')]
+    private $equipment;
+
     #[Pure] public function __construct()
     {
         $this->medicalFileLines = new ArrayCollection();
+        $this->equipment = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -85,6 +90,33 @@ class Service
             if ($medicalFileLine->getService() === $this) {
                 $medicalFileLine->setService(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Equipment>
+     */
+    public function getEquipment(): Collection
+    {
+        return $this->equipment;
+    }
+
+    public function addEquipment(Equipment $equipment): self
+    {
+        if (!$this->equipment->contains($equipment)) {
+            $this->equipment[] = $equipment;
+            $equipment->addService($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEquipment(Equipment $equipment): self
+    {
+        if ($this->equipment->removeElement($equipment)) {
+            $equipment->removeService($this);
         }
 
         return $this;

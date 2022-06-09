@@ -11,7 +11,7 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: SpecialisationRepository::class)]
 class Specialisation extends EnumEntity
 {
-    #[ORM\ManyToMany(targetEntity: Doctor::class, mappedBy: 'specialisation')]
+    #[ORM\ManyToMany(targetEntity: Doctor::class, mappedBy: 'specialisations')]
     private Collection $doctors;
 
     #[Pure] public function __construct(string $slug, string $name)

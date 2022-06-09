@@ -3,7 +3,7 @@
 {% block title %}Ressources humaine{% endblock %}
 
 {% block body %}
-    <h4 class="title-list-users">
+    <h4 class="title-list">
         {% if user is defined %}
             Modifier {{ user.firstName }}
         {% else %}
@@ -55,7 +55,7 @@
             </div>
         </div>
         <div class="card__row">
-            {{ form_label(form.address,null, {'label_attr': {'class': 'label__row'}}) }}
+            {{ form_label(form.address, null, {'label_attr': {'class': 'label__row'}}) }}
             {{ form_widget(form.address, {'attr': {'class': 'form-input-datatable'}}) }}
         </div>
         <br>

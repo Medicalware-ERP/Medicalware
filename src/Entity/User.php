@@ -2,8 +2,11 @@
 
 namespace App\Entity;
 
+use App\Entity\Accounting\Invoice;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\DiscriminatorColumn;
 use Doctrine\ORM\Mapping\DiscriminatorMap;
@@ -44,9 +47,13 @@ class User extends Person implements UserInterface, PasswordAuthenticatedUserInt
     #[ORM\JoinColumn(nullable: false)]
     private ?UserType $profession = null;
 
+    #[ORM\OneToMany(mappedBy: 'validatedBy', targetEntity: Invoice::class)]
+    private $invoicesValidated;
+
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
+        $this->invoicesValidated = new ArrayCollection();
     }
 
     public function getEmail(): ?string
@@ -151,6 +158,36 @@ class User extends Person implements UserInterface, PasswordAuthenticatedUserInt
     public function setProfession(?UserType $profession): self
     {
         $this->profession = $profession;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Invoice>
+     */
+    public function getInvoicesValidated(): Collection
+    {
+        return $this->invoicesValidated;
+    }
+
+    public function addInvoicesValidated(Invoice $invoicesValidated): self
+    {
+        if (!$this->invoicesValidated->contains($invoicesValidated)) {
+            $this->invoicesValidated[] = $invoicesValidated;
+            $invoicesValidated->setValidatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvoicesValidated(Invoice $invoicesValidated): self
+    {
+        if ($this->invoicesValidated->removeElement($invoicesValidated)) {
+            // set the owning side to null (unless already changed)
+            if ($invoicesValidated->getValidatedBy() === $this) {
+                $invoicesValidated->setValidatedBy(null);
+            }
+        }
 
         return $this;
     }

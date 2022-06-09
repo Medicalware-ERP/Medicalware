@@ -1,27 +1,9 @@
-.container-list-users {
-  width: 100%;
-}
-
-.title-list-users {
-  font-size: 18px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  margin-bottom: 20px;
-  color: #6c757d;
-}
 
 .card {
   width: 100%;
   background-color: white;
   padding: 15px;
   box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
-}
-
-.row__datatable {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
 }
 
 .btn-xs {
@@ -152,46 +134,4 @@ input {
     font-weight: 500;
     color: white;
   }
-}
-
-//Style pagination
-.pagination {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 1rem 2rem 0 0;
-  justify-content: flex-end;
-
-  li {
-    color: black;
-  }
-
-  a {
-    cursor: pointer;
-    border-radius: 50%;
-    font-size: 0.9rem;
-    display: flex;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    align-items: center;
-    transition: background-color 0.2s ease-in-out, box-shadow 0.1s ease-in-out;
-  }
-
-  a:active {
-    box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
-  }
-
-  a:hover {
-    background-color: #eef2f7;
-  }
-
-  a.active {
-    background-color: #727cf5;
-
-    li {
-      color: white;
-    }
-  }
-
 }
