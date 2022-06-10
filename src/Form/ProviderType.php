@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ProviderType extends AbstractType
 {
@@ -18,9 +19,6 @@ class ProviderType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Nom',
-                'attr' => [
-                    'class' => 'sdfsdf'
-                ]
             ])
             ->add('phone', PhoneType::class)
             ->add('email', EmailType::class)

@@ -6,7 +6,7 @@
 @import "./common/datatable";
 @import "./human_resources/details";
 @import "./human_resources/datatable";
-@import "./human_resources/forms";
+@import "common/form/forms";
 @import "./common/utilis";
 @import "select2";
 
@@ -71,4 +71,5 @@ hr{
   height: 1px;
   background-color: var(--hr-color);
   border: none;
+  margin: 1rem 0;
 }

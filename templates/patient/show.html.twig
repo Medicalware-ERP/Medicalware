@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ patient.firstName }}{{ patient.lastName }}{% endblock %}
+
+{% block body %}
+    <div id="user-details-container">
+        <div class="card">
+            <div class="row">
+                {% if patient.avatar is not null %}
+                    <img class="avatar" src="https://cdn.pixabay.com/photo/2015/03/03/08/55/portrait-657116_960_720.jpg" />
+                    {# Todo : mettre l'image #}
+                {% else %}
+                    <div class="avatar avatar-text">
+                        <span>
+                            {{ patient.firstName|first|upper ~ patient.lastName|first|upper }}
+                        </span>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Numéro de sécurité sociale :
+                </div>
+
+                <div class="right-item">
+                    {{ patient.numberSocialSecurity }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Nom :
+                </div>
+
+                <div class="right-item">
+                    {{ patient.lastName }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Prénom :
+                </div>
+
+                <div class="right-item">
+                    {{ patient.firstName }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Adresse :
+                </div>
+
+                <div class="right-item">
+                    {{ patient.address }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Email :
+                </div>
+
+                <div class="right-item">
+                    {{ patient.email }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Téléphone :
+                </div>
+
+                <div class="right-item">
+                    {{ patient.phoneNumber }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="left-item">
+                    Âge :
+                </div>
+
+                <div class="right-item">
+                    {{ date().diff(date(patient.birthdayDate)).y }} ans ({{ patient.birthdayDate|date('d/m/Y') }})
+                </div>
+            </div>
+            <div class="row row-actions">
+                <div class="left-item">
+                    #{{ patient.id }}
+                </div>
+
+                <div class="right-item">
+                    <a class="btn btn-warning" href="{{ path('app_edit_patient', {'id': patient.id}) }}">
+                        Éditer
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+

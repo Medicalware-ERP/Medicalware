@@ -46,8 +46,8 @@ class PatientDataFormatter implements DataFormatterInterface
             'email' => $this->environment->render('human_resources/datatable/columns/email.html.twig', [
                 'user' => $data
             ]),
-            'actions' => $this->environment->render('human_resources/datatable/columns/actions.html.twig', [
-                'user' => $data
+            'actions' => $this->environment->render('patient/datatable/columns/actions.html.twig', [
+                'patient' => $data
             ]),
         ];
     }

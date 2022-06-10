@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Provider;
 use App\Form\ProviderType;
+use App\Repository\ProviderRepository;
 use App\Service\Provider\ProviderDataFormatter;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -30,7 +31,7 @@ class ProviderController extends BaseController
     }
 
     #[Route('/provider/add', name: 'provider_add')]
-    public function add(Request $request): Response
+    public function add(Request $request, ProviderRepository $providerRepository): Response
     {
         $provider = new Provider();
 
@@ -38,7 +39,8 @@ class ProviderController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            dd($provider);
+            $providerRepository->add($provider);
+            return $this->redirectToRoute('provider_show_information', ['id' => $provider->getId()]);
         }
 
         return $this->renderForm('provider/form.html.twig', [
@@ -46,4 +48,51 @@ class ProviderController extends BaseController
         ]);
     }
 
+    #[Route('/provider/edit/{id}', name: 'provider_edit')]
+    public function edit(Request $request, int $id, ProviderRepository $providerRepository): Response
+    {
+        $provider = $providerRepository->find($id);
+
+        $form = $this->createForm(ProviderType::class, $provider);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $providerRepository->edit($provider);
+            return $this->redirectToRoute('provider_show_information', ['id' => $provider->getId()]);
+        }
+
+        return $this->renderForm('provider/form.html.twig', [
+            'form' => $form
+        ]);
+    }
+
+    #[Route('/provider/show/{id}/information', name: 'provider_show_information')]
+    public function info(int $id, ProviderRepository $providerRepository): Response
+    {
+        $provider = $providerRepository->find($id);
+
+        return $this->renderForm('provider/includes/_informations.html.twig', [
+            'provider' => $provider
+        ]);
+    }
+
+    #[Route('/provider/show/{id}/command', name: 'provider_show_command')]
+    public function command(int $id, ProviderRepository $providerRepository): Response
+    {
+        $provider = $providerRepository->find($id);
+
+        return $this->renderForm('provider/includes/_command.html.twig', [
+            'provider' => $provider
+        ]);
+    }
+
+    #[Route('/provider/show/{id}/pieces', name: 'provider_show_piece')]
+    public function pieces(int $id, ProviderRepository $providerRepository): Response
+    {
+        $provider = $providerRepository->find($id);
+
+        return $this->renderForm('provider/includes/_piece.html.twig', [
+            'provider' => $provider
+        ]);
+    }
 }

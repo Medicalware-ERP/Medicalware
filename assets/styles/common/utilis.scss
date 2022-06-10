@@ -1,22 +1,22 @@
 $spaces: 20;
 @mixin margin($size) {
-  margin: $size + rem;
+  margin: $size + px;
 }
 
 @mixin margin-top($size) {
-  margin-top: $size + rem;
+  margin-top: $size + px;
 }
 
 @mixin margin-left($size) {
-  margin-left: $size + rem;
+  margin-left: $size + px;
 }
 
 @mixin margin-right($size) {
-  margin-right: $size + rem;
+  margin-right: $size + px;
 }
 
 @mixin margin-bottom($size) {
-  margin-bottom: $size + rem;
+  margin-bottom: $size + px;
 }
 
 @mixin margin-x($size) {
@@ -30,23 +30,23 @@ $spaces: 20;
 }
 
 @mixin padding($size) {
-  padding: $size + rem;
+  padding: $size + px;
 }
 
 @mixin padding-top($size) {
-  padding-top: $size + rem;
+  padding-top: $size + px;
 }
 
 @mixin padding-left($size) {
-  padding-left: $size + rem;
+  padding-left: $size + px;
 }
 
 @mixin padding-right($size) {
-  padding-right: $size + rem;
+  padding-right: $size + px;
 }
 
 @mixin padding-bottom($size) {
-  padding-bottom: $size + rem;
+  padding-bottom: $size + px;
 }
 
 @for $i from 1 through $spaces {
@@ -112,6 +112,18 @@ $spaces: 20;
   justify-content: center;
 }
 
+.align-items-center {
+  align-items: center;
+}
+
+.align-content-center {
+  align-content: center;
+}
+
+.h-100 {
+  height: 100%;
+}
+
 .text-primary {
   color: var(--color-primary);
 }
@@ -124,6 +136,133 @@ $spaces: 20;
   color: var(--color-secondary-light);
 }
 
-.fz-16 {
+.text-danger {
+  color: var(--color-danger);
+}
+
+.fz-32 {
   font-size: 2rem;
+}
+
+.btn {
+  border: 1px solid transparent;
+  padding: 0.45rem 0.9rem;
+  font-size: .9rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  font-weight: 400;
+  cursor: pointer;
+  line-height: 1.5;
+  text-align: center;
+  border-radius: 0.15rem;
+  box-shadow: 0 2px 6px 0 rgb(23 34 23 / 50%);
+  transition: all .15s ease-in-out;
+
+  &.btn-success {
+    background-color: #5ab32f;
+  }
+
+  &:hover {
+    background-color: #63bb38;
+  }
+}
+
+.btn-xs {
+  width: 30px;
+  height: 30px;
+  box-shadow: 0 2px 6px 0 rgb(114 124 245 / 50%);
+  color: #fff;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.btn-primary {
+    background-color: #727cf5;
+    transition: all 0.5s;
+
+    &:hover {
+      background-color: #6169d0;
+    }
+  }
+}
+
+/* Toggle is active or not */
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 31px;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-shadow: 0 0 1px #2196F3;
+  background-color: white;
+  transition: .4s;
+
+  &:before {
+    position: absolute;
+    content: "N";
+    height: 25px;
+    display: flex;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    width: 25px;
+    left: 4px;
+    bottom: 4px;
+    font-size: 15px;
+    background-color: red;
+    transition: 0.4s;
+  }
+}
+
+input {
+  &:checked {
+    + {
+      .slider {
+        &:before {
+          content: "O";
+          background-color: #63bb38;
+          transform: translateX(26px);
+        }
+      }
+    }
+  }
+}
+
+/* rounder sliders */
+
+.slider.round {
+  border-radius: 34px;
+
+  &:before {
+    border-radius: 50%;
+  }
+}
+
+.card {
+  width: 100%;
+  background-color: white;
+  padding: 15px;
+  box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
+}
+
+.width-auto{
+  width:auto;
 }

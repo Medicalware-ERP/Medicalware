@@ -29,6 +29,15 @@ class ProviderRepository extends DatatableRepository
         }
     }
 
+    public function edit(Provider $entity, bool $flush = true): void
+    {
+        $this->_em->persist($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
+
+
     public function remove(Provider $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);

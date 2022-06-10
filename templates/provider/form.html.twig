@@ -12,14 +12,20 @@
         {% endif %}
     </h4>
     <div class="card">
+        <div class="wrapper">
+            {{ form_start(form) }}
+            <div class="container__row">
+                <div>
+                    {{ form_row(form.name) }}
+                    {{ form_row(form.phone) }}
+                    {{ form_row(form.email) }}
+                </div>
+                {{ form_row(form.address) }}
+            </div>
 
-        {% form_theme form 'form/form_layout.html.twig' %}
-
-        {{ form_start(form) }}
-            {{ form_rest(form) }}
-            <input type="submit" value="Enregistrer">
-        {{ form_end(form) }}
-
+            <input class="btn btn-success" type="submit" value="Ajouter">
+            {{ form_end(form) }}
+        </div>
     </div>
 {% endblock %}
 

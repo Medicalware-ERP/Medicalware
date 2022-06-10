@@ -1,5 +1,4 @@
-import {$, simpleLoader} from '../utils'
-import {isText} from "../utilis/stringUtilis";
+import {$, simpleLoader, isText} from '../utils'
 
 let query: string = '';
 let page: number = 1;
