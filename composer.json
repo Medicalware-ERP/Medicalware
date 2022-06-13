@@ -47,11 +47,11 @@
         "symfony/webpack-encore-bundle": "^1.13",
         "symfony/yaml": "6.0.*",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0"
+        "twig/twig": "^2.12|^3.0",
+        "doctrine/doctrine-fixtures-bundle": "^3.4"
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^6.7",
-        "doctrine/doctrine-fixtures-bundle": "^3.4",
         "phpunit/phpunit": "^9.5",
         "symfony/browser-kit": "6.0.*",
         "symfony/css-selector": "6.0.*",
@@ -102,6 +102,10 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "compile": [
+            "php bin/console d:s:u --force",
+            "php bin/console d:f:l -n --env=PROD"
         ]
     },
     "conflict": {
