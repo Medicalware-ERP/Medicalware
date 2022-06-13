@@ -28,4 +28,21 @@ export let colors = {
 export function isText(data: any): data is string {
     return typeof data === 'string';
 }
+
 export const simpleLoader = () => '<i class="fas fa-circle-notch fa-spin text-primary fz-32"></i>';
+
+export const findInDataset = (e: HTMLElement, id: string): string => {
+    const data = e.dataset[id];
+
+    if (!isText(data)) {
+        throw new Error(id +' not found in element '+ e);
+    }
+
+    return data;
+}
+
+export function htmlToElement(html: string): HTMLElement {
+    const template = document.createElement('template');
+    template.innerHTML = html.trim();
+    return template.content.firstChild as HTMLElement;
+}

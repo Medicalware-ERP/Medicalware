@@ -1,7 +1,7 @@
 import {$} from '../utils'
 import Routing from "../Routing";
 import generateDatable from "../datatable/datatableGeneric";
-import {swaleWarning} from "../utilis/swal";
+import {swaleWarning} from "../util/swal";
 
 const table = $("#table-users")
 

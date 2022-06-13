@@ -6,6 +6,8 @@ use App\Entity\Patient;
 use App\Entity\Tva;
 use App\Entity\User;
 use App\Repository\Accounting\InvoiceRepository;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -39,11 +41,25 @@ class Invoice
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'invoicesValidated')]
     private ?User $validatedBy = null;
 
-    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: InvoiceLine::class, orphanRemoval: true)]
-    private $invoiceLines;
+    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: InvoiceLine::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $invoiceLines;
+
+    #[ORM\Column(type: 'datetime')]
+    private ?DateTimeInterface $date = null;
+
+    #[ORM\ManyToOne(targetEntity: InvoiceState::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?InvoiceState $state = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $comment = null;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $reference = null;
 
     public function __construct()
     {
+        $this->date         = new DateTime();
         $this->invoiceLines = new ArrayCollection();
     }
 
@@ -152,5 +168,58 @@ class Invoice
         }
 
         return $this;
+    }
+
+    public function getDate(): ?DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getState(): ?InvoiceState
+    {
+        return $this->state;
+    }
+
+    public function setState(?InvoiceState $state): self
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(string $reference): self
+    {
+        $this->reference = $reference;
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->reference;
     }
 }
