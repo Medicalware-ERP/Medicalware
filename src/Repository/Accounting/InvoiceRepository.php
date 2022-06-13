@@ -3,6 +3,9 @@
 namespace App\Repository\Accounting;
 
 use App\Entity\Accounting\Invoice;
+use App\Repository\Datatable\DatatableConfigJoin;
+use App\Repository\Datatable\DatatableConfigSearch;
+use App\Repository\Datatable\DatatableRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -14,17 +17,13 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Invoice[]    findAll()
  * @method Invoice[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class InvoiceRepository extends ServiceEntityRepository
+class InvoiceRepository extends DatatableRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Invoice::class);
     }
 
-    /**
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
     public function add(Invoice $entity, bool $flush = true): void
     {
         $this->_em->persist($entity);
@@ -33,10 +32,6 @@ class InvoiceRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
     public function remove(Invoice $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);
@@ -45,32 +40,25 @@ class InvoiceRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return Invoice[] Returns an array of Invoice objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function configureDatableJoin(): array
     {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        return [
+            new DatatableConfigJoin('patient')
+        ];
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Invoice
+    public function configureDatableSearch(): array
     {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return [
+            new DatatableConfigSearch('reference'),
+            new DatatableConfigSearch('name', 'patient')
+        ];
     }
-    */
+
+    public function configureDatableColumns(): array
+    {
+        return [
+
+        ];
+    }
 }

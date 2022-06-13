@@ -22,6 +22,12 @@ class InvoiceLine
     #[ORM\Column(type: 'float')]
     private ?float $price = null;
 
+    #[ORM\Column(type: 'integer')]
+    private ?int $quantity = null;
+
+    #[ORM\Column(type: 'integer')]
+    private ?int $ht = null;
+
     #[ORM\ManyToOne(targetEntity: Invoice::class, inversedBy: 'invoiceLines')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Invoice $invoice = null;
@@ -76,6 +82,42 @@ class InvoiceLine
     {
         $this->invoice = $invoice;
 
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    /**
+     * @param int|null $quantity
+     * @return InvoiceLine
+     */
+    public function setQuantity(?int $quantity): InvoiceLine
+    {
+        $this->quantity = $quantity;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getHt(): ?int
+    {
+        return $this->ht;
+    }
+
+    /**
+     * @param int|null $ht
+     * @return InvoiceLine
+     */
+    public function setHt(?int $ht): InvoiceLine
+    {
+        $this->ht = $ht;
         return $this;
     }
 }

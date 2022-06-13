@@ -21,15 +21,21 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.ts')
+    .addEntry('datatableGeneric', './assets/js/datatable/datatableGeneric.ts')
+    .addEntry('layout.show', './assets/js/layout/layout_show.ts')
     .addEntry('sidebar', './assets/js/sidebar/sidebar.ts')
+    .addEntry('form.collection', './assets/js/util/form_collection.ts')
+
     .addEntry('human_resources.show', './assets/js/human_resources/show.ts')
     .addEntry('human_resources.datatable', './assets/js/human_resources/datatable.ts')
     .addEntry('room.index', './assets/js/room/index.ts')
     .addEntry('patient.datatable', './assets/js/patient/datatable.ts')
     .addEntry('provider.datatable', './assets/js/provider/datatable.ts')
     .addEntry('provider.show', './assets/js/provider/show.ts')
-    .addEntry('layout.show', './assets/js/layout/layout_show.ts')
-    .addEntry('datatableGeneric', './assets/js/datatable/datatableGeneric.ts')
+    .addEntry('invoice.datatable', './assets/js/invoice/datatable.ts')
+    .addEntry('invoice.form', './assets/js/invoice/form.ts')
+
+
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

@@ -1,6 +1,6 @@
 import {$} from '../utils'
 import Routing from "../Routing";
-import {swaleWarningAndRedirect} from "../utilis/swal";
+import {swaleWarningAndRedirect} from "../util/swal";
 
 let userIdElement = $('#user-id') as HTMLInputElement;
 
