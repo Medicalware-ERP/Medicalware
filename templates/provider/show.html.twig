@@ -1,0 +1,26 @@
+{% extends 'layout_show.html.twig' %}
+
+{% block title %}Fournisseurs{% endblock %}
+
+{% block aside_header %}
+    <header class="d-flex" style="align-items: center">
+        <div class="avatar-default margin-right-10" style="">
+            <span>{{ provider.name|slice(0,2)|upper }}</span>
+        </div>
+        {{  provider }}
+    </header>
+{% endblock %}
+
+{% block aside_nav %}
+    <nav class="d-flex" style="flex-direction: column; gap: 20px">
+        <button data-url="{{ path('provider_show_information', {id: provider.id}) }}"><i class="margin-right-5 fa fa-address-card"></i> Informations</button>
+        <button data-url="{{ path('provider_show_command', {id: provider.id}) }}"><i class="margin-right-5 fa fa-receipt"></i> Commandes</button>
+        <button data-url="{{ path('provider_show_piece', {id: provider.id}) }}"><i class="margin-right-5 fa fa-cube"></i> Équipement</button>
+    </nav>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('provider.show') }}
+{% endblock %}
+

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ patient is defined ? "Ajouter un patient" : "Modifier un patient"}} {% endblock %}
+
+{% block body %}
+    <h4 class="title-list-users">
+        {% if patient is defined %}
+            Modifier {{ patient.firstName }}
+        {% else %}
+            Ajouter
+        {% endif %}
+    </h4>
+    <div class="card">
+        <div class="wrapper">
+            {{ form_start(form) }}
+            {{ form_rest(form) }}
+            <input type="submit" class="btn btn-success" value="{{ patient is defined ? "Modifier" : "Ajouter" }}">
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+

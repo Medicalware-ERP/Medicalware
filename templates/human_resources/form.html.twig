@@ -3,19 +3,20 @@
 {% block title %}Ressources humaine{% endblock %}
 
 {% block body %}
+    <h4 class="title-list">
+        {% if user is defined %}
+            Modifier {{ user.firstName }}
+        {% else %}
+            Ajouter
+        {% endif %}
+    </h4>
     <div class="card">
-        {{ form_start(form) }}
-            {{ form_row(form.lastName) }}
-            {{ form_row(form.firstName) }}
-            {{ form_row(form.phoneNumber) }}
-            {{ form_row(form.birthdayDate) }}
-            {{ form_row(form.email) }}
-            {{ form_row(form.isActive) }}
-            {{ form_row(form.address) }}
-            {{ form_row(form.profession) }}
-
-            <input type="submit" value="Enregistrer">
-        {{ form_end(form) }}
+        <div class="wrapper">
+            {{ form_start(form) }}
+            {{ form_rest(form) }}
+            <input type="submit" class="btn btn-success" value="{{ user is defined ? "Modifier" : "Ajouter" }}">
+            {{ form_end(form) }}
+        </div>
     </div>
 {% endblock %}
 
