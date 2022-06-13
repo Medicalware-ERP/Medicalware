@@ -24,3 +24,8 @@ export let colors = {
     navLinks :  getCssVariableValue('--bg-color-nav-links'),
     black :     getCssVariableValue('--color-black'),
 }
+
+export function isText(data: any): data is string {
+    return typeof data === 'string';
+}
+export const simpleLoader = () => '<i class="fas fa-circle-notch fa-spin text-primary fz-32"></i>';

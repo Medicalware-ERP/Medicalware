@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class AddressType extends AbstractType
 {
@@ -14,17 +15,20 @@ class AddressType extends AbstractType
     {
         $builder
             ->add('street', TextType::class, [
-                'label' => 'Rue'
+                'label' => 'Rue',
+                "constraints" => [new NotBlank(message: 'Veuillez remplir ce champ')],
             ])
             ->add('complementaryInfo', TextType::class, [
                 'label' => 'Info complémentaire',
                 'required' => false
             ])
             ->add('postalCode', TextType::class, [
-                'label' => 'Code postal'
+                'label' => 'Code postal',
+                "constraints" => [new NotBlank(message: 'Veuillez remplir ce champ')],
             ])
             ->add('city', TextType::class, [
-                'label' => 'Ville'
+                'label' => 'Ville',
+                "constraints" => [new NotBlank(message: 'Veuillez remplir ce champ')],
             ])
         ;
     }
@@ -33,6 +37,7 @@ class AddressType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Address::class,
+            'label' => false
         ]);
     }
 }

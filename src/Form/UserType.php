@@ -3,8 +3,11 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Enum\RoleEnum;
+use App\Form\Base\SelectMultipleType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -38,12 +41,17 @@ class UserType extends AbstractType
                 'label' => 'Email'
             ])
             ->add('isActive', CheckboxType::class, [
-                'label' => 'Compte actif ?'
+                'label' => 'Compte actif ?',
+                'required' => false,
             ])
             ->add('address', AddressType::class, [
                 'label' => false
             ])
             ->add('profession')
+            ->add('roles', SelectMultipleType::class, [
+                'label'     => 'Rôles',
+                'choices'   => RoleEnum::getChoiceList()
+            ])
         ;
     }
 

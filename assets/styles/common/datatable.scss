@@ -1,33 +1,3 @@
-.form-input-datatable {
-  border: 1px solid #80bdff;
-  padding: 0.45rem 0.9rem;
-  font-weight: 100;
-  color: #6c757d;
-  border-radius: 0.25rem;
-  margin-right: 15px;
-  outline: 0;
-  transition: all .15s ease-in-out;
-
-  &:focus {
-    box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
-  }
-}
-
-.form-select {
-  outline: none;
-  border: 1px solid #80bdff;
-  font-weight: 100;
-  color: #6c757d;
-  border-radius: 0.25rem;
-  padding: 0.3rem 0.9rem;
-  outline: 0;
-  transition: all .15s ease-in-out;
-
-  &:focus {
-    box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
-  }
-}
-
 .datatable {
   width: 100%;
   border-collapse: collapse;
@@ -53,8 +23,75 @@
   }
 
   tr {
+    transition:transform 0.2s ease-in ,box-shadow 0.2s ease-in;
     &:nth-child(even) {
       background-color: #f2f2f2;
+    }
+
+    &:hover:not(thead tr){
+      transform: scale(1.03);
+      cursor:pointer;
+      box-shadow: 0 0 3px 1px rgb(0 0 0 / 50%);
+    }
+  }
+}
+
+.container-list {
+  width: 100%;
+}
+
+.title-list {
+  font-size: 18px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-bottom: 20px;
+  color: #6c757d;
+}
+
+.row__datatable {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+//Style pagination
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 2rem 0 0;
+  justify-content: flex-end;
+
+  li {
+    color: black;
+  }
+
+  a {
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    transition: background-color 0.2s ease-in-out, box-shadow 0.1s ease-in-out;
+  }
+
+  a:active {
+    box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
+  }
+
+  a:hover {
+    background-color: #eef2f7;
+  }
+
+  a.active {
+    background-color: #727cf5;
+
+    li {
+      color: white;
     }
   }
 }

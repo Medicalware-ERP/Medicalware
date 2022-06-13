@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+{% block title %}Patients{% endblock %}
+
+{% block body %}
+    <div class="container-list-users">
+        <h4 class="title-list-users">
+            Patients
+        </h4>
+        <div class="card">
+
+            <div class="row__datatable">
+                <div>
+                    <label for="input-search"></label>
+                    <input class="form-input" type="text" placeholder="Chercher ..." id="input-search" name="search"/>
+
+                    <label for="datatable-limit"></label>
+                    <select name="limit" id="datatable-limit" class="form-input">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                    </select>
+                </div>
+                <a class="btn btn-success" href="{{ path("app_add_patient") }}">
+                    <i class="fa fa-plus"></i>
+                    Ajouter un patient
+                </a>
+            </div>
+
+            <table id="table-patients" class="datatable" data-url="{{ path('patients_json') }}">
+                <thead>
+                <tr>
+                    <th>Numéro de sécurité sociale</th>
+                    <th>Avatar</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Tél.</th>
+                    <th>Email</th>
+                    <th>Détails</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('patient.datatable') }}
+{% endblock %}
+

@@ -14,16 +14,16 @@
         </div>
     {% endif %}
     <div class="logo-details-form-login">
-        <img class="logo-image" src={{ asset('build/images/logo.png') }} alt="" />
+        <img class="logo-image" src="{{ asset('build/images/logo.png') }}" alt="logo"/>
         <span class="logo-name-login">MedicalWare</span>
     </div>
     <div class="field">
-        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-input"  autocomplete="email" autofocus required>
-        <label>Email</label>
+        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-input-login"  autocomplete="email" autofocus required>
+        <label for="inputEmail">Email</label>
     </div>
     <div class="field">
-        <input type="password" name="password" id="inputPassword" class="form-input" autocomplete="current-password" required>
-        <label>Mot de passe</label>
+        <input type="password" name="password" id="inputPassword" class="form-input-login" autocomplete="current-password" required>
+        <label for="inputPassword">Mot de passe</label>
     </div>
 
 

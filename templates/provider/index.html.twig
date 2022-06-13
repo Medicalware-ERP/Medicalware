@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fournisseurs{% endblock %}
+
+{% block body %}
+    <div class="container-list">
+
+        <div class="card">
+            <h4 class="title-list">
+                Fournisseurs
+            </h4>
+            <hr>
+            <div class="row__datatable">
+                <div class="d-flex">
+                    <label for="input-search"></label>
+                    <input class="form-input" type="text" placeholder="Chercher ..." id="input-search" name="search"/>
+
+                    <label for="datatable-limit"></label>
+                    <select name="limit" id="datatable-limit" class="form-input">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                    </select>
+                </div>
+                <a class="btn btn-success" href="{{ path('provider_add') }}">
+                    <i class="fa fa-plus"></i>
+                    Ajouter un fournisseur
+                </a>
+            </div>
+
+            <table id="table-provider" class="datatable" data-url="{{ path('provider_json') }}">
+                <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Tél.</th>
+                    <th>Email</th>
+                    <th>Adresse</th>
+                    <th>Détails</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('provider.datatable') }}
+{% endblock %}
+
