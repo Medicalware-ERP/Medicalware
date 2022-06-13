@@ -21,7 +21,7 @@
     "license": "UNLICENSED",
     "private": true,
     "scripts": {
-        "heroku-postbuild": "encore production --progress",
+        "heroku-postbuild": "encore production --progress && php bin/console d:s:u --force && php bin/console d:f:l -n",
         "start": "encore dev-server",
         "dev": "encore dev",
         "watch": "encore dev --watch",
