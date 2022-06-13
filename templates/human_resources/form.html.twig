@@ -3,7 +3,7 @@
 {% block title %}Ressources humaine{% endblock %}
 
 {% block body %}
-    <h4 class="title-list-users">
+    <h4 class="title-list">
         {% if user is defined %}
             Modifier {{ user.firstName }}
         {% else %}
@@ -11,56 +11,12 @@
         {% endif %}
     </h4>
     <div class="card">
-        {{ form_start(form) }}
-        <div class="container__row">
-            <div class="card__row">
-                {{ form_label(form.lastName,null, {'label_attr': {'class': 'label__row'}}) }}
-                {{ form_widget(form.lastName, {'attr': {'class': 'form-input-datatable'}}) }}
-            </div>
-            <div class="card__row">
-                {{ form_label(form.firstName,null, {'label_attr': {'class': 'label__row'}}) }}
-                {{ form_widget(form.firstName, {'attr': {'class': 'form-input-datatable'}}) }}
-            </div>
+        <div class="wrapper">
+            {{ form_start(form) }}
+            {{ form_rest(form) }}
+            <input type="submit" class="btn btn-success" value="{{ user is defined ? "Modifier" : "Ajouter" }}">
+            {{ form_end(form) }}
         </div>
-        <div class="container__row">
-            <div class="card__row">
-                {{ form_label(form.phoneNumber,null, {'label_attr': {'class': 'label__row'}}) }}
-                {{ form_widget(form.phoneNumber, {'attr': {'class': 'form-input-datatable'}}) }}
-            </div>
-            <div class="card__row">
-                {{ form_label(form.birthdayDate,null, {'label_attr': {'class': 'label__row'}}) }}
-                {{ form_widget(form.birthdayDate, {'attr': {'class': 'form-input-datatable'}}) }}
-            </div>
-        </div>
-        <div class="container__row">
-            <div class="card__row">
-                {{ form_label(form.email,null, {'label_attr': {'class': 'label__row'}}) }}
-                {{ form_widget(form.email, {'attr': {'class': 'form-input-datatable'}}) }}
-            </div>
-            <div class="card__row">
-                {{ form_label(form.isActive,null, {'label_attr': {'class': 'label__row'}}) }}
-                {{ form_widget(form.isActive, {'attr': {'class': 'form-input-datatable'}}) }}
-            </div>
-        </div>
-        <div class="container__row">
-            <div class="card__row">
-                {{ form_label(form.profession,null, {'label_attr': {'class': 'label__row'}}) }}
-                {{ form_widget(form.profession, {'attr': {'class': 'form-input-datatable'}}) }}
-            </div>
-        </div>
-        <div class="container__row">
-            <div class="card__row">
-                {{ form_label(form.roles,null, {'label_attr': {'class': 'label__row'}}) }}
-                {{ form_widget(form.roles, {'attr': {'class': 'form-input-datatable'}}) }}
-            </div>
-        </div>
-        <div class="card__row">
-            {{ form_label(form.address,null, {'label_attr': {'class': 'label__row'}}) }}
-            {{ form_widget(form.address, {'attr': {'class': 'form-input-datatable'}}) }}
-        </div>
-        <br>
-        <input type="submit" class="btn btn-success" value="{{ user is defined ? "Modifier" : "Ajouter" }}">
-        {{ form_end(form) }}
     </div>
 {% endblock %}
 

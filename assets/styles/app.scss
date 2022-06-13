@@ -6,7 +6,8 @@
 @import "./common/datatable";
 @import "./human_resources/details";
 @import "./human_resources/datatable";
-@import "./human_resources/forms";
+@import "common/form/forms";
+@import "common/button.scss";
 @import "./common/utilis";
 @import "select2";
 
@@ -33,6 +34,7 @@
   --width-side-bar: 300px;
   --width-side-bar-close: 78px;
   --height-top-bar: 80px;
+  --hr-color: #e5e5e5;
 }
 
 * {
@@ -66,3 +68,9 @@ a {
   padding: 5px;
 }
 
+hr{
+  height: 1px;
+  background-color: var(--hr-color);
+  border: none;
+  margin: 1rem 0;
+}

@@ -1,35 +1,55 @@
 $spaces: 20;
 @mixin margin($size) {
-  margin: $size + rem;
+  margin: $size + px;
 }
+
 @mixin margin-top($size) {
-  margin-top: $size + rem;
+  margin-top: $size + px;
 }
+
 @mixin margin-left($size) {
+  margin-left: $size + px;
+}
+
+@mixin margin-right($size) {
+  margin-right: $size + px;
+}
+
+@mixin margin-bottom($size) {
+  margin-bottom: $size + px;
+}
+
+@mixin margin-x($size) {
+  margin-right: $size + rem;
   margin-left: $size + rem;
 }
-@mixin margin-right($size) {
-  margin-right: $size + rem;
-}
-@mixin margin-bottom($size) {
+
+@mixin margin-y($size) {
+  margin-top: $size + rem;
   margin-bottom: $size + rem;
 }
+
 @mixin padding($size) {
-  padding: $size + rem;
+  padding: $size + px;
 }
+
 @mixin padding-top($size) {
-  padding-top: $size + rem;
+  padding-top: $size + px;
 }
+
 @mixin padding-left($size) {
-  padding-left: $size + rem;
+  padding-left: $size + px;
 }
+
 @mixin padding-right($size) {
-  padding-right: $size + rem;
+  padding-right: $size + px;
 }
+
 @mixin padding-bottom($size) {
-  padding-bottom: $size + rem;
+  padding-bottom: $size + px;
 }
-@for $i from 1 through $spaces {
+
+@for $i from 0 through $spaces {
   .margin-#{$i} {
     @include margin($i);
   }
@@ -44,6 +64,12 @@ $spaces: 20;
   }
   .margin-bottom-#{$i} {
     @include margin-bottom($i);
+  }
+  .margin-x-#{$i} {
+    @include margin-x($i);
+  }
+  .margin-y-#{$i} {
+    @include margin-y($i);
   }
   .padding-#{$i} {
     @include padding($i);
@@ -66,6 +92,14 @@ $spaces: 20;
   display: flex;
 }
 
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
 .justify-content-between {
   justify-content: space-between;
 }
@@ -84,4 +118,118 @@ $spaces: 20;
 
 .justify-content-center {
   justify-content: center;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.align-content-center {
+  align-content: center;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.text-secondary {
+  color: var(--color-secondary);
+}
+
+.text-secondary-light {
+  color: var(--color-secondary-light);
+}
+
+.text-danger {
+  color: var(--color-danger);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.fz-32 {
+  font-size: 2rem;
+}
+
+/* Toggle is active or not */
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 31px;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-shadow: 0 0 1px #2196F3;
+  background-color: white;
+  transition: .4s;
+
+  &:before {
+    position: absolute;
+    content: "N";
+    height: 25px;
+    display: flex;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    width: 25px;
+    left: 4px;
+    bottom: 4px;
+    font-size: 15px;
+    background-color: red;
+    transition: 0.4s;
+  }
+}
+
+input {
+  &:checked {
+    + {
+      .slider {
+        &:before {
+          content: "O";
+          background-color: #63bb38;
+          transform: translateX(26px);
+        }
+      }
+    }
+  }
+}
+
+/* rounder sliders */
+
+.slider.round {
+  border-radius: 34px;
+
+  &:before {
+    border-radius: 50%;
+  }
+}
+
+.card {
+  width: 100%;
+  background-color: white;
+  padding: 15px;
+  box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
+}
+
+.width-auto {
+  width: auto;
 }

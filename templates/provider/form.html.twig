@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fournisseurs{% endblock %}
+
+{% block body %}
+
+    <h4 class="title-list">
+        {% if provider is defined %}
+            Modifier {{ provider.name }}
+        {% else %}
+            Ajouter
+        {% endif %}
+    </h4>
+    <div class="card">
+        <div class="wrapper">
+            {{ form_start(form) }}
+            <div class="container__row">
+                <div>
+                    {{ form_row(form.name) }}
+                    {{ form_row(form.phone) }}
+                    {{ form_row(form.email) }}
+                </div>
+                {{ form_row(form.address) }}
+            </div>
+
+            <input class="btn btn-success" type="submit" value="Ajouter">
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('provider.datatable') }}
+{% endblock %}
+
