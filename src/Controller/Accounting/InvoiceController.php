@@ -57,8 +57,8 @@ class InvoiceController extends BaseController
         }
 
         return $this->render('invoice/form.html.twig', [
-            'form' => $form->createView(),
-            'invoice' => $invoice
+            'form'      => $form->createView(),
+            'invoice'   => $invoice
         ]);
     }
 
