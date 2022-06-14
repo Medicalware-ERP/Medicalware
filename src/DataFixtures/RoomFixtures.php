@@ -56,6 +56,7 @@ public function load(ObjectManager $manager): void
     ;
 
     $room2->addOption($console);
+    $room2->addOption($tv);
 
     $manager->persist($room2);
 
