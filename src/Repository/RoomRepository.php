@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Room;
+use App\Repository\Datatable\DatatableConfigSearch;
+use App\Repository\Datatable\DatatableConfigJoin;
 use App\Repository\Datatable\DatatableRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -44,19 +46,24 @@ class RoomRepository extends DatatableRepository
             $this->_em->flush();
         }
     }
-
-    public function configureDatableJoin(): array
-    {
-        return [];
-    }
-
-    public function configureDatableSearch(): array
-    {
-        return [];
-    }
-
     public function configureDatableColumns(): array
     {
         return [];
+    }
+
+    #[Pure] public function configureDatableJoin(): array
+    {
+        return [
+            new DatatableConfigJoin('type')
+        ];
+    }
+
+    #[Pure] public function configureDatableSearch(): array
+    {
+        return [
+            new DatatableConfigSearch('label'),
+            new DatatableConfigSearch('capacity'),
+            new DatatableConfigSearch('name', 'type'),
+        ];
     }
 }
