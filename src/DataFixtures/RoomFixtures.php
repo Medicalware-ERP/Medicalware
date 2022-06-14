@@ -2,13 +2,9 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Address;
-use App\Entity\Room;
-use App\Entity\RoomType;
-use App\Entity\User;
-use App\Entity\UserType;
-use App\Enum\RoomTypeEnum;
-use DateTimeImmutable;
+use App\Entity\Room\Room;
+use App\Entity\Room\RoomOption;
+use App\Entity\Room\RoomType;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -27,16 +23,29 @@ public function load(ObjectManager $manager): void
     $arcade = new RoomType("arcade", "salle d'arcade");
     $office = new RoomType("office", "bureaux");
 
+    $manager->persist($repos);
+    $manager->persist($arcade);
+    $manager->persist($office);
+
+    $tv = new RoomOption("télévision", "Avec télé");
+    $projo = new RoomOption("projecteur", "Avec projo");
+    $console = new RoomOption("console de jeu", "Avec console");
+
+    $manager->persist($tv);
+    $manager->persist($projo);
+    $manager->persist($console);
+
     $room1 = new Room();
 
     $room1
         ->setLabel("Salle de repos #624")
         ->setCapacity(1)
-        ->setType($repos);
+        ->setType($repos)
     ;
 
+    $room1->addOption($tv);
+
     $manager->persist($room1);
-    $manager->persist($repos);
 
     $room2 = new Room();
 
@@ -46,8 +55,9 @@ public function load(ObjectManager $manager): void
         ->setType($arcade);
     ;
 
+    $room2->addOption($console);
+
     $manager->persist($room2);
-    $manager->persist($arcade);
 
     $room3 = new Room();
 
@@ -57,8 +67,9 @@ public function load(ObjectManager $manager): void
         ->setType($office);
     ;
 
+    $room3->addOption($projo);
+
     $manager->persist($room3);
-    $manager->persist($office);
 
     $manager->flush();
 }

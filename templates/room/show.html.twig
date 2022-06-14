@@ -37,6 +37,20 @@
                 </div>
             </div>
 
+            {% for option in room.options %}
+
+                <div class="row">
+                    <div>
+                        Capacité :
+                    </div>
+
+                    <div>
+                        {{ option }}
+                    </div>
+                </div>
+
+            {% endfor %}
+
             <div class="row row-actions">
                 <div id="actions-room-id">
                     #{{ room.id }}

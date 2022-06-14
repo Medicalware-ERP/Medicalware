@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Room;
+use App\Entity\Room\Room;
 use App\Repository\RoomRepository;
 use App\Service\Room\RoomDataFormatter;
 use Doctrine\ORM\EntityManagerInterface;

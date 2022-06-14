@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Room;
+use App\Entity\Room\Room;
 use App\Repository\Datatable\DatatableConfigSearch;
 use App\Repository\Datatable\DatatableConfigJoin;
 use App\Repository\Datatable\DatatableRepository;

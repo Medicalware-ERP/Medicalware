@@ -1,8 +1,12 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Room;
 
+use App\Entity\EntityInterface;
+use App\Entity\Room\RoomType;
 use App\Repository\RoomRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 // TODO : Rajouter liaison au service
@@ -24,6 +28,14 @@ class Room implements EntityInterface
     #[ORM\ManyToOne(targetEntity: RoomType::class, inversedBy: 'rooms')]
     #[ORM\JoinColumn(nullable: false)]
     private ?RoomType $type = null;
+
+    #[ORM\ManyToMany(targetEntity: RoomOption::class)]
+    private $options;
+
+    public function __construct()
+    {
+        $this->options = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -62,6 +74,30 @@ class Room implements EntityInterface
     public function setType(?RoomType $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RoomOption>
+     */
+    public function getOptions(): Collection
+    {
+        return $this->options;
+    }
+
+    public function addOption(RoomOption $option): self
+    {
+        if (!$this->options->contains($option)) {
+            $this->options[] = $option;
+        }
+
+        return $this;
+    }
+
+    public function removeOption(RoomOption $option): self
+    {
+        $this->options->removeElement($option);
 
         return $this;
     }

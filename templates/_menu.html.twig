@@ -22,7 +22,7 @@
                 <li><a class="link_name" href="#">Planning</a></li>
             </ul>
         </li>
-        <li id="accountent">
+        <li class="drawer-links">
             <div class="icon-link">
                 <a href="#">
                     <i class="fa fa-money-check-alt"></i>
@@ -63,13 +63,19 @@
                 <li><a class="link_name" href="#">Services</a></li>
             </ul>
         </li>
-        <li>
-            <a href="{{ path('app_room') }}">
-                <i class="fa fa-door-open"></i>
-                <span class="link_name">Salles</span>
-            </a>
-            <ul class="sub-menu blank">
-                <li><a class="link_name" href="{{ path('app_room') }}">Salles</a></li>
+        <li class="drawer-links">
+            <div class="icon-link">
+                <a href="{{ path('app_room') }}">
+                    <i class="fa fa-money-check-alt"></i>
+                    <span class="link_name">Salles</span>
+                </a>
+                <i class="fa fa-angle-right arrow"></i>
+            </div>
+            <ul class="sub-menu">
+                <li><a class="link_name" href="#">Salles</a></li>
+                <li><a href="{{ path('app_room') }}">Salles</a></li>
+                <li><a href="#">Types de salle</a></li>
+                <li><a href="#">Options de salle</a></li>
             </ul>
         </li>
         <li>
