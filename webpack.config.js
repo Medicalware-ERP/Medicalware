@@ -29,13 +29,14 @@ Encore
     .addEntry('human_resources.show', './assets/js/human_resources/show.ts')
     .addEntry('human_resources.datatable', './assets/js/human_resources/datatable.ts')
     .addEntry('room.index', './assets/js/room/index.ts')
+    .addEntry('room.show', './assets/js/room/show.ts')
     .addEntry('patient.datatable', './assets/js/patient/datatable.ts')
     .addEntry('provider.datatable', './assets/js/provider/datatable.ts')
     .addEntry('provider.show', './assets/js/provider/show.ts')
     .addEntry('invoice.datatable', './assets/js/invoice/datatable.ts')
     .addEntry('invoice.form', './assets/js/invoice/form.ts')
 
-
+    .addStyleEntry('room.show.style', './assets/styles/room/show.scss')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

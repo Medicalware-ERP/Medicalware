@@ -1,6 +1,6 @@
 {% apply spaceless %}
     <div class="d-flex justify-content-center">
-        <a class="btn-xs btn-primary margin-right-1" href="#}"><i class="fa fa-eye"></i></a>
+        <a class="btn-xs btn-primary margin-right-1" href="{{ path('app_show_room', {'id': room.id }) }}"><i class="fa fa-eye"></i></a>
         <a class="btn-xs btn-primary margin-right-1" href="#"><i class="fa fa-pen"></i></a>
         <a class="btn-xs btn-danger btn-delete-room" data-room="{{ room.id }}"><i class="fa fa-trash-alt"></i></a>
     </div>

@@ -1,12 +1,11 @@
 import generateDatable from "../datatable/datatableGeneric";
 import {$} from "../utils";
-import Routing from "../Routing";
 import {swaleWarning} from "../util/swal";
+import Routing from "../Routing";
 
 const table = $("#table-rooms");
 
 const deleteRoom = () => {
-
     const callback = (e: Event) => {
         e.stopPropagation();
 
