@@ -6,6 +6,7 @@ use App\Entity\Patient;
 use App\Entity\User;
 use App\Form\PatientType;
 use App\Form\UserType;
+use App\Repository\PatientRepository;
 use App\Service\Patient\PatientDataFormatter;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -87,16 +88,6 @@ class PatientController extends BaseController
         ]);
     }
 
-    #[Route('/patient/{id}', name: 'app_show_patient')]
-    public function show(int $id): Response
-    {
-        $patient = $this->manager->find(Patient::class, $id) ?? throw new NotFoundHttpException("Patient non trouvé");
-
-        return $this->render('patient/show.html.twig', [
-            'patient' => $patient
-        ]);
-    }
-
     #[Route('/patient/toArchive/{id}', name: 'app_to_archive_patient')]
     public function archive(int $id): Response
     {
@@ -110,6 +101,36 @@ class PatientController extends BaseController
         $this->manager->persist($patient);
         $this->manager->flush();
         return $this->redirectToRoute("app_patients");
+    }
+
+    #[Route('/patient/show/{id}/information', name: 'patient_show_information')]
+    public function info(int $id, PatientRepository $patientRepository): Response
+    {
+        $patient = $patientRepository->find($id);
+
+        return $this->renderForm('patient/includes/_informations.html.twig', [
+            'patient' => $patient
+        ]);
+    }
+
+    #[Route('/patient/show/{id}/medicalFile', name: 'patient_show_medical_file')]
+    public function command(int $id, PatientRepository $patientRepository): Response
+    {
+        $patient = $patientRepository->find($id);
+
+        return $this->renderForm('patient/includes/_medical_file.html.twig', [
+            'patient' => $patient
+        ]);
+    }
+
+    #[Route('/patient/show/{id}/calendrier', name: 'patient_show_calendrier')]
+    public function pieces(int $id, PatientRepository $patientRepository): Response
+    {
+        $patient = $patientRepository->find($id);
+
+        return $this->renderForm('patient/includes/_calendrier.html.twig', [
+            'patient' => $patient
+        ]);
     }
 
 }

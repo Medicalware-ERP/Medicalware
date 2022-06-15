@@ -3,7 +3,7 @@
 {% block title %}{{ patient is defined ? "Ajouter un patient" : "Modifier un patient"}} {% endblock %}
 
 {% block body %}
-    <h4 class="title-list-users">
+    <h4 class="title margin-bottom-10">
         {% if patient is defined %}
             Modifier {{ patient.firstName }}
         {% else %}
@@ -11,12 +11,54 @@
         {% endif %}
     </h4>
     <div class="card">
-        <div class="wrapper">
             {{ form_start(form) }}
-            {{ form_rest(form) }}
-            <input type="submit" class="btn btn-success" value="{{ patient is defined ? "Modifier" : "Ajouter" }}">
-            {{ form_end(form) }}
+            <div class="container__row">
+                <div class="card__row">
+                    {{ form_row(form.numberSocialSecurity) }}
+                </div>
+                <div class="card__row">
+                    {{ form_row(form.firstName) }}
+                </div>
+            </div>
+            <div class="container__row">
+                <div class="card__row">
+                {{ form_row(form.lastName) }}
+            </div>
+            <div class="card__row">
+                {{ form_row(form.phoneNumber) }}
+            </div>
         </div>
+            <div class="container__row">
+                <div class="card__row">
+                    {{ form_row(form.birthdayDate) }}
+                </div>
+            <div class="card__row">
+                {{ form_row(form.email) }}
+            </div>
+        </div>
+            <div class="container__row">
+                <div class="card__row">
+                {{ form_row(form.address.street) }}
+            </div>
+            <div class="card__row">
+                {{ form_row(form.address.complementaryInfo) }}
+            </div>
+        </div>
+        <div class="container__row">
+            <div class="card__row">
+                {{ form_row(form.address.city) }}
+            </div>
+            <div class="card__row">
+                {{ form_row(form.address.postalCode) }}
+            </div>
+        </div>
+        <div class="container__row">
+            <div class="card__row">
+                {{ form_row(form.gender) }}
+            </div>
+        </div>
+        <input type="submit" class="btn btn-success" style="margin: auto;" value="{{ patient is defined ? "Modifier" : "Ajouter" }}">
+        {{ form_end(form) }}
     </div>
 {% endblock %}
 

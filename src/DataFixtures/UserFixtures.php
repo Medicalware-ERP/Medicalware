@@ -39,6 +39,7 @@ class UserFixtures extends Fixture
             ->setBirthdayDate(new DateTimeImmutable())
             ->setEmail('admin@medicalware.fr')
             ->setIsActive(true)
+            ->setGender("M")
             ->setRoles(["ROLE_ADMIN"])
             ->setPassword($this->userPasswordHasher->hashPassword($user, 'admin'))
         ;
@@ -57,6 +58,7 @@ class UserFixtures extends Fixture
             ->setPhoneNumber('0713124578')
             ->setProfession($profession1)
             ->setAddress($address1)
+            ->setGender("M")
             ->setBirthdayDate(new DateTimeImmutable())
             ->setEmail('admin@medicfdfalware.fr')
             ->setIsActive(false)
@@ -78,6 +80,7 @@ class UserFixtures extends Fixture
             ->setPhoneNumber('0712454578')
             ->setProfession($profession2)
             ->setAddress($address2)
+            ->setGender("M")
             ->setBirthdayDate(new DateTimeImmutable())
             ->setEmail('admin@medicalwafsdfsdre.fr')
             ->setIsActive(true)

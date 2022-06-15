@@ -1,0 +1,5 @@
+{% extends app.request.query.get('isAjax', false) ? 'layout_empty.html.twig' : 'patient/show.html.twig' %}
+
+{% block content %}
+    <p>Dossier médical</p>
+{% endblock %}

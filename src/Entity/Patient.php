@@ -22,7 +22,11 @@ class Patient extends Person implements EntityInterface
     private Collection $invoices;
 
     #[ORM\Column(type: 'boolean')]
-    private bool $isArchived;
+    private bool $isArchived = false;
+
+    #[ORM\OneToOne(inversedBy: "patient", targetEntity: MedicalFile::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?MedicalFile $medicalFile = null;
 
     #[Pure] public function __construct()
     {
@@ -32,6 +36,25 @@ class Patient extends Person implements EntityInterface
     public function getNumberSocialSecurity(): ?string
     {
         return $this->numberSocialSecurity;
+    }
+
+    /**
+     * @return MedicalFile|null
+     */
+    public function getMedicalFile(): ?MedicalFile
+    {
+        return $this->medicalFile;
+    }
+
+    /**
+     * @param MedicalFile|null $medicalFile
+     * @return Patient
+     */
+    public function setMedicalFile(?MedicalFile $medicalFile): Patient
+    {
+        $medicalFile->setPatient($this);
+        $this->medicalFile = $medicalFile;
+        return $this;
     }
 
     public function setNumberSocialSecurity(string $numberSocialSecurity): self

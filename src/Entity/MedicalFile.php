@@ -16,7 +16,7 @@ class MedicalFile
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\OneToOne(targetEntity: Patient::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy:"medicalFile", targetEntity: Patient::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?Patient $patient = null;
 
