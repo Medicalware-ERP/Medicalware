@@ -1,0 +1,17 @@
+{% extends app.request.query.get('isAjax', false) ? 'layout_empty.html.twig' : 'room/index.html.twig' %}
+
+{% block content %}
+
+    <h3>Liste des types de salle</h3>
+
+    <div>
+
+        {% for type in roomTypes %}
+
+            {{ type }}
+
+        {% endfor %}
+
+    </div>
+
+{% endblock %}

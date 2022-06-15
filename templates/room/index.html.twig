@@ -1,41 +1,13 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout_show_horizontal.html.twig' %}
 
 {% block title %}Salle{% endblock %}
 
-{% block body %}
-    <div class="container-list-rooms">
-        <h4 class="title-list-rooms">
-            Salles
-        </h4>
-        <div class="card">
-            <div class="row__datatable">
-                <div class="d-flex">
-                    <input class="form-input" type="text" placeholder="Chercher ..." id="input-search" name="search"/>
-                    <label for="datatable-limit"></label>
-                    <select name="limit" id="datatable-limit" class="form-input">
-                        <option value="10">10</option>
-                        <option value="20">20</option>
-                        <option value="30">30</option>
-                    </select>
-                </div>
-                <a class="btn btn-success" href="{{ path('app_add_room') }}">
-                    <i class="fa fa-plus"></i>
-                    Ajouter une salle
-                </a>
-            </div>
-
-            <table id="table-rooms" class="datatable" data-url="{{ path('rooms_json') }}">
-                <thead>
-                <tr>
-                    <th>Libellé</th>
-                    <th>Capacité</th>
-                    <th>Type</th>
-                    <th>Détails</th>
-                </tr>
-                </thead>
-            </table>
-        </div>
-    </div>
+{% block aside_header %}
+    <nav>
+        <button data-url="{{ path('index_room') }}" data-name="rooms"><i class="margin-right-5 fa fa-door-open"></i> Salles</button>
+        <button data-url="{{ path('index_room_type') }}" data-name="types"><i class="margin-right-5 fa fa-receipt"></i> Types</button>
+        <button data-url="{{ path('index_room_option') }}" data-name="options"><i class="margin-right-5 fa fa-clipboard-check"></i> Options</button>
+    </nav>
 {% endblock %}
 
 {% block javascripts %}

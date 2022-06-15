@@ -5,6 +5,10 @@ import Routing from "../Routing";
 
 const table = $("#table-rooms");
 
+
+console.log("entrée dans le TS")
+
+
 const deleteRoom = () => {
     const callback = (e: Event) => {
         e.stopPropagation();
@@ -30,6 +34,12 @@ const deleteRoom = () => {
 }
 
 document.addEventListener('datatable.loaded', deleteRoom);
+
+document.addEventListener('layout.rooms.loaded', () => {
+    console.log("layout.room.loaded");
+    const roomTable = $("#table-rooms");
+    if (!!roomTable) generateDatable(roomTable as HTMLTableElement);
+});
 
 if (table instanceof HTMLTableElement) {
     generateDatable(table);

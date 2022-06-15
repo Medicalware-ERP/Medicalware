@@ -28,6 +28,8 @@ links.forEach((link, key) => {
     link.addEventListener('click', (e) => {
         const a = e.target as HTMLAnchorElement
         const url = a.dataset.url;
+        const name = a.dataset.name;
+
         if (!isText(url)) {
             return;
         }
@@ -43,7 +45,17 @@ links.forEach((link, key) => {
             url,
         }, '', url);
 
-        loadTab(url).then(r => r);
+        loadTab(url).then(r => {
+            console.log("loadTab w/ name", name);
+            if (!!name)
+            {
+                console.log("chaien géné:", `layout.${name}.loaded`);
+                const event = new CustomEvent(`layout.${name}.loaded`);
+                document.dispatchEvent(event);
+            }
+            const event = new CustomEvent('layout.loaded');
+            document.dispatchEvent(event);
+        });
     })
 });
 

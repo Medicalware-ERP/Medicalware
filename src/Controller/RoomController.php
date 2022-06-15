@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Room\Room;
 use App\Form\RoomType;
+use App\Repository\RoomOptionRepository;
 use App\Repository\RoomRepository;
+use App\Repository\RoomTypeRepository;
 use App\Service\Room\RoomDataFormatter;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
@@ -54,7 +56,7 @@ class RoomController extends BaseController
             $this->manager->persist($room);
             $this->manager->flush();
 
-            return $this->redirectToRoute("app_room");
+            return $this->redirectToRoute("index_room");
         }
 
         return $this->renderForm('room/form.html.twig', [
@@ -73,8 +75,8 @@ class RoomController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->manager->persist($room);
             $this->manager->flush();
-            
-            return $this->redirectToRoute("app_room");
+
+            return $this->redirectToRoute("index_room");
         }
 
         return $this->renderForm('room/form.html.twig', [
@@ -93,7 +95,7 @@ class RoomController extends BaseController
 
         $roomRepository->remove($room);
 
-        return $this->redirectToRoute("app_room");
+        return $this->redirectToRoute("index_room");
     }
 
     #[Route('/room/{id}', name: 'app_show_room')]
@@ -103,6 +105,36 @@ class RoomController extends BaseController
 
         return $this->render('room/show.html.twig', [
             'room' => $room
+        ]);
+    }
+
+    #[Route('/room/include/list', name: 'index_room')]
+    public function roomIndex(RoomRepository $roomRepository) : Response
+    {
+        $provider = $roomRepository->findAll();
+
+        return $this->renderForm('room/includes/_room.html.twig', [
+            'rooms' => $provider
+        ]);
+    }
+
+    #[Route('/room/include/type', name: 'index_room_type')]
+    public function roomTypeIndex(RoomTypeRepository $roomTypeRepository) : Response
+    {
+        $provider = $roomTypeRepository->findAll();
+
+        return $this->renderForm('room/includes/_types.html.twig', [
+            'roomTypes' => $provider
+        ]);
+    }
+
+    #[Route('/room/include/option', name: 'index_room_option')]
+    public function roomOptionIndex(RoomOptionRepository $roomOptionRepository) : Response
+    {
+        $provider = $roomOptionRepository->findAll();
+
+        return $this->renderForm('room/includes/_options.html.twig', [
+            'roomOptions' => $provider
         ]);
     }
 }
