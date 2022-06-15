@@ -62,6 +62,27 @@ class RoomController extends BaseController
         ]);
     }
 
+    #[Route('/room/edit/{id}', name: 'app_edit_room')]
+    public function edit(Request $request, int $id): Response
+    {
+        $room = $this->manager->find(Room::class, $id) ?? throw new NotFoundHttpException("Salle non trouvé");
+
+        $form = $this->createForm(RoomType::class, $room);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->manager->persist($room);
+            $this->manager->flush();
+            
+            return $this->redirectToRoute("app_room");
+        }
+
+        return $this->renderForm('room/form.html.twig', [
+            'form' => $form,
+            'room' => $room
+        ]);
+    }
+
     #[Route('/room/delete/{id}', name: 'app_delete_room')]
     public function delete(int $id, RoomRepository $roomRepository)
     {
@@ -79,7 +100,6 @@ class RoomController extends BaseController
     public function show(int $id): Response
     {
         $room = $this->manager->find(Room::class, $id) ?? throw new NotFoundHttpException("Salle non trouvée");
-
 
         return $this->render('room/show.html.twig', [
             'room' => $room
