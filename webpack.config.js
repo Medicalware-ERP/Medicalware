@@ -37,6 +37,7 @@ Encore
     .addEntry('invoice.form', './assets/js/invoice/form.ts')
 
     .addStyleEntry('room.show.style', './assets/styles/room/show.scss')
+    .addStyleEntry('room.index.style', './assets/styles/room/index.scss')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
