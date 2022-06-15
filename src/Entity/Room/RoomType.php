@@ -2,6 +2,7 @@
 
 namespace App\Entity\Room;
 
+use App\Repository\RoomTypeRepository;
 use App\Entity\EnumEntity;
 use Doctrine\ORM\Mapping as ORM;
 

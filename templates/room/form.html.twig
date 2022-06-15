@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Salle{% endblock %}
+
+{% block body %}
+    <h4 class="title-list">
+        {% if room is defined %}
+            Modifier {{ room.label }}
+        {% else %}
+            Ajouter
+        {% endif %}
+    </h4>
+    <div class="card">
+        <div class="wrapper">
+            {{ form_start(form) }}
+            {{ form_rest(form) }}
+            <input type="submit" class="btn btn-success" value="{{ room is defined ? "Modifier" : "Ajouter" }}">
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+

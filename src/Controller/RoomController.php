@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Room\Room;
+use App\Form\RoomType;
 use App\Repository\RoomRepository;
 use App\Service\Room\RoomDataFormatter;
 use Doctrine\ORM\EntityManagerInterface;
@@ -39,6 +40,26 @@ class RoomController extends BaseController
     public function paginate(Request $request, RoomDataFormatter $roomDataFormatter): JsonResponse
     {
         return $this->paginateRequest(Room::class, $request, $roomDataFormatter);
+    }
+
+    #[Route('/room/add', name: 'app_add_room')]
+    public function add(Request $request): Response
+    {
+        $room = new Room();
+
+        $form = $this->createForm(RoomType::class, $room);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->manager->persist($room);
+            $this->manager->flush();
+
+            return $this->redirectToRoute("app_room");
+        }
+
+        return $this->renderForm('room/form.html.twig', [
+            'form' => $form
+        ]);
     }
 
     #[Route('/room/delete/{id}', name: 'app_delete_room')]

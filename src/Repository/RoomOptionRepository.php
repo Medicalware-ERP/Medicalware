@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\RoomOption;
+use App\Entity\Room\RoomOption;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
