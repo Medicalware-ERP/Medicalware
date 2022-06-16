@@ -35,6 +35,13 @@ class RoomRepository extends DatatableRepository
         }
     }
 
+    public function findAllActive()
+    {
+        return $this->findBy([
+            "archivedAt" => null
+        ]);
+    }
+
     /**
      * @throws ORMException
      * @throws OptimisticLockException

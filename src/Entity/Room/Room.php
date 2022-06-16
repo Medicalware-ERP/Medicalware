@@ -32,6 +32,9 @@ class Room implements EntityInterface
     #[ORM\ManyToMany(targetEntity: RoomOption::class)]
     private $options;
 
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private $archivedAt;
+
     public function __construct()
     {
         $this->options = new ArrayCollection();
@@ -98,6 +101,18 @@ class Room implements EntityInterface
     public function removeOption(RoomOption $option): self
     {
         $this->options->removeElement($option);
+
+        return $this;
+    }
+
+    public function getArchivedAt(): ?\DateTimeImmutable
+    {
+        return $this->archivedAt;
+    }
+
+    public function setArchivedAt(?\DateTimeImmutable $archivedAt): self
+    {
+        $this->archivedAt = $archivedAt;
 
         return $this;
     }

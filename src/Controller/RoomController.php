@@ -85,15 +85,16 @@ class RoomController extends BaseController
         ]);
     }
 
-    #[Route('/room/delete/{id}', name: 'app_delete_room')]
-    public function delete(int $id, RoomRepository $roomRepository)
+    #[Route('/room/archive/{id}', name: 'app_archive_room')]
+    public function archive(int $id, RoomRepository $roomRepository)
     {
         $room = $roomRepository->find($id);
 
         if ($room == null)
             throw new NotFoundHttpException();
 
-        $roomRepository->remove($room);
+        $room->setArchivedAt(new \DateTimeImmutable());
+        $roomRepository->add($room);
 
         return $this->redirectToRoute("index_room");
     }
@@ -111,7 +112,7 @@ class RoomController extends BaseController
     #[Route('/room/include/list', name: 'index_room')]
     public function roomIndex(RoomRepository $roomRepository) : Response
     {
-        $provider = $roomRepository->findAll();
+        $provider = $roomRepository->findAllActive();
 
         return $this->renderForm('room/includes/_room.html.twig', [
             'rooms' => $provider
@@ -121,20 +122,48 @@ class RoomController extends BaseController
     #[Route('/room/include/type', name: 'index_room_type')]
     public function roomTypeIndex(RoomTypeRepository $roomTypeRepository) : Response
     {
-        $provider = $roomTypeRepository->findAll();
+        $provider = $roomTypeRepository->findAllActive();
 
         return $this->renderForm('room/includes/_types.html.twig', [
             'roomTypes' => $provider
         ]);
     }
 
+    #[Route('/room/type/archive/{id}', name: 'app_archive_room_type')]
+    public function archiveType(int $id, RoomTypeRepository $roomTypeRepository)
+    {
+        $type = $roomTypeRepository->find($id);
+
+        if ($type == null)
+            throw new NotFoundHttpException();
+
+        $type->setArchivedAt(new \DateTimeImmutable());
+        $roomTypeRepository->add($type);
+
+        return $this->redirectToRoute("index_room_type");
+    }
+
     #[Route('/room/include/option', name: 'index_room_option')]
     public function roomOptionIndex(RoomOptionRepository $roomOptionRepository) : Response
     {
-        $provider = $roomOptionRepository->findAll();
+        $provider = $roomOptionRepository->findAllActive();
 
         return $this->renderForm('room/includes/_options.html.twig', [
             'roomOptions' => $provider
         ]);
+    }
+
+    #[Route('/room/option/archive/{id}', name: 'app_archive_room_option')]
+    public function archiveOption(int $id, RoomOptionRepository $roomOptionRepository)
+    {
+        $option = $roomOptionRepository->find($id);
+
+        if ($option == null)
+            throw new NotFoundHttpException();
+
+        $option->setArchivedAt(new \DateTimeImmutable());
+        $roomOptionRepository->add($option);
+
+        return $this->redirectToRoute("index_room_option");
     }
 }

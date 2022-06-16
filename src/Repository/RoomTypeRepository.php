@@ -21,6 +21,13 @@ class RoomTypeRepository extends ServiceEntityRepository
         parent::__construct($registry, RoomType::class);
     }
 
+    public function findAllActive()
+    {
+        return $this->findBy([
+            "archivedAt" => null
+        ]);
+    }
+
     /**
      * @throws ORMException
      * @throws OptimisticLockException

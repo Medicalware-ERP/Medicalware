@@ -6,8 +6,8 @@ const callback = (e: Event) => {
     e.stopPropagation();
 
     const button = <HTMLInputElement>e.currentTarget;
-    const text: string = "Vous êtes sur le point de supprimer une salle."
-    const url = Routing.generate('app_delete_room', {
+    const text: string = "Vous êtes sur le point d'archiver une salle."
+    const url = Routing.generate('app_archive_room', {
         id: button.dataset.room
     });
 

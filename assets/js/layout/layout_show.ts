@@ -46,10 +46,8 @@ links.forEach((link, key) => {
         }, '', url);
 
         loadTab(url).then(r => {
-            console.log("loadTab w/ name", name);
             if (!!name)
             {
-                console.log("chaien géné:", `layout.${name}.loaded`);
                 const event = new CustomEvent(`layout.${name}.loaded`);
                 document.dispatchEvent(event);
             }
