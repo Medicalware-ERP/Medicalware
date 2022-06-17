@@ -116,6 +116,6 @@ class InvoiceController extends BaseController
         $html    = $this->renderView('invoice/pdf/_pdf.html.twig', ['invoice' => $invoice]);
         $content = $pdf->getOutputFromHtml($html);
 
-        return new PdfResponse($content, contentDisposition: ResponseHeaderBag::DISPOSITION_INLINE);
+        return new PdfResponse($content, 'facture_'.$invoice->getDate()->format('d_m_Y').".pdf");
     }
 }
