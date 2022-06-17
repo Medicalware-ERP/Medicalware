@@ -114,6 +114,26 @@ class RoomController extends BaseController
         ]);
     }
 
+    #[Route('/room/{id}/show', name: 'show_room_information')]
+    public function showInformation(int $id) : Response
+    {
+        $room = $this->manager->find(Room::class, $id) ?? throw new NotFoundHttpException("Salle non trouvée");
+
+        return $this->renderForm('room/includes/_show_room.html.twig', [
+            'room' => $room
+        ]);
+    }
+
+    #[Route('/room/{id}/planning', name: 'show_room_planning')]
+    public function showPlanning(int $id) : Response
+    {
+        $room = $this->manager->find(Room::class, $id) ?? throw new NotFoundHttpException("Salle non trouvée");
+
+        return $this->renderForm('room/includes/_show_planning.html.twig', [
+            'room' => $room
+        ]);
+    }
+
     #[Route('/room/include/list', name: 'index_room')]
     public function roomIndex(RoomRepository $roomRepository) : Response
     {
