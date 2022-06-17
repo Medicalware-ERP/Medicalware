@@ -49,7 +49,9 @@ function initTypes(){
         swaleWarningAndRedirect(text, url);
     };
 
-    $(".btn-delete-room-type")?.addEventListener('click', callback);
+    $(".btn-delete-room-type", (elem: Node) => {
+        elem.addEventListener('click', callback)
+    });
 }
 
 document.addEventListener('layout.types.loaded', () => {
@@ -73,7 +75,9 @@ function initOptions(){
         swaleWarningAndRedirect(text, url);
     };
 
-    $(".btn-delete-room-option")?.addEventListener('click', callback);
+    $(".btn-delete-room-option", (elem: Node) => {
+        elem.addEventListener('click', callback)
+    });
 }
 
 document.addEventListener('layout.options.loaded', () => {

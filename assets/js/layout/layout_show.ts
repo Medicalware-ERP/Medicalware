@@ -24,7 +24,7 @@ const loadTab = (url: string, link: Element) =>  {
         nodeLinkFiltered.classList.remove("active");
     });
 
-    axios.request(
+    return axios.request(
         {
             method: 'GET',
             params: {

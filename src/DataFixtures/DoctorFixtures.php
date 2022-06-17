@@ -32,7 +32,7 @@ class DoctorFixtures extends Fixture
 
         for($i = 0; $i <= 20 ; $i++){
             $doctor = new Doctor();
-            $specialisation = $states[rand(1, 17)];
+            $specialisation = $states[rand(1, 16)];
             $profession = new UserType("Docteur", "docteur");
             $address    = new Address($faker->streetName , $faker->city, $faker->postcode);
             $numberTrunced = substr($faker->e164PhoneNumber,5, strlen($faker->e164PhoneNumber));
