@@ -37,6 +37,9 @@ abstract class Person
     #[ORM\Column(type: 'datetime')]
     protected ?DateTimeInterface $birthdayDate = null;
 
+    #[ORM\Column(type: 'string', length: 1)]
+    private ?string $gender = null;
+
     /**
      * @return int|null
      */
@@ -129,5 +132,17 @@ abstract class Person
     public function __toString(): string
     {
         return $this->firstName . ' ' . $this->lastName;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->gender;
+    }
+
+    public function setGender(string $gender): self
+    {
+        $this->gender = $gender;
+
+        return $this;
     }
 }

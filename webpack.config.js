@@ -29,6 +29,7 @@ Encore
     .addEntry('human_resources.show', './assets/js/human_resources/show.ts')
     .addEntry('human_resources.datatable', './assets/js/human_resources/datatable.ts')
     .addEntry('patient.datatable', './assets/js/patient/datatable.ts')
+    .addEntry('patient.show', './assets/js/patient/show.ts')
     .addEntry('provider.datatable', './assets/js/provider/datatable.ts')
     .addEntry('provider.show', './assets/js/provider/show.ts')
     .addEntry('invoice.datatable', './assets/js/invoice/datatable.ts')

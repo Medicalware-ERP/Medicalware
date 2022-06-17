@@ -65,3 +65,52 @@
     background-color: var(--color-warning-light);
   }
 }
+
+.btn-show {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  font-weight: 500;
+  width:100%;
+  transition:background 0.1s ease-in;
+
+  span{
+    margin: auto auto auto 20px;
+  }
+
+  i,span{
+    color: #6C757D;
+    transition:color 0.1s ease-in;
+  }
+
+  &.active{
+    background:#edf0f7;
+
+    i,span {
+      color:#2401cc;
+    }
+
+    i{
+      transform:rotate(360deg);
+    }
+  }
+
+  i{
+    width:30px;
+    transition:transform 0.5s ease-in-out;
+  }
+
+  &:hover{
+    background:#edf0f7;
+
+    i,span {
+      color:#2401cc;
+    }
+
+    i{
+      transform:rotate(360deg);
+    }
+  }
+}

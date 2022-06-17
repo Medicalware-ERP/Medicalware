@@ -10,59 +10,19 @@ use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
 #[ORM\Entity(repositoryClass: ServiceRepository::class)]
-class Service
+class Service extends EnumEntity
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private ?string $name = null;
-
-    #[ORM\OneToOne(targetEntity: ServiceSpecialisation::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?ServiceSpecialisation $serviceSpecialisation = null;
-
     #[ORM\OneToMany(mappedBy: 'service', targetEntity: MedicalFileLine::class)]
     private Collection $medicalFileLines;
 
     #[ORM\ManyToMany(targetEntity: Equipment::class, mappedBy: 'service')]
-    private $equipment;
+    private Collection $equipment;
 
-    #[Pure] public function __construct()
+    #[Pure] public function __construct(string $slug, $name)
     {
+        parent::__construct($slug, $name);
         $this->medicalFileLines = new ArrayCollection();
         $this->equipment = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getServiceSpecialisation(): ?ServiceSpecialisation
-    {
-        return $this->serviceSpecialisation;
-    }
-
-    public function setServiceSpecialisation(ServiceSpecialisation $serviceSpecialisation): self
-    {
-        $this->serviceSpecialisation = $serviceSpecialisation;
-
-        return $this;
     }
 
     /**

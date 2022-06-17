@@ -7,6 +7,7 @@ use App\Repository\PatientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
 #[ORM\Entity(repositoryClass: PatientRepository::class)]
 class Patient extends Person implements EntityInterface
@@ -20,7 +21,20 @@ class Patient extends Person implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'patient', targetEntity: Invoice::class)]
     private Collection $invoices;
 
-    public function __construct()
+    #[ORM\Column(type: 'boolean')]
+    private bool $isArchived = false;
+
+    #[ORM\OneToOne(inversedBy: "patient", targetEntity: MedicalFile::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?MedicalFile $medicalFile = null;
+
+    #[ORM\Column(type: 'string', length: 5)]
+    private ?string $bloodGroup = null;
+
+    #[ORM\ManyToOne(targetEntity: Doctor::class, inversedBy: 'patients')]
+    private ?Doctor $doctor = null;
+
+    #[Pure] public function __construct()
     {
         $this->invoices = new ArrayCollection();
     }
@@ -28,6 +42,25 @@ class Patient extends Person implements EntityInterface
     public function getNumberSocialSecurity(): ?string
     {
         return $this->numberSocialSecurity;
+    }
+
+    /**
+     * @return MedicalFile|null
+     */
+    public function getMedicalFile(): ?MedicalFile
+    {
+        return $this->medicalFile;
+    }
+
+    /**
+     * @param MedicalFile|null $medicalFile
+     * @return Patient
+     */
+    public function setMedicalFile(?MedicalFile $medicalFile): Patient
+    {
+        $medicalFile->setPatient($this);
+        $this->medicalFile = $medicalFile;
+        return $this;
     }
 
     public function setNumberSocialSecurity(string $numberSocialSecurity): self
@@ -75,6 +108,42 @@ class Patient extends Person implements EntityInterface
                 $invoice->setPatient(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isIsArchived(): ?bool
+    {
+        return $this->isArchived;
+    }
+
+    public function setIsArchived(bool $isArchived): self
+    {
+        $this->isArchived = $isArchived;
+
+        return $this;
+    }
+
+    public function getBloodGroup(): ?string
+    {
+        return $this->bloodGroup;
+    }
+
+    public function setBloodGroup(string $bloodGroup): self
+    {
+        $this->bloodGroup = $bloodGroup;
+
+        return $this;
+    }
+
+    public function getDoctor(): ?Doctor
+    {
+        return $this->doctor;
+    }
+
+    public function setDoctor(?Doctor $doctor): self
+    {
+        $this->doctor = $doctor;
 
         return $this;
     }
