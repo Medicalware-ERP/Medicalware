@@ -1,0 +1,14 @@
+{{ form_start(form) }}
+    <div class="d-flex align-items-center margin-bottom-20 justify-content-between">
+        <div class="d-flex align-items-center" style="gap: 10px;">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name) }}
+        </div>
+        <div class="d-flex align-items-center" style="gap: 10px;">
+            {{ form_label(form.color) }}
+            {{ form_widget(form.color) }}
+        </div>
+    </div>
+    {{ form_row(form.description) }}
+{{ form_end(form) }}
+<script>console.log("toto")</script>
