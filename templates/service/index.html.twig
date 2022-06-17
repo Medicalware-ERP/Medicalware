@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Services{% endblock %}
+
+{% block body %}
+    <button class="btn btn-success" id="add_service">Ajouter un service</button>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('service.index') }}
+{% endblock %}

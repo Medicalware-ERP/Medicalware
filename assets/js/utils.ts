@@ -31,6 +31,8 @@ export function isText(data: any): data is string {
 
 export const simpleLoader = () => '<i class="fas fa-circle-notch fa-spin text-primary fz-32"></i>';
 
+export const simpleLoaderModal = () => '<div class="d-flex align-items-center justify-content-center"><i class="fas fa-circle-notch fa-spin text-primary fz-32"></i></div>';
+
 export const findInDataset = (e: HTMLElement, id: string): string => {
     const data = e.dataset[id];
 

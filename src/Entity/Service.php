@@ -18,7 +18,7 @@ class Service extends EnumEntity
     #[ORM\ManyToMany(targetEntity: Equipment::class, mappedBy: 'service')]
     private Collection $equipment;
 
-    #[Pure] public function __construct(string $slug, $name)
+    #[Pure] public function __construct(string $slug = "", string $name = "")
     {
         parent::__construct($slug, $name);
         $this->medicalFileLines = new ArrayCollection();
