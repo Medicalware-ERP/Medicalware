@@ -1,5 +1,6 @@
 import {htmlToElement, simpleLoader, simpleLoaderModal} from "../utils";
 import axios from "axios";
+import $ from "jquery";
 
 export const openModal = (id : string = "modal") => {
     const modal:HTMLElement|null = document.querySelector(`#${id}`);

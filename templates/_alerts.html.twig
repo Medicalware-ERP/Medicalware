@@ -1,0 +1,29 @@
+{% for flashMessage in app.session.flashbag.get('success') %}
+    <div class="card d-flex justify-content-between" role="alert">
+        <div class="d-flex  gap-10">
+            <div class="alert-icon"><i class="icon fas fa-check-circle text-success"></i></div>
+            <div class="alert-text"> {{ flashMessage | raw }}</div>
+        </div>
+        <span onclick="this.parentElement.remove()"><i class="fa fa-times"></i></span>
+    </div>
+{% endfor %}
+
+{% for flashMessage in app.session.flashbag.get('error') %}
+    <div class="card d-flex justify-content-between" role="alert">
+        <div class="d-flex  gap-10">
+            <div class="alert-icon"><i class="icon fas fa-times-circle text-danger"></i></div>
+            <div class="alert-text"> {{ flashMessage | raw }}</div>
+        </div>
+        <span onclick="this.parentElement.remove()"><i class="fa fa-times"></i></span>
+    </div>
+{% endfor %}
+
+{% for flashMessage in app.session.flashbag.get('warning') %}
+    <div class="card d-flex justify-content-between" role="alert">
+        <div class="d-flex  gap-10">
+            <div class="alert-icon"><i class="icon fas fa-exclamation-circle text-warning"></i></div>
+            <div class="alert-text"> {{ flashMessage | raw }}</div>
+        </div>
+        <span onclick="this.parentElement.remove()"><i class="fa fa-times"></i></span>
+    </div>
+{% endfor %}

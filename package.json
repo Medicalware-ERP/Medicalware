@@ -4,8 +4,10 @@
         "@symfony/webpack-encore": "^1.0.0",
         "@types/alpinejs": "^3.7.0",
         "@types/select2": "^4.0.55",
+        "autoprefixer": "^10.4.7",
         "core-js": "^3.0.0",
         "file-loader": "^6.2.0",
+        "postcss-loader": "^6.2.1",
         "regenerator-runtime": "^0.13.2",
         "sass": "^1.49.7",
         "sass-loader": "^12.4.0",
@@ -37,5 +39,9 @@
         "select2": "^4.1.0-rc.0",
         "sweetalert2": "^11.4.4",
         "tsd": "^0.20.0"
-    }
+    },
+    "browserslist": [
+        "defaults",
+        "ie >= 9"
+    ]
 }

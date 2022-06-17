@@ -1,4 +1,4 @@
 
 {% apply spaceless %}
-    {{ invoice.ttc }}
+    {{ invoice.ttc|format_currency('EUR', [], 'fr_Fr') }}
 {% endapply %}

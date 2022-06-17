@@ -69,7 +69,7 @@ class InvoiceType extends AbstractType
             }
 
             $invoice->setHt($ht);
-            $invoice->setTtc($ht * 1.2);
+            $invoice->setTtc($ht * $invoice->getTva()->value());
 
         });
     }

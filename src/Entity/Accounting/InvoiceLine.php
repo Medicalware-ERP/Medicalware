@@ -120,4 +120,10 @@ class InvoiceLine
         $this->ht = $ht;
         return $this;
     }
+
+    public function calculateHt(): int
+    {
+        $this->setHt($this->getPrice() * $this->getQuantity());
+        return $this->getHt();
+    }
 }

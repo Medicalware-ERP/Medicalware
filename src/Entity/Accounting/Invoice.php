@@ -57,6 +57,8 @@ class Invoice
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $reference = null;
 
+    private string $workflowState = 'draft';
+
     public function __construct()
     {
         $this->date         = new DateTime();
@@ -221,5 +223,44 @@ class Invoice
     public function __toString(): string
     {
         return $this->reference;
+    }
+
+    public function calculateTotalHt() {
+        $total = 0;
+
+        foreach ($this->getInvoiceLines() as $invoiceLine) {
+            $total += $invoiceLine->getHt();
+        }
+
+        return $total;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWorkflowState(): string
+    {
+        return $this->state->getSlug() ?? $this->workflowState;
+    }
+
+    /**
+     * @param string $workflowState
+     */
+    public function setWorkflowState(string $workflowState): void
+    {
+        $this->workflowState = $workflowState;
+    }
+
+    public function calculate(): self
+    {
+        $ht = 0;
+        foreach ($this->getInvoiceLines() as $invoiceLine) {
+            $ht += $invoiceLine->calculateHt();
+        }
+
+        $this->setHt($ht);
+        $this->setTtc($ht * $this->getTva()->value());
+
+        return $this;
     }
 }

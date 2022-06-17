@@ -23,6 +23,7 @@ class PatientRepository extends DatatableRepository
         parent::__construct($registry, Patient::class);
     }
 
+
     /**
      * @throws ORMException
      * @throws OptimisticLockException
