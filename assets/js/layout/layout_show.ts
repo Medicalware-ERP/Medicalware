@@ -12,7 +12,7 @@ if (links.length === 0) {
     throw new Error('No links found');
 }
 
-const loadTab = (url: string, link: Element) =>  {
+const initLinkButton = (link: Element) => {
     link.classList.add("active");
     if (!(link.parentNode instanceof HTMLElement)) {
         throw new Error('link not found');
@@ -23,6 +23,10 @@ const loadTab = (url: string, link: Element) =>  {
     nodesLinkFiltered.forEach((nodeLinkFiltered) => {
         nodeLinkFiltered.classList.remove("active");
     });
+}
+
+const loadTab = (url: string, link: Element) =>  {
+    initLinkButton(link);
 
     return axios.request(
         {
@@ -77,6 +81,14 @@ window.onpopstate = function(event) {
     if(link == null) {
         return;
     }
+
     loadTab(location.pathname,link);
 };
 
+// A l'arrivé sur une tab, on la sélectionne
+document.addEventListener('DOMContentLoaded', () => {
+    const link: HTMLElement | null = document.querySelector(`nav button[data-url="${location.pathname}"]`);
+
+    if (link instanceof HTMLElement)
+        initLinkButton(link);
+});
