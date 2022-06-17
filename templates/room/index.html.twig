@@ -4,9 +4,9 @@
 
 {% block aside_header %}
     <nav class="d-flex">
-        <button class="btn-show" data-url="{{ path('index_room') }}" data-name="rooms"><i class="margin-right-5 fa fa-door-open"></i> Salles</button>
-        <button class="btn-show" data-url="{{ path('index_room_type') }}" data-name="types"><i class="margin-right-5 fa fa-receipt"></i> Types</button>
-        <button class="btn-show" data-url="{{ path('index_room_option') }}" data-name="options"><i class="margin-right-5 fa fa-clipboard-check"></i> Options</button>
+        <button id="btn-show-room" class="btn-show" data-url="{{ path('index_room') }}" data-name="rooms"><i class="margin-right-5 fa fa-door-open"></i> Salles</button>
+        <button id="btn-show-room-type" class="btn-show" data-url="{{ path('index_room_type') }}" data-name="types"><i class="margin-right-5 fa fa-receipt"></i> Types</button>
+        <button id="btn-show-room-option" class="btn-show" data-url="{{ path('index_room_option') }}" data-name="options"><i class="margin-right-5 fa fa-clipboard-check"></i> Options</button>
     </nav>
 {% endblock %}
 

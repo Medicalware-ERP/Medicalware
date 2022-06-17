@@ -58,10 +58,6 @@ document.addEventListener('layout.types.loaded', () => {
     initTypes();
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-    initTypes();
-});
-
 function initOptions(){
     const callback = (e: Event) => {
         e.stopPropagation();
@@ -85,9 +81,42 @@ document.addEventListener('layout.options.loaded', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    initOptions();
+    selectTab();
+
 });
 
 if (table instanceof HTMLTableElement) {
     generateDatable(table);
+}
+
+const selectTab = function () {
+    const doesContains = function(search: string, contains: string): boolean {
+        return search.includes(contains);
+    }
+
+    // Récupération de URL pour savoir sur quel onglet on doit être
+    let tab:Element | null | undefined;
+    const currentUrl: string = window.location.href;
+
+    switch (true) {
+        case doesContains(currentUrl, "list"):
+            tab = $("#btn-show-room");
+            break;
+
+        case doesContains(currentUrl, "type"):
+            initTypes();
+            tab = $("#btn-show-room-type");
+            break;
+
+        case doesContains(currentUrl, "option"):
+            tab = $("#btn-show-room-option");
+            initOptions();
+            break;
+    }
+
+    // Si l'onglet en cours n'a pas la classe active, on la lui rajoute
+    // @ts-ignore
+    if (!!tab && !tab?.classList.contains("active")) {
+        tab?.classList.add("active");
+    }
 }
