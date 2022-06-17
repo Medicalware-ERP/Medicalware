@@ -1,0 +1,36 @@
+{% extends app.request.query.get('isAjax', false) ? 'layout_empty.html.twig' : 'room/index.html.twig' %}
+
+{% block content %}
+    <div id="room-types">
+        <div class="d-flex justify-content-between">
+            <h3>Liste des options de salle</h3>
+
+            <a class="btn btn-success">
+                <i class="fa fa-plus"></i>
+                Ajouter une option
+            </a>
+        </div>
+
+        <div class="card-container justify-content-center">
+            {% for option in roomOptions %}
+                <div class="d-flex flex-column card">
+                    <b>{{ option.name }}</b>
+                    <div class="d-flex justify-content-between bottom-line">
+                        <div class="d-flex align-self-end font-italic">
+                            #{{ option.id }}
+                        </div>
+                        <div class="d-flex buttons-container">
+                            <a class="btn btn-primary btn-edit-room-option">Modifier</a>
+
+                            <a class="btn btn-danger btn-delete-room-option" data-option="{{ option.id }}">Supprimer</a>
+                        </div>
+                    </div>
+
+                </div>
+            {% else %}
+                Aucune option trouvée
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

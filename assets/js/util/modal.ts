@@ -33,15 +33,6 @@ export const openAjaxModal = (url: string, id : string = "modal") => {
     }
     modalBody.innerHTML = simpleLoaderModal();
     axios.get(url).then(res => {
-        let myDiv = htmlToElement(res.data);
-        let arr = myDiv.getElementsByTagName('script')
-
-        for (let n = 0; n < arr.length; n++){
-            const scriptEl = document.createRange().createContextualFragment(arr[n].textContent as string);
-            document.body.append(scriptEl);
-        }
-
-        modalBody.appendChild(myDiv);
-
+        $(modalBody).html(res.data)
     });
 }

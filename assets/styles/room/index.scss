@@ -1,0 +1,22 @@
+#room-types, #room-options {
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2em;
+    padding: 2em;
+
+    .card {
+      width: 300px;
+      row-gap: 1em;
+      box-shadow: 0 2px 6px 0 rgba(23, 34, 23, 0.5);
+
+      .bottom-line {
+        column-gap: 1em;
+
+        .buttons-container {
+          column-gap: 1em;
+        }
+      }
+    }
+  }
+}

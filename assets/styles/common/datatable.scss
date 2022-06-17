@@ -23,13 +23,13 @@
   }
 
   tr {
-    transition:transform 0.2s ease-in ,box-shadow 0.2s ease-in;
+    position: relative;
+    transition: box-shadow 0.2s ease-in;
     &:nth-child(even) {
       background-color: #f2f2f2;
     }
 
     &:hover:not(thead tr):not(tfoot tr){
-      transform: scale(1.03);
       cursor:pointer;
       box-shadow: 0 0 3px 1px rgb(0 0 0 / 50%);
     }

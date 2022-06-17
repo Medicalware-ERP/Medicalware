@@ -1,0 +1,21 @@
+{% extends 'layout_show_horizontal.html.twig' %}
+
+{% block title %}Salle{% endblock %}
+
+{% block aside_header %}
+    <nav class="d-flex">
+        <button id="btn-show-room" class="btn-show" data-url="{{ path('index_room') }}" data-name="rooms"><i class="margin-right-5 fa fa-door-open"></i> Salles</button>
+        <button id="btn-show-room-type" class="btn-show" data-url="{{ path('index_room_type') }}" data-name="types"><i class="margin-right-5 fa fa-receipt"></i> Types</button>
+        <button id="btn-show-room-option" class="btn-show" data-url="{{ path('index_room_option') }}" data-name="options"><i class="margin-right-5 fa fa-clipboard-check"></i> Options</button>
+    </nav>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('room.index') }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('room.index.style') }}
+{% endblock %}
