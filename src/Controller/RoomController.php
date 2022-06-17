@@ -9,6 +9,7 @@ use App\Repository\RoomRepository;
 use App\Repository\RoomTypeRepository;
 use App\Service\Room\RoomDataFormatter;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -41,7 +42,11 @@ class RoomController extends BaseController
     #[Route('/roomsJson', name: 'rooms_json')]
     public function paginate(Request $request, RoomDataFormatter $roomDataFormatter): JsonResponse
     {
-        return $this->paginateRequest(Room::class, $request, $roomDataFormatter);
+        $modifier = function(QueryBuilder $queryBuilder){
+            $queryBuilder->andWhere("e.archivedAt is null");
+        };
+
+        return $this->paginateRequest(Room::class, $request, $roomDataFormatter, $modifier);
     }
 
     #[Route('/room/add', name: 'app_add_room')]
