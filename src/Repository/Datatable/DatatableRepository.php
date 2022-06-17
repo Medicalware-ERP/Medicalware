@@ -22,7 +22,7 @@ abstract class DatatableRepository extends ServiceEntityRepository implements Da
      * @return Paginator
      * @throws ReflectionException
      */
-    public function paginate(int $currentPage, int $limit, string $query = null): Paginator
+    public function paginate(int $currentPage, int $limit, string $query = null, \Closure $modifier = null): Paginator
     {
         $queryBuilder = $this->createQueryBuilder('e');
         $expr = $queryBuilder->expr();
@@ -50,6 +50,9 @@ abstract class DatatableRepository extends ServiceEntityRepository implements Da
             $queryBuilder->addOrderBy($column->getAliasJoinField() . '.' . $column->getField(), $column->getOrder());
         }
 
+        if($modifier != null){
+            $modifier($queryBuilder);
+        }
 
         $queryBuilder
             ->setFirstResult(($currentPage - 1) * $limit)

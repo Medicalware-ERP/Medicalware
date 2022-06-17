@@ -48,7 +48,7 @@ class User extends Person implements UserInterface, PasswordAuthenticatedUserInt
     private ?UserType $profession = null;
 
     #[ORM\OneToMany(mappedBy: 'validatedBy', targetEntity: Invoice::class)]
-    private $invoicesValidated;
+    private Collection $invoicesValidated;
 
     public function __construct()
     {

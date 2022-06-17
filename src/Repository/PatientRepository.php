@@ -4,10 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Patient;
 use App\Repository\Datatable\DatatableConfigColumn;
-use App\Repository\Datatable\DatatableConfigJoin;
 use App\Repository\Datatable\DatatableConfigSearch;
 use App\Repository\Datatable\DatatableRepository;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,7 +14,6 @@ use JetBrains\PhpStorm\Pure;
 /**
  * @method Patient|null find($id, $lockMode = null, $lockVersion = null)
  * @method Patient|null findOneBy(array $criteria, array $orderBy = null)
- * @method Patient[]    findAll()
  * @method Patient[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class PatientRepository extends DatatableRepository

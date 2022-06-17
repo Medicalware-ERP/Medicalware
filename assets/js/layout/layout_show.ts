@@ -12,21 +12,36 @@ if (links.length === 0) {
     throw new Error('No links found');
 }
 
-const loadTab = (url: string) =>   axios.request(
-    {
-        method: 'GET',
-        params: {
-            isAjax: true
-        },
-        url,
+const loadTab = (url: string, link: Element) =>  {
+    link.classList.add("active");
+    if (!(link.parentNode instanceof HTMLElement)) {
+        throw new Error('link not found');
     }
-).then(res => {
-    container.innerHTML = res.data
-});
+
+    const nodesLink = Array.from(link.parentNode.children);
+    const nodesLinkFiltered = nodesLink.filter((nodeLink) => link !== nodeLink);
+    nodesLinkFiltered.forEach((nodeLinkFiltered) => {
+        nodeLinkFiltered.classList.remove("active");
+    });
+
+    axios.request(
+        {
+            method: 'GET',
+            params: {
+                isAjax: true
+            },
+            url,
+        }
+    ).then(res => {
+        container.innerHTML = res.data
+    });
+}
 
 links.forEach((link, key) => {
     link.addEventListener('click', (e) => {
-        const a = e.target as HTMLAnchorElement
+        e.stopPropagation()
+        const a = e.currentTarget as HTMLAnchorElement
+
         const url = a.dataset.url;
         const name = a.dataset.name;
 
@@ -42,10 +57,10 @@ links.forEach((link, key) => {
 
         history.pushState({
             key,
-            url,
+            url
         }, '', url);
 
-        loadTab(url).then(r => {
+        loadTab(url, link).then(r => {
             if (!!name)
             {
                 const event = new CustomEvent(`layout.${name}.loaded`);
@@ -58,6 +73,10 @@ links.forEach((link, key) => {
 });
 
 window.onpopstate = function(event) {
-    loadTab(event.state?.url).then(r => r);
+    const link = document.querySelector(`nav button[data-url='${location.pathname}']`)
+    if(link == null) {
+        return;
+    }
+    loadTab(location.pathname,link);
 };
 

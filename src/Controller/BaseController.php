@@ -32,14 +32,14 @@ class BaseController extends AbstractController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function paginateRequest(string $entity, Request $request, DataFormatterInterface $formatter): JsonResponse
+    public function paginateRequest(string $entity, Request $request, DataFormatterInterface $formatter, \Closure $modifier = null): JsonResponse
     {
         $page = $request->query->get('page', 1);
         $query = $request->query->get('query');
         $limit = $request->query->get('limit', self::LIMIT);
 
         $manager = $this->container->get(EntityManagerInterface::class);
-        $datas = $manager->getRepository($entity)->paginate($page, $limit, $query);
+        $datas = $manager->getRepository($entity)->paginate($page, $limit, $query, $modifier);
 
         $data = [];
 

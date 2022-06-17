@@ -18,11 +18,15 @@ class Doctor extends User
     #[ORM\OneToMany(mappedBy: 'doctor', targetEntity: MedicalFileLine::class)]
     private Collection $medicalFileLines;
 
+    #[ORM\OneToMany(mappedBy: 'doctor', targetEntity: Patient::class)]
+    private Collection $patients;
+
     public function __construct()
     {
         parent::__construct();
         $this->specialisations = new ArrayCollection();
         $this->medicalFileLines = new ArrayCollection();
+        $this->patients = new ArrayCollection();
     }
 
     /**
@@ -73,6 +77,36 @@ class Doctor extends User
             // set the owning side to null (unless already changed)
             if ($medicalFileLine->getDoctor() === $this) {
                 $medicalFileLine->setDoctor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Patient>
+     */
+    public function getPatients(): Collection
+    {
+        return $this->patients;
+    }
+
+    public function addPatient(Patient $patient): self
+    {
+        if (!$this->patients->contains($patient)) {
+            $this->patients[] = $patient;
+            $patient->setDoctor($this);
+        }
+
+        return $this;
+    }
+
+    public function removePatient(Patient $patient): self
+    {
+        if ($this->patients->removeElement($patient)) {
+            // set the owning side to null (unless already changed)
+            if ($patient->getDoctor() === $this) {
+                $patient->setDoctor(null);
             }
         }
 

@@ -1,6 +1,7 @@
 {% apply spaceless %}
     <div class="d-flex justify-content-center">
-        <a class="btn-xs btn-primary margin-right-1" href="{{ path('app_show_patient', {'id': patient.id }) }}"><i class="fa fa-eye"></i></a>
-        <a class="btn-xs btn-primary" href="{{ path('app_edit_patient', {'id': patient.id }) }}"><i class="fa fa-pen"></i></a>
+        <a class="btn-xs btn-primary margin-right-2" href="{{ path('patient_show_information', {'id': patient.id }) }}"><i class="fa fa-eye"></i></a>
+        <a class="btn-xs btn-primary margin-right-2" href="{{ path('app_edit_patient', {'id': patient.id }) }}"><i class="fa fa-pen"></i></a>
+        <a class="btn-xs btn-danger" data-patient="{{ patient.id }}"><i class="fas fa-user-lock"></i></a>
     </div>
 {% endapply %}

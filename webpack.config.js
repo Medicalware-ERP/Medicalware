@@ -31,6 +31,7 @@ Encore
     .addEntry('room.index', './assets/js/room/index.ts')
     .addEntry('room.show', './assets/js/room/show.ts')
     .addEntry('patient.datatable', './assets/js/patient/datatable.ts')
+    .addEntry('patient.show', './assets/js/patient/show.ts')
     .addEntry('provider.datatable', './assets/js/provider/datatable.ts')
     .addEntry('provider.show', './assets/js/provider/show.ts')
     .addEntry('invoice.datatable', './assets/js/invoice/datatable.ts')

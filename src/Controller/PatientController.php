@@ -6,15 +6,16 @@ use App\Entity\Patient;
 use App\Entity\User;
 use App\Form\PatientType;
 use App\Form\UserType;
+use App\Repository\PatientRepository;
 use App\Service\Patient\PatientDataFormatter;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PatientController extends BaseController
@@ -40,7 +41,11 @@ class PatientController extends BaseController
     #[Route('/patientsJson', name: 'patients_json')]
     public function paginate(Request $request, PatientDataFormatter $patientDataFormatter): JsonResponse
     {
-        return $this->paginateRequest(Patient::class, $request, $patientDataFormatter);
+        $modifier = function(QueryBuilder $queryBuilder){
+            $queryBuilder->andWhere("e.isArchived = 0");
+        };
+
+        return $this->paginateRequest(Patient::class, $request, $patientDataFormatter, $modifier);
     }
 
     #[Route('/patient/add', name: 'app_add_patient')]
@@ -83,12 +88,47 @@ class PatientController extends BaseController
         ]);
     }
 
-    #[Route('/patient/{id}', name: 'app_show_patient')]
-    public function show(int $id): Response
+    #[Route('/patient/toArchive/{id}', name: 'app_to_archive_patient')]
+    public function archive(int $id): Response
     {
         $patient = $this->manager->find(Patient::class, $id) ?? throw new NotFoundHttpException("Patient non trouvé");
 
-        return $this->render('patient/show.html.twig', [
+        if ($patient == null){
+            throw new NotFoundHttpException();
+        }
+
+        $patient->setIsArchived(true);
+        $this->manager->persist($patient);
+        $this->manager->flush();
+        return $this->redirectToRoute("app_patients");
+    }
+
+    #[Route('/patient/show/{id}/information', name: 'patient_show_information')]
+    public function info(int $id, PatientRepository $patientRepository): Response
+    {
+        $patient = $patientRepository->find($id);
+
+        return $this->renderForm('patient/includes/_informations.html.twig', [
+            'patient' => $patient
+        ]);
+    }
+
+    #[Route('/patient/show/{id}/medicalFile', name: 'patient_show_medical_file')]
+    public function command(int $id, PatientRepository $patientRepository): Response
+    {
+        $patient = $patientRepository->find($id);
+
+        return $this->renderForm('patient/includes/_medical_file.html.twig', [
+            'patient' => $patient
+        ]);
+    }
+
+    #[Route('/patient/show/{id}/calendrier', name: 'patient_show_calendrier')]
+    public function pieces(int $id, PatientRepository $patientRepository): Response
+    {
+        $patient = $patientRepository->find($id);
+
+        return $this->renderForm('patient/includes/_calendrier.html.twig', [
             'patient' => $patient
         ]);
     }
