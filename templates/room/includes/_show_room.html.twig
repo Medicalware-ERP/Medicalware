@@ -1,0 +1,68 @@
+{% extends app.request.query.get('isAjax', false) ? 'layout_empty.html.twig' : 'room/show.html.twig' %}
+
+{% block content %}
+<input type="hidden" id="user-id" data-room="{{ room.id }}">
+<div id="room-details-container">
+    <div class="card">
+
+        <div class="row">
+            <div>
+                Libellé :
+            </div>
+            <div>
+                {{ room.label }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                Type :
+            </div>
+            <div>
+                {{ room.type }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                Capacité :
+            </div>
+            <div>
+                {{ room.capacity }}
+            </div>
+        </div>
+
+        {% for option in room.options %}
+
+            <div class="row">
+                <div>
+                    {% if (loop.index == 1) %}
+                        Options :
+                    {% endif %}
+                </div>
+                <div>
+                    {{ option }}
+                </div>
+            </div>
+
+        {% endfor %}
+
+        <div class="row row-actions">
+            <div id="actions-room-id">
+                #{{ room.id }}
+            </div>
+
+            <div class="actions-buttons-container">
+                <a class="btn btn-warning" href="{{ path('app_edit_room', {'id': room.id }) }}">
+                    Éditer
+                </a>
+                <a class="btn btn-danger btn-delete-room" data-room="{{ room.id }}">
+                    Supprimer
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
