@@ -3,10 +3,8 @@
 namespace App\DataFixtures;
 
 use App\Entity\Address;
-use App\Entity\EnumEntity;
 use App\Entity\User;
 use App\Entity\UserType;
-use App\Enum\UserTypeEnum;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;

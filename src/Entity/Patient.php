@@ -28,6 +28,12 @@ class Patient extends Person implements EntityInterface
     #[ORM\JoinColumn(nullable: true)]
     private ?MedicalFile $medicalFile = null;
 
+    #[ORM\Column(type: 'string', length: 5)]
+    private ?string $bloodGroup = null;
+
+    #[ORM\ManyToOne(targetEntity: Doctor::class, inversedBy: 'patients')]
+    private ?Doctor $doctor = null;
+
     #[Pure] public function __construct()
     {
         $this->invoices = new ArrayCollection();
@@ -114,6 +120,30 @@ class Patient extends Person implements EntityInterface
     public function setIsArchived(bool $isArchived): self
     {
         $this->isArchived = $isArchived;
+
+        return $this;
+    }
+
+    public function getBloodGroup(): ?string
+    {
+        return $this->bloodGroup;
+    }
+
+    public function setBloodGroup(string $bloodGroup): self
+    {
+        $this->bloodGroup = $bloodGroup;
+
+        return $this;
+    }
+
+    public function getDoctor(): ?Doctor
+    {
+        return $this->doctor;
+    }
+
+    public function setDoctor(?Doctor $doctor): self
+    {
+        $this->doctor = $doctor;
 
         return $this;
     }

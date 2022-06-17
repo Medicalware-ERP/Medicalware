@@ -3,9 +3,11 @@
 namespace App\DataFixtures;
 
 use App\Entity\Address;
+use App\Entity\Doctor;
 use App\Entity\MedicalFile;
 use App\Entity\Patient;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 
@@ -33,21 +35,24 @@ class PatientFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create("fr_FR");
-
+        $doctors = $manager->getRepository(Doctor::class)->findAll();
         for($i = 0; $i <= 20 ; $i++){
             $patient = new Patient();
             $medicalFile = new MedicalFile();
-            $address    = new Address($faker->streetName, $faker->city, $faker->postcode);
-            $patient->setFirstName($faker->firstName);
-            $patient->setLastName(($faker->lastName));
-            $patient->setBirthdayDate($faker->dateTime);
-            $patient->setGender("M");
-            $patient->setEmail($faker->email);
+            $medicalFile->setNumberFile($faker->randomNumber(8));
             $numberTrunced = substr($faker->e164PhoneNumber,5, strlen($faker->e164PhoneNumber));
-            $patient->setPhoneNumber("06". $numberTrunced);
-            $patient->setNumberSocialSecurity($this->randomNumberOfSecuritySocial());
-            $patient->setAddress($address);
-            $patient->setMedicalFile($medicalFile);
+            $address    = new Address($faker->streetName, $faker->city, $faker->postcode);
+            $patient->setFirstName($faker->firstName)
+                    ->setLastName(($faker->lastName))
+                    ->setBirthdayDate($faker->dateTime)
+                    ->setGender("M")
+                    ->setBloodGroup($faker->bloodGroup())
+                    ->setEmail($faker->email)
+                    ->setPhoneNumber("06". $numberTrunced)
+                    ->setNumberSocialSecurity($this->randomNumberOfSecuritySocial())
+                    ->setAddress($address)
+                    ->setDoctor($doctors[$i])
+                    ->setMedicalFile($medicalFile);
             $manager->persist($patient);
         }
 
