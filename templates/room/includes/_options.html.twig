@@ -5,7 +5,7 @@
         <div class="d-flex justify-content-between">
             <h3>Liste des options de salle</h3>
 
-            <a class="btn btn-success">
+            <a id="btn-add-room-option"  class="btn btn-success">
                 <i class="fa fa-plus"></i>
                 Ajouter une option
             </a>
@@ -15,6 +15,9 @@
             {% for option in roomOptions %}
                 <div class="d-flex flex-column card">
                     <b>{{ option.name }}</b>
+                    <p class="description">
+                        {{ option.description }}
+                    </p>
                     <div class="d-flex justify-content-between bottom-line">
                         <div class="d-flex align-self-end font-italic">
                             #{{ option.id }}

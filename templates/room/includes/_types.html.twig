@@ -5,7 +5,7 @@
         <div class="d-flex justify-content-between">
             <h3>Liste des types de salle</h3>
 
-            <a class="btn btn-success">
+            <a id="btn-add-room-type" class="btn btn-success">
                 <i class="fa fa-plus"></i>
                 Ajouter un type
             </a>
@@ -15,6 +15,9 @@
             {% for type in roomTypes %}
                 <div class="d-flex flex-column card">
                     <b>{{ type.name }}</b>
+                    <p class="description">
+                        {{ type.description }}
+                    </p>
                     <div class="d-flex justify-content-between bottom-line">
                         <div class="d-flex align-self-end font-italic">
                             #{{ type.id }}
