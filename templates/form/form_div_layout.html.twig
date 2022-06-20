@@ -288,7 +288,7 @@
 {%- block form_label -%}
     {% if label is not same as(false) -%}
         {% if not compound -%}
-            {% set label_attr = label_attr|merge({'for': id, 'class' : 'label__row'}) %}
+            {% set label_attr = label_attr|merge({'for': id, 'class' : 'label__row ' ~ label_attr.class|default('')}) %}
         {%- endif -%}
         {% if required -%}
             {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}

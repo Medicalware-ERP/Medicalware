@@ -67,7 +67,7 @@ class HumanResourcesController extends BaseController
     #[Route('/user/edit/{id}', name: 'app_edit_user')]
     public function edit(Request $request, int $id): Response
     {
-        $user = $this->manager->find(User::class, $id) ?? throw new NotFoundHttpException("Utilisateur non trouvée");
+        $user = $this->manager->find(User::class, $id) ?? throw new NotFoundHttpException("Utilisateur non trouvé");
 
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);

@@ -23,6 +23,9 @@ class MedicalFile
     #[ORM\OneToMany(mappedBy: 'medicalFile', targetEntity: MedicalFileLine::class, orphanRemoval: true)]
     private Collection $medicalFileLines;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private $numberFile;
+
     #[Pure] public function __construct()
     {
         $this->medicalFileLines = new ArrayCollection();
@@ -71,6 +74,18 @@ class MedicalFile
                 $medicalFileLine->setMedicalFile(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNumberFile(): ?string
+    {
+        return $this->numberFile;
+    }
+
+    public function setNumberFile(string $numberFile): self
+    {
+        $this->numberFile = $numberFile;
 
         return $this;
     }

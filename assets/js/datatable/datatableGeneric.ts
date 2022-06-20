@@ -1,11 +1,5 @@
 import {$, simpleLoader, isText} from '../utils'
 
-let query: string = '';
-let page: number = 1;
-let limitSelect = $('#datatable-limit') as HTMLSelectElement;
-let limit: number = parseInt(limitSelect?.value ?? 2);
-const inputSearch = $('#input-search');
-
 type JSONResponse = {
     data: JSONDataCollection,
     filteredCount: number,
@@ -20,6 +14,12 @@ type JSONDataCollection = Array<JSONData>;
 
 
 export default function generateDatable(table: HTMLTableElement) {
+    let query: string = '';
+    let page: number = 1;
+    let limitSelect = $('#datatable-limit') as HTMLSelectElement;
+    let limit: number = parseInt(limitSelect?.value ?? 1);
+    const inputSearch = $('#input-search');
+
     const fetchData = async (): Promise<JSONResponse> => {
         const dataUrl = table.dataset.url;
 

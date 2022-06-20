@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="card d-flex flex-column justify-content-center">
+        {% block aside_header %} {% endblock %}
+        {% block aside_nav %} {% endblock %}
+        <hr/>
+        <main id="content_container" style="flex: 4">
+            {% block content %} {% endblock %}
+        </main>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('layout.show') }}
+{% endblock %}
+
