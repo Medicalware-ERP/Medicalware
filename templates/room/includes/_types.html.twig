@@ -15,15 +15,15 @@
             {% for type in roomTypes %}
                 <div class="d-flex flex-column card">
                     <b>{{ type.name }}</b>
-                    <p class="description">
-                        {{ type.description }}
-                    </p>
+                    <div class="description">
+                        {{ type.description | raw }}
+                    </div>
                     <div class="d-flex justify-content-between bottom-line">
                         <div class="d-flex align-self-end font-italic">
                             #{{ type.id }}
                         </div>
                         <div class="d-flex buttons-container">
-                            <a class="btn btn-primary btn-edit-room-type">Modifier</a>
+                            <a class="btn btn-primary btn-edit-room-type" data-type="{{ type.id }}">Modifier</a>
 
                             <a class="btn btn-danger btn-delete-room-type" data-type="{{ type.id }}">Supprimer</a>
                         </div>
