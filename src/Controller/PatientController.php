@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\MedicalFile;
+use App\Entity\MedicalFileLine;
 use App\Entity\Patient;
 use App\Entity\User;
+use App\Form\MedicalFileType;
 use App\Form\PatientType;
 use App\Form\UserType;
 use App\Repository\PatientRepository;
@@ -114,12 +117,24 @@ class PatientController extends BaseController
     }
 
     #[Route('/patient/show/{id}/medicalFile', name: 'patient_show_medical_file')]
-    public function command(int $id, PatientRepository $patientRepository): Response
+    public function command(int $id, PatientRepository $patientRepository, Request $request): Response
     {
         $patient = $patientRepository->find($id);
+        $medicalFile = $patient->getMedicalFile();
+        $form = $this->createForm(MedicalFileType::class, $medicalFile);
+        $form->handleRequest($request);
+        $medicalFileLines = $form['medicalFileLines']->getData();
+        if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($medicalFileLines as $medicalFileLine){
+                $medicalFile->addMedicalFileLine($medicalFileLine);
+                $this->manager->persist($medicalFileLine);
+            }
+            $this->manager->flush();
+        }
 
         return $this->renderForm('patient/includes/_medical_file.html.twig', [
-            'patient' => $patient
+            'patient' => $patient,
+            'form' => $form
         ]);
     }
 

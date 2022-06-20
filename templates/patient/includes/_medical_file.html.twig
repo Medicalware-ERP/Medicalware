@@ -1,26 +1,110 @@
 {% extends app.request.query.get('isAjax', false) ? 'layout_empty.html.twig' : 'patient/show.html.twig' %}
 
 {% block content %}
-    <header class="header__medical_file">
-        <div class="d-flex align-items-center margin-bottom-10">
-            <div class="d-flex align-items-center" style="width:50%">
-                <label class="label__show">Nom: </label>
-                <p class="header__info">{{ patient.lastName }}</p>
-            </div>
-            <div class="d-flex align-items-center">
-                <label class="label__show">Prénom: </label>
-                <p class="header__info">{{ patient.firstName }}</p>
-            </div>
+    <header>
+        <div class="group__buttons d-flex justify-content-between align-items-center">
+            <img style="width:50px;" src={{ asset('build/images/logo.png') }} alt="logo" />
+            <button class="btn btn-secondary"><i class="fa fa-download"></i>Télécharger</button>
         </div>
-        <div class="d-flex align-items-center">
-            <div class="d-flex align-items-center" style="width:50%">
-                <label class="label__show">Email: </label>
-                <p class="header__info">{{ patient.email }}</p>
+        <hr>
+        <section class="d-flex align-items-center flex-column justify-content-center">
+            <h1 class="title_folder margin-bottom-15 margin-top-10">Dossier médical</h1>
+            <span style="font-weight: 500;color: #313a46;font-size: 1.5rem;">N° {{ patient.medicalFile.id }}</span>
+        </section>
+        <hr>
+        <div class="card bg-grey">
+            <div class="d-flex align-items-center margin-bottom-10">
+                <div class="d-flex align-items-center" style="width:65%">
+                    <label class="label__show">Nom: </label>
+                    <small>{{ patient.lastName }}</small>
+                </div>
+                <div class="d-flex align-items-center">
+                    <label class="label__show">Prénom: </label>
+                    <small>{{ patient.firstName }}</small>
+                </div>
             </div>
             <div class="d-flex align-items-center">
-                <label class="label__show">Date de naissance: </label>
-                <p class="header__info">{{ patient.birthdayDate|date("d/m/Y") }}</p>
+                <div class="d-flex align-items-center" style="width:65%">
+                    <label class="label__show">Email: </label>
+                    <small>{{ patient.email }}</small>
+                </div>
+                <div class="d-flex align-items-center">
+                    <label class="label__show">Date de naissance: </label>
+                    <small>{{ patient.birthdayDate|date("d/m/Y") }}</small>
+                </div>
             </div>
         </div>
     </header>
+    <hr>
+    <section class="card bg-grey d-flex flex-column gap-10">
+        <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center" style="width:65%">
+                <label class="label__show">Adresse: </label>
+                <small>{{ patient.address }}</small>
+            </div>
+            <div class="d-flex align-items-center">
+                <label class="label__show">Téléphone: </label>
+                <small>{{ patient.phoneNumber | split('', 2) |join('.') }}</small>
+            </div>
+        </div>
+        <div class="d-flex align-items-cente justify-content-between">
+            <div class="d-flex align-items-center">
+                <label class="label__show" style="width: 135px;">Groupe sanguin: </label>
+                <small>{{ patient.bloodGroup }}</small>
+            </div>
+            <div class="d-flex align-items-center">
+                <label class="label__show">Numéro de sécurité sociale: </label>
+                <small>{{ patient.numberSocialSecurity }}</small>
+            </div>
+            <div class="d-flex align-items-center">
+                <label class="label__show">Médecin traitant: </label>
+                <small>Mr {{ patient.doctor.lastName }}</small>
+            </div>
+        </div>
+    </section>
+    <hr>
+    <main id="container__folder_medical">
+        <h3 class="label__show margin-bottom-10">Consultations</h3>
+        {{ form_start(form) }}
+            <table class="table_medical_file_line">
+                <thead class="table_medical_file_line_header">
+                    <th>Medecin</th>
+                    <th>Service</th>
+                    <th>Maladie</th>
+                    <th>Date de début</th>
+                    <th>Date de fin</th>
+                    <th></th>
+                </thead>
+
+                <tbody id="{{ form.medicalFileLines.vars.id }}"
+                       data-prototype="{{ include("patient/includes/medical_file_line/_medical_file_line_form.html.twig", {form: form.medicalFileLines.vars.prototype})| e('html_attr') }}"
+                       data-widget-counter="{{ form.medicalFileLines|length }}">
+                {% for medicalFileLine in form.medicalFileLines %}
+                    {{ include("patient/includes/medical_file_line/_medical_file_line_form.html.twig", {form: medicalFileLine}) }}
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="7">
+                            <button
+                                    class="btn btn-success"
+                                    data-collection-id="{{ form.medicalFileLines.vars.id }}"
+                                    type="button"
+                            >
+                                <i class="icon fas fa-plus"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        <input type="submit" class="btn btn-success justify-content-center" style="margin:auto;"
+               value="Ajouter">
+        {{ form_row(form._token) }}
+        {{ form_end(form, {'render_rest': false}) }}
+    </main>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('form.collection') }}
 {% endblock %}

@@ -30,6 +30,10 @@ if (addToCollectionBtn instanceof HTMLElement) {
             let btn = e.currentTarget as HTMLElement;
             const elementId = findInDataset(btn, 'elementRemove');
             document.getElementById(elementId)?.remove();
+            const event = new CustomEvent('collection.element.remove', {
+                detail: {elementId}
+            });
+            document.dispatchEvent(event);
             let couter = parseInt(findInDataset(collection, 'widgetCounter'));
             couter--;
             collection.dataset.widgetCounter = couter.toString();

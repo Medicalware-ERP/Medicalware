@@ -13,7 +13,6 @@ import Alpine from 'alpinejs';
 
 // start the Stimulus application
 import '../bootstrap';
-
 window.Alpine = Alpine;
 
 Alpine.start();
@@ -25,3 +24,4 @@ if (Array.from(document.querySelectorAll('select[multiple]')).length > 0) {
         });
     });
 }
+

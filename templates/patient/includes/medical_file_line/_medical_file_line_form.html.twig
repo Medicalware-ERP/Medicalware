@@ -1,0 +1,16 @@
+<tr id="{{ form.vars.id }}">
+        <td>{{ form_row(form.doctor) }}</td>
+        <td>{{ form_row(form.service) }}</td>
+        <td>{{ form_row(form.disease) }}</td>
+        <td>{{ form_row(form.startDate) }}</td>
+        <td>{{ form_row(form.endDate) }}</td>
+        <td>
+            <button
+                    class="btn btn-danger"
+                    data-element-remove="{{ form.vars.id }}"
+                    type="button"
+            >
+                <i class="icon fas fa-times"></i>
+            </button>
+        </td>
+</tr>
