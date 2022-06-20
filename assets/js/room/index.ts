@@ -85,6 +85,30 @@ document.addEventListener('layout.types.loaded', () => {
 });
 
 function initOptions(){
+    // Mise en place du binding pour l'ajout d'une option
+    const addButton = document.querySelector("#btn-add-room-option");
+    addButton?.addEventListener("click", () => {
+        const url = Routing.generate("add_enum",{
+            class : "App\\Entity\\Room\\RoomOption"
+        });
+        openAjaxModal(url);
+    })
+
+    // Mise en place du binding pour l'édition d'une des options
+    const editOptionCallback = (e: Event) => {
+        const button = <HTMLInputElement>e.currentTarget;
+
+        const url = Routing.generate("edit_enum",{
+            class : "App\\Entity\\Room\\RoomOption",
+            id : button.dataset.option
+        });
+        openAjaxModal(url);
+    }
+
+    $(".btn-edit-room-option", (elem: Node) => {
+        elem.addEventListener('click', editOptionCallback)
+    });
+
     // Mise en place du binding pour l'archivage d'une option
     const callback = (e: Event) => {
         e.stopPropagation();
