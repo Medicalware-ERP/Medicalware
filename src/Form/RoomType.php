@@ -39,7 +39,9 @@ class RoomType extends AbstractType
             ->getQuery()
             ->getResult();
 
-        $roomTypes[] = $builder->getData()->getType();
+        if ($builder->getData()->getType() instanceof RoomType) {
+            $roomTypes[] = $builder->getData()->getType();
+        }
         $roomTypes = array_unique($roomTypes);
 
         $builder

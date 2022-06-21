@@ -18,7 +18,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HumanResourcesController extends BaseController
 {
-
     public function __construct(private readonly EntityManagerInterface $manager)
     {
     }
@@ -28,7 +27,6 @@ class HumanResourcesController extends BaseController
     {
         return $this->render('human_resources/index.html.twig');
     }
-
 
     /**
      * @param Request $request
