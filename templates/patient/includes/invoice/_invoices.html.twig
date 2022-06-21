@@ -1,0 +1,35 @@
+{% extends app.request.query.get('isAjax', false) ? 'layout_empty.html.twig' : 'patient/show.html.twig' %}
+
+{% block content %}
+    <div class="container-list-users">
+        <h4 class="title margin-bottom-5">
+            Factures
+        </h4>
+        <div class="card">
+            <div class="row__datatable">
+                <div class="d-flex">
+                    <label for="input-search"></label>
+                    <input class="form-input" type="text" placeholder="Chercher ..." id="input-search" name="search"/>
+
+                    <label for="datatable-limit"></label>
+                    <select name="limit" id="datatable-limit" class="form-input">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                    </select>
+                </div>
+            </div>
+
+            <table id="table-patients" class="datatable" data-url="{{ path('invoice_json') }}">
+                <thead>
+                <tr>
+                    <th>Référence</th>
+                    <th>Date</th>
+                    <th>Prix</th>
+                    <th>Statut</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+{% endblock %}
