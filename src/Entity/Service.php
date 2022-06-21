@@ -15,14 +15,14 @@ class Service extends EnumEntity
     #[ORM\OneToMany(mappedBy: 'service', targetEntity: MedicalFileLine::class)]
     private Collection $medicalFileLines;
 
-    #[ORM\ManyToMany(targetEntity: Equipment::class, mappedBy: 'service')]
-    private Collection $equipment;
+    #[ORM\ManyToMany(targetEntity: Equipment::class, mappedBy: 'services')]
+    private Collection $equipments;
 
     #[Pure] public function __construct(string $slug = "", string $name = "")
     {
         parent::__construct($slug, $name);
         $this->medicalFileLines = new ArrayCollection();
-        $this->equipment = new ArrayCollection();
+        $this->equipments = new ArrayCollection();
     }
 
     /**
@@ -60,13 +60,13 @@ class Service extends EnumEntity
      */
     public function getEquipment(): Collection
     {
-        return $this->equipment;
+        return $this->equipments;
     }
 
     public function addEquipment(Equipment $equipment): self
     {
-        if (!$this->equipment->contains($equipment)) {
-            $this->equipment[] = $equipment;
+        if (!$this->equipments->contains($equipment)) {
+            $this->equipments[] = $equipment;
             $equipment->addService($this);
         }
 
@@ -75,7 +75,7 @@ class Service extends EnumEntity
 
     public function removeEquipment(Equipment $equipment): self
     {
-        if ($this->equipment->removeElement($equipment)) {
+        if ($this->equipments->removeElement($equipment)) {
             $equipment->removeService($this);
         }
 

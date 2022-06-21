@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stock{% endblock %}
+
+{% block body %}
+    <div class="card">
+        {{ form_start(form) }}
+            {{ form_row(form.equipment.reference) }}
+            {{ form_row(form.equipment.name) }}
+            {{ form_row(form.equipment.price) }}
+            {{ form_row(form.equipment.services) }}
+            {{ form_row(form.equipment.provider) }}
+            {{ form_row(form.quantity) }}
+
+            <button class="btn btn-primary margin-top-10" type="submit">Ajouter</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+{% endblock %}

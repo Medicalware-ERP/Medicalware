@@ -1,0 +1,14 @@
+{% extends app.request.query.get('isAjax', false) ? 'layout_empty.html.twig' : 'stock/show.html.twig' %}
+
+{% block content %}
+    <a class="btn btn-primary margin-bottom-15" href="{{ path('stock_ask_order', {id: stock.id}) }}">Demande de commande</a>
+    <p> Nom : {{ stock.equipment.name }}</p>
+    <p> Référence : {{ stock.equipment.reference }}</p>
+    <p> Prix : {{ stock.equipment.price }}</p>
+    <p> Quantité : {{ stock.quantity }}</p>
+    <hr>
+    <p>{{ stock.equipment.provider.name }}</p>
+    <p>{{ stock.equipment.provider.email }}</p>
+    <p>{{ stock.equipment.provider.phone }}</p>
+    <p>{{ stock.equipment.provider.address }}</p>
+{% endblock %}

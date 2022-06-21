@@ -73,6 +73,8 @@ class InvoiceStateSubscriber implements EventSubscriberInterface
 
         $emails = $this->entityManager->getRepository(User::class)->findEmailsByProfession(UserTypeEnum::ACCOUNTANT);
 
+        $html = '';
+
         try {
             $html = $this->environment->render('invoice/email/invoice_to_validate.html.twig', [
                 'invoice' => $invoice
@@ -83,8 +85,7 @@ class InvoiceStateSubscriber implements EventSubscriberInterface
         $email = (new Email())
             ->from('admin@medicalware.com')
             ->to(...$emails)
-            ->subject('Time for Symfony Mailer!')
-            ->text('Sending emails is fun again!')
+            ->subject('Validation facture')
             ->html($html)
         ;
 

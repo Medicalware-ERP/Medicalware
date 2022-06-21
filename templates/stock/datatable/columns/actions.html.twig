@@ -1,0 +1,5 @@
+
+{% apply spaceless %}
+    <a href="{{ path('stock_show_information', {id: stock.id}) }}" class="btn btn-primary margin-right-5"><i class="fa fa-eye"></i></a>
+    <a href="{{ path('stock_edit', {id: stock.id}) }}" class="btn btn-primary"><i class="fa fa-pen"></i></a>
+{% endapply %}

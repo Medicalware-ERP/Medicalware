@@ -13,13 +13,13 @@
 
 {% block aside_nav %}
     <nav class="d-flex" style="flex-direction: column; gap: 20px">
-        <button class="btn-show d-flex align-items-center" data-url="{{ path('provider_show_information', {id: provider.id}) }}">
+        <button class="btn-show d-flex align-items-center" data-name="inforamtions" data-url="{{ path('provider_show_information', {id: provider.id}) }}">
             <i class="margin-right-5 fa fa-address-card"></i> Informations
         </button>
-        <button class="btn-show d-flex align-items-center" data-url="{{ path('provider_show_command', {id: provider.id}) }}">
+        <button class="btn-show d-flex align-items-center" data-name="command" data-url="{{ path('provider_show_command', {id: provider.id}) }}">
             <i class="margin-right-5 fa fa-receipt"></i> Commandes
         </button>
-        <button class="btn-show d-flex align-items-center" data-url="{{ path('provider_show_piece', {id: provider.id}) }}">
+        <button class="btn-show d-flex align-items-center" data-name="equipment" data-url="{{ path('provider_show_piece', {id: provider.id}) }}">
             <i class="margin-right-5 fa fa-cube"></i> Équipement
         </button>
     </nav>

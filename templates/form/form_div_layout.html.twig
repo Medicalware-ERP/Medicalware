@@ -458,8 +458,9 @@
 {%- endblock form_rows -%}
 
 {%- block widget_attributes -%}
+    {% dump(attr) %}
     {%- set checkbox = checkbox|default(false) -%}
-    class="form-input {{ not valid ? "danger"}} {{ checkbox ? "width-auto" }}" id="{{ id }}" name="{{ full_name }}"
+    class="form-input {{ attr.class|default('') }} {{ not valid ? "danger"}} {{ checkbox ? "width-auto" }}" id="{{ id }}" name="{{ full_name }}"
     {%- if disabled %} disabled="disabled"{% endif -%}
     {%- if required %} required="required"{% endif -%}
     {{ block('attributes') }}

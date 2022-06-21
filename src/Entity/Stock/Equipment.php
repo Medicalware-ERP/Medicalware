@@ -2,14 +2,17 @@
 
 namespace App\Entity\Stock;
 
+use App\Entity\Accounting\OrderLine;
 use App\Entity\Provider;
 use App\Entity\Service;
 use App\Repository\Stock\EquipmentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: EquipmentRepository::class)]
+#[UniqueEntity('reference')]
 class Equipment
 {
     #[ORM\Id]
@@ -17,7 +20,7 @@ class Equipment
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private ?string $reference = null;
 
     #[ORM\Column(type: 'float')]
@@ -26,8 +29,8 @@ class Equipment
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: Service::class, inversedBy: 'equipment')]
-    private Collection|null $service;
+    #[ORM\ManyToMany(targetEntity: Service::class, inversedBy: 'equipments')]
+    private Collection $services;
 
     #[ORM\OneToOne(mappedBy: 'equipment', targetEntity: Stock::class, cascade: ['persist', 'remove'])]
     private ?Stock $stock = null;
@@ -36,9 +39,13 @@ class Equipment
     #[ORM\JoinColumn(nullable: false)]
     private ?Provider $provider = null;
 
+    #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: OrderLine::class)]
+    private Collection $orderLines;
+
     public function __construct()
     {
-        $this->service = new ArrayCollection();
+        $this->services = new ArrayCollection();
+        $this->orderLines = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -85,15 +92,15 @@ class Equipment
     /**
      * @return Collection<int, Service>
      */
-    public function getService(): Collection
+    public function getServices(): Collection
     {
-        return $this->service;
+        return $this->services;
     }
 
     public function addService(Service $service): self
     {
-        if (!$this->service->contains($service)) {
-            $this->service[] = $service;
+        if (!$this->services->contains($service)) {
+            $this->services[] = $service;
         }
 
         return $this;
@@ -101,7 +108,7 @@ class Equipment
 
     public function removeService(Service $service): self
     {
-        $this->service->removeElement($service);
+        $this->services->removeElement($service);
 
         return $this;
     }
@@ -133,5 +140,40 @@ class Equipment
         $this->provider = $provider;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderLine>
+     */
+    public function getOrderLines(): Collection
+    {
+        return $this->orderLines;
+    }
+
+    public function addOrderLine(OrderLine $orderLine): self
+    {
+        if (!$this->orderLines->contains($orderLine)) {
+            $this->orderLines[] = $orderLine;
+            $orderLine->setEquipment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderLine(OrderLine $orderLine): self
+    {
+        if ($this->orderLines->removeElement($orderLine)) {
+            // set the owning side to null (unless already changed)
+            if ($orderLine->getEquipment() === $this) {
+                $orderLine->setEquipment(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

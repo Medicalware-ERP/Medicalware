@@ -17,7 +17,6 @@ class DatatableConfigJoin
 {
     private ?self $parent = null;
     private ArrayCollection $children;
-    private ?string $className = null;
     private ?DatatableConfig $datatableConfig;
     private ?string $targetClassName = null;
 
@@ -25,7 +24,8 @@ class DatatableConfigJoin
     public function __construct(
         private string  $field,
         private ?string $alias = null,
-        private string  $aliasClassName = DatatableRepository::DEFAULT_ENTITY_ALIAS
+        private ?string $className = null,
+        private string  $aliasClassName = DatatableRepository::DEFAULT_ENTITY_ALIAS,
     )
     {
         $this->alias = $field;
@@ -127,9 +127,8 @@ class DatatableConfigJoin
      */
     public function addChildren(self $child)
     {
-        if (!$this->children->contains($child) && $this->isValidJoin()) {
+        if (!$this->children->contains($child)) {
             $child->setParent($this);
-            $child->setClassName($this->isValidJoin());
             $child->setAliasClassName($this->alias);
             if ($child->isValidJoin()) {
                 $this->children->add($child);

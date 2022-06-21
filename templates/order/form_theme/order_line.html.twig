@@ -1,0 +1,43 @@
+{% extends 'form/form_div_layout.html.twig' %}
+
+{% block _order_orderLines_row %}
+    <tbody
+            {% with {attr: attr|merge({
+                'data-prototype': form_row(form.vars.prototype),
+                'data-prototype-name': form.vars.prototype.vars.name,
+                'data-widget-counter': form.children|length,
+                id: form.vars.id,
+            })} %}{{ block('attributes') }}{% endwith %}
+    >
+    {% for formInvoiceLines in form.children %}
+        {{ form_row(formInvoiceLines) }}
+    {% endfor %}
+    </tbody>
+{% endblock %}
+
+{% block _order_orderLines_entry_row %}
+    {% set qty = form.quantity.vars.value| default(0) %}
+    {% set price = form.price.vars.value| default(0) %}
+
+    <tr     x-data="{ qty: {{ qty }}, price: {{ price }}, total: 0}"  x-effect="total = qty * price"
+            {% with {attr: row_attr|merge({
+                id: form.vars.id,
+            })} %}{{ block('attributes') }}{% endwith %}
+    >
+        <td></td>
+        <td>{{ form_widget(form.equipment, {attr: {class: 'w-100'}}) }}</td>
+        <td>{{ form_widget(form.description, {attr: {class: 'w-100'}}) }}</td>
+        <td>{{ form_widget(form.quantity, {attr: {class: 'w-100'}}) }}</td>
+        <td>{{ form_widget(form.price, {attr: {class: 'w-100'}}) }}</td>
+        <td><span x-text="total"></span>€</td>
+        <td>
+            <button
+                    class="btn btn-danger"
+                    data-element-remove="{{ form.vars.id }}"
+                    type="button"
+            >
+                <i class="icon fas fa-times"></i>
+            </button>
+        </td>
+    </tr>
+{% endblock %}

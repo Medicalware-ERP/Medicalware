@@ -8,7 +8,6 @@ tests:
 
 prepare-dev:
 	npm install
-	npm run dev
 	composer install --prefer-dist
 	php bin/console doctrine:database:drop --if-exists -f --env=dev
 	php bin/console doctrine:database:create --env=dev

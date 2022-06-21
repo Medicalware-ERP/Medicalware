@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande d'achat{% endblock %}
+
+{% block body %}
+    <div class="container-list">
+
+        <div class="card">
+            <h4 class="title-list">
+                Commandes d'achat
+            </h4>
+            <hr>
+            <div class="row__datatable">
+                <div class="d-flex">
+                    <label for="input-search"></label>
+                    <input class="form-input" type="text" placeholder="Chercher ..." id="input-search" name="search"/>
+
+                    <label for="datatable-limit"></label>
+                    <select name="limit" id="datatable-limit" class="form-input">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                    </select>
+                </div>
+                <a class="btn btn-success" href="{{ path('order_add') }}">
+                    <i class="fa fa-plus"></i>
+                    Créer une commande d'achat
+                </a>
+            </div>
+
+            <table id="table-order" class="datatable" data-url="{{ path('order_paginate') }}">
+                <thead>
+                    <tr>
+                        <th>Référence</th>
+                        <th>Fournisseur</th>
+                        <th>Date prévue</th>
+                        <th>Date livraison</th>
+                        <th>Status</th>
+                        <th>Total ttc</th>
+                        <th>Détails</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('order.datatable') }}
+{% endblock %}
