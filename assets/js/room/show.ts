@@ -1,6 +1,11 @@
 import {$} from "../utils";
-import {swaleWarning, swaleWarningAndRedirect} from "../util/swal";
+import { swaleWarningAndRedirect } from "../util/swal";
 import Routing from "../Routing";
+import {Calendar} from "@fullcalendar/core";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import listPlugin from "@fullcalendar/list";
+import frLocale from '@fullcalendar/core/locales/fr';
 
 const initShow = () => {
     const callback = (e: Event) => {
@@ -21,4 +26,34 @@ const initShow = () => {
 
 document.addEventListener('layout.room-information.loaded', () => {
     initShow();
+});
+
+
+const initRoomPlanning = () => {
+    const calendarElement: HTMLElement | null = document.getElementById("room-show-planning");
+
+    if (!(!!calendarElement))
+        return;
+
+    let calendar = new Calendar(calendarElement, {
+        plugins: [ dayGridPlugin, timeGridPlugin, listPlugin ],
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,listWeek'
+        },
+        locale: frLocale
+    });
+
+    calendar.render();
+}
+
+document.addEventListener('layout.room-planning.loaded', () => {
+    initRoomPlanning();
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    initShow();
+    initRoomPlanning();
 });
