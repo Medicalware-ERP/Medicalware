@@ -25,12 +25,14 @@ export const openModal = (id : string = "modal") => {
     return modal;
 }
 
-export const openAjaxModal = (url: string, id : string = "modal") => {
+export const openAjaxModal = (url: string, title: string = "Header modal", id : string = "modal") => {
     const modal = openModal(id);
+    const modalTitle = modal?.querySelector(".modal-title");
     const modalBody = modal?.querySelector(".modal-body");
-    if(modalBody == null){
+    if(modalBody == null || modalTitle == null){
         return;
     }
+    modalTitle.innerHTML = title.toUpperCase();
     modalBody.innerHTML = simpleLoaderModal();
     axios.get(url).then(res => {
         $(modalBody).html(res.data)
