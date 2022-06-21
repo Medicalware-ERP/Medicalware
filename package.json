@@ -29,6 +29,10 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.4",
+        "@fullcalendar/core": "^5.11.0",
+        "@fullcalendar/daygrid": "^5.11.0",
+        "@fullcalendar/list": "^5.11.0",
+        "@fullcalendar/timegrid": "^5.11.0",
         "@types/jquery": "^3.5.14",
         "alpinejs": "^3.10.2",
         "axios": "^0.27.2",
