@@ -85,6 +85,15 @@ class StockController extends BaseController
         ]);
     }
 
+    #[Route('/stock/remove/{id}', name: 'stock_remove')]
+    public function remove(Stock $stock, StockRepository $stockRepository): Response
+    {
+        $stock->setArchivedAt(new \DateTimeImmutable());
+
+        $stockRepository->add($stock);
+        return $this->redirectToRoute('stock_index');
+    }
+
     #[Route('/stock/{id}/information', name: 'stock_show_information')]
     public function showInformation(Stock $stock): Response
     {

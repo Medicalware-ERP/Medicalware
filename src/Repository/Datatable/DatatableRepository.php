@@ -57,8 +57,13 @@ abstract class DatatableRepository extends ServiceEntityRepository implements Da
             $field      = $filter['field'];
             $condition  = $filter['condition'];
             $value      =  $filter['value'];
-            $queryBuilder->andWhere($field.' '.$condition.' :'.$key);
-            $queryBuilder->setParameter($key, $value);
+
+            if ($value !== "") {
+                $queryBuilder->andWhere($field.' '.$condition.' :'.$key);
+                $queryBuilder->setParameter($key, $value);
+            } else {
+                $queryBuilder->andWhere($field.' '.$condition);
+            }
         }
 
         $queryBuilder

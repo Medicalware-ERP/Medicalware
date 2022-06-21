@@ -26,6 +26,9 @@ class Stock implements EntityInterface
     #[ORM\OneToMany(mappedBy: 'stock', targetEntity: StockHistory::class, cascade: ['persist', 'remove'])]
     private Collection $stockHistories;
 
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeInterface $archivedAt = null;
+
     public function __construct()
     {
         $this->stockHistories = new ArrayCollection();
@@ -93,6 +96,26 @@ class Stock implements EntityInterface
                 $stockHistory->setStock(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTimeInterface|null
+     */
+    public function getArchivedAt(): ?\DateTimeInterface
+    {
+        return $this->archivedAt;
+    }
+
+    /**
+     * @param \DateTimeInterface|null $archivedAt
+     * @return Stock
+     */
+    public function setArchivedAt(?\DateTimeInterface $archivedAt): Stock
+    {
+        $this->archivedAt = $archivedAt;
+        $this->equipment->setArchivedAt($archivedAt);
 
         return $this;
     }

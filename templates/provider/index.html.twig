@@ -27,7 +27,11 @@
                 </a>
             </div>
 
-            <table id="table-provider" class="datatable" data-url="{{ path('provider_json') }}">
+            <form id="filters">
+                <input type="hidden" name="archived" data-field="e.archivedAt" data-condition="IS NULL" value="">
+            </form>
+
+            <table id="table-provider" class="datatable" data-url="{{ path('provider_json') }}" data-filters="#filters">
                 <thead>
                 <tr>
                     <th>Nom</th>

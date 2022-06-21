@@ -25,10 +25,10 @@
             })} %}{{ block('attributes') }}{% endwith %}
     >
         <td></td>
-        <td>{{ form_widget(form.equipment, {attr: {class: 'w-100'}}) }}</td>
-        <td>{{ form_widget(form.description, {attr: {class: 'w-100'}}) }}</td>
-        <td>{{ form_widget(form.quantity, {attr: {class: 'w-100'}}) }}</td>
-        <td>{{ form_widget(form.price, {attr: {class: 'w-100'}}) }}</td>
+        <td>{{ form_row(form.equipment, {attr: {class: 'w-100'}}) }}</td>
+        <td>{{ form_row(form.description, {attr: {class: 'w-100'}}) }}</td>
+        <td>{{ form_row(form.quantity, {attr: {class: 'w-100'}}) }}</td>
+        <td>{{ form_row(form.price, {attr: {class: 'w-100'}}) }}</td>
         <td><span x-text="total"></span>€</td>
         <td>
             <button

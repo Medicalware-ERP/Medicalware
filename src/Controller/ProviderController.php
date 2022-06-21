@@ -66,6 +66,15 @@ class ProviderController extends BaseController
         ]);
     }
 
+    #[Route('/provider/remove/{id}', name: 'provider_remove')]
+    public function remove(Provider $provider, ProviderRepository $providerRepository): Response
+    {
+        $provider->setArchivedAt(new \DateTimeImmutable());
+        $providerRepository->add($provider);
+
+        return $this->redirectToRoute('provider_index');
+    }
+
     #[Route('/provider/show/{id}/information', name: 'provider_show_information')]
     public function info(int $id, ProviderRepository $providerRepository): Response
     {

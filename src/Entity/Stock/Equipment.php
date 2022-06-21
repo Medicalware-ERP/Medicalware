@@ -42,6 +42,9 @@ class Equipment
     #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: OrderLine::class)]
     private Collection $orderLines;
 
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeInterface $archivedAt = null;
+
     public function __construct()
     {
         $this->services = new ArrayCollection();
@@ -169,6 +172,24 @@ class Equipment
             }
         }
 
+        return $this;
+    }
+
+    /**
+     * @return \DateTimeInterface|null
+     */
+    public function getArchivedAt(): ?\DateTimeInterface
+    {
+        return $this->archivedAt;
+    }
+
+    /**
+     * @param \DateTimeInterface|null $archivedAt
+     * @return Equipment
+     */
+    public function setArchivedAt(?\DateTimeInterface $archivedAt): Equipment
+    {
+        $this->archivedAt = $archivedAt;
         return $this;
     }
 

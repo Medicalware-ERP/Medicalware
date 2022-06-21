@@ -17,7 +17,7 @@ class StockType extends AbstractType
                 'label' =>  'Quantité disponible'
             ])
             ->add('equipment', EquipmentType::class, [
-                'label' => false
+                'label' => false,
             ])
         ;
     }

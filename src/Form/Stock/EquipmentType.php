@@ -4,6 +4,7 @@ namespace App\Form\Stock;
 
 use App\Entity\Provider;
 use App\Entity\Stock\Equipment;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -28,6 +29,10 @@ class EquipmentType extends AbstractType
             ->add('services')
             ->add('provider', EntityType::class, [
                 'class' => Provider::class,
+                'query_builder' => function(EntityRepository $repository) {
+                    return $repository->createQueryBuilder('e')
+                        ->where('e.archivedAt IS NULL');
+                },
                 'label' => 'Fournisseur'
             ])
         ;

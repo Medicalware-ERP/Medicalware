@@ -1,5 +1,8 @@
 
 {% apply spaceless %}
-    <a href="{{ path('stock_show_information', {id: stock.id}) }}" class="btn btn-primary margin-right-5"><i class="fa fa-eye"></i></a>
-    <a href="{{ path('stock_edit', {id: stock.id}) }}" class="btn btn-primary"><i class="fa fa-pen"></i></a>
+    <div class="d-flex justify-content-start gap-5">
+        <a href="{{ path('stock_show_information', {id: stock.id}) }}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+        <a href="{{ path('stock_edit', {id: stock.id}) }}" class="btn btn-primary"><i class="fa fa-pen"></i></a>
+        <a class="btn-xs btn-danger" data-remove-url="{{ path('stock_remove', {'id': stock.id }) }}"><i class="fa fa-trash"></i></a>
+    </div>
 {% endapply %}
