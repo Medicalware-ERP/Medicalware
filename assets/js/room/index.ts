@@ -46,7 +46,7 @@ function initTypes(){
         const url = Routing.generate("add_enum",{
             class : "App\\Entity\\Room\\RoomType"
         });
-        openAjaxModal(url);
+        openAjaxModal(url, "Ajouter un type");
     })
 
     // Mise en place du binding pour l'édition d'un des types
@@ -57,7 +57,7 @@ function initTypes(){
             class : "App\\Entity\\Room\\RoomType",
             id : button.dataset.type
         });
-        openAjaxModal(url);
+        openAjaxModal(url, "Modifier un type");
     }
 
     $(".btn-edit-room-type", (elem: Node) => {
@@ -93,7 +93,7 @@ function initOptions(){
         const url = Routing.generate("add_enum",{
             class : "App\\Entity\\Room\\RoomOption"
         });
-        openAjaxModal(url);
+        openAjaxModal(url, "Ajouter une option");
     })
 
     // Mise en place du binding pour l'édition d'une des options
@@ -104,7 +104,7 @@ function initOptions(){
             class : "App\\Entity\\Room\\RoomOption",
             id : button.dataset.option
         });
-        openAjaxModal(url);
+        openAjaxModal(url, "Modifier une option");
     }
 
     $(".btn-edit-room-option", (elem: Node) => {
