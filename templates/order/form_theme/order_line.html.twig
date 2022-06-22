@@ -28,7 +28,7 @@
         <td>{{ form_row(form.description, {attr: {class: 'w-100'}}) }}</td>
         <td>{{ form_row(form.quantity, {attr: {class: 'w-100'}}) }}</td>
         <td>{{ form_row(form.price, {attr: {class: 'w-100'}}) }}</td>
-        <td><span x-text="total"></span>€</td>
+        <td><span x-text="total.toFixed(2)"></span>€</td>
         <td>
             <button
                     class="btn btn-danger"

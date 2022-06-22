@@ -3,6 +3,7 @@
 namespace App\Form\Accounting;
 
 use App\Entity\Accounting\InvoiceLine;
+use App\Form\Base\FloatType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -35,11 +36,10 @@ class InvoiceLineType extends AbstractType
                     new Range(minMessage: 'Veuillez saisir une valeur supérieur ou égale à 0', min: 0),
                 ],
             ])
-            ->add('price', IntegerType::class, [
+            ->add('price', FloatType::class, [
                 'label' => false,
                 'attr' => [
                     'x-model.number' => 'price',
-                    'min' => 0
                 ],
                 'constraints' => [
                     new NotBlank(message: 'Veuillez saisir un prix'),
