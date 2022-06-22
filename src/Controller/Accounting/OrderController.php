@@ -108,11 +108,14 @@ class OrderController extends BaseController
     }
 
     #[Route('/order/{id}/delete', name: 'order_delete')]
-    public function delete(Order $order, OrderRepository $repository): RedirectResponse
+    public function delete(Request $request, Order $order, OrderRepository $repository): RedirectResponse
     {
         $repository->remove($order);
 
-        return $this->redirectToRoute('order_index');
+        $referer = $request->headers->get('referer');
+
+        return $this->redirect($referer);
+
     }
 
     #[Route('/order/{id}/export/pdf', name: 'order_export_pdf')]
