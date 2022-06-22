@@ -44,7 +44,6 @@ class OrderLine
     private ?Order $order = null;
 
 
-
     public function getDescription(): ?string
     {
         return $this->description;
@@ -118,6 +117,9 @@ class OrderLine
     public function setEquipment(?Equipment $equipment): self
     {
         $this->equipment = $equipment;
+        $this->equipmentName = $equipment?->getName();
+        $this->equipmentReference = $equipment?->getReference();
+        $this->equipmentPrice = $equipment?->getPrice();
 
         return $this;
     }
