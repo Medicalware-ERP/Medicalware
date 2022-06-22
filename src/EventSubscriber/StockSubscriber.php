@@ -50,7 +50,7 @@ class StockSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $stock->addStockHistory(new StockHistory("Le stock à étais modifier", $this->security->getUser()));
+        $stock->addStockHistory(new StockHistory("Le stock a été modifié", $this->security->getUser()));
 
         $args->getObjectManager()->persist($stock);
         $args->getObjectManager()->flush();
