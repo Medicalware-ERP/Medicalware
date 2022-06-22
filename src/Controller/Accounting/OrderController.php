@@ -5,10 +5,12 @@ namespace App\Controller\Accounting;
 use App\Controller\BaseController;
 use App\Entity\Accounting\Invoice;
 use App\Entity\Accounting\Order;
+use App\Entity\Accounting\OrderLine;
 use App\Entity\Accounting\OrderState;
 use App\Enum\Accounting\OrderStateEnum;
 use App\Form\Accounting\OrderType;
 use App\Repository\Accounting\InvoiceRepository;
+use App\Repository\Accounting\OrderLineRepository;
 use App\Repository\Accounting\OrderRepository;
 use App\Service\Order\OrderDataFormatter;
 use App\Workflow\InvoiceStateWorkflow;
@@ -125,5 +127,14 @@ class OrderController extends BaseController
         $content = $pdf->getOutputFromHtml($html);
 
         return new PdfResponse($content, 'commande_'.(new \DateTime())->format('d_m_Y').".pdf");
+    }
+
+    #[Route('/order/delete/{id}/line', name: 'order_delete_line')]
+    public function deleteLine(OrderLine $order, OrderLineRepository $repository): JsonResponse
+    {
+        $repository->remove($order);
+
+        return $this->json('ok');
+
     }
 }

@@ -33,6 +33,9 @@
             <button
                     class="btn btn-danger"
                     data-element-remove="{{ form.vars.id }}"
+                    {% if form.vars.value.id is defined %}
+                        data-element-remove-id="{{ form.vars.value.id }}"
+                    {% endif %}
                     type="button"
             >
                 <i class="icon fas fa-times"></i>
