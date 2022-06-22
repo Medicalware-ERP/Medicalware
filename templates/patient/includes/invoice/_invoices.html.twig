@@ -1,11 +1,9 @@
-{% extends 'base.html.twig' %}
+{% extends app.request.query.get('isAjax', false) ? 'layout_empty.html.twig' : 'patient/show.html.twig' %}
 
-{% block title %}Services{% endblock %}
-
-{% block body %}
+{% block content %}
     <div class="container-list-users">
         <h4 class="title margin-bottom-5">
-            Services
+            Factures
         </h4>
         <div class="card">
             <div class="row__datatable">
@@ -20,18 +18,15 @@
                         <option value="30">30</option>
                     </select>
                 </div>
-                <button class="btn btn-success" id="add_service">
-                    <i class="fa fa-plus"></i>
-                    Ajouter un service
-                </button>
             </div>
 
-            <table id="table-services" class="datatable" data-url="{{ path('service_json') }}">
+            <table id="table-patients" class="datatable" data-url="{{ path('invoice_json') }}">
                 <thead>
                 <tr>
-                    <th>Nom</th>
-                    <th>Description</th>
-                    <th>Actions</th>
+                    <th>Référence</th>
+                    <th>Date</th>
+                    <th>Prix</th>
+                    <th>Statut</th>
                 </tr>
                 </thead>
             </table>
@@ -40,5 +35,5 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    {{ encore_entry_script_tags('service.index') }}
+    {{ encore_entry_script_tags('invoice.datatable') }}
 {% endblock %}

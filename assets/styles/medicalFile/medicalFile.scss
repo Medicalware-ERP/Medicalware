@@ -1,0 +1,36 @@
+.title_folder {
+  font-size:3rem;
+  text-transform: uppercase;
+  color: #313a46;
+}
+
+#container__folder_medical{
+  overflow: auto;
+}
+
+.table_medical_file_line{
+  width:100%;
+  border-collapse: collapse;
+
+  .table_medical_file_line_header{
+    background-color: #2401cc;
+    color:white;
+    th {
+      text-transform: uppercase;
+      padding: 0.85rem;
+      font-size: 0.65rem;
+      text-align: left;
+      &:first-child{
+        border-radius:5px 0 0 5px;
+      }
+
+      &:last-child{
+        border-radius:0 5px 5px 0;
+      }
+    }
+  }
+
+  td {
+    padding:0.5rem 0;
+  }
+}

@@ -2,13 +2,19 @@
 
 namespace App\Controller;
 
+use App\Entity\MedicalFile;
+use App\Entity\MedicalFileLine;
 use App\Entity\Patient;
 use App\Entity\User;
+use App\Form\MedicalFileType;
 use App\Form\PatientType;
 use App\Form\UserType;
+use App\Repository\MedicalFileLineRepository;
 use App\Repository\PatientRepository;
 use App\Service\Patient\PatientDataFormatter;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -114,12 +120,30 @@ class PatientController extends BaseController
     }
 
     #[Route('/patient/show/{id}/medicalFile', name: 'patient_show_medical_file')]
-    public function command(int $id, PatientRepository $patientRepository): Response
+    public function command(int $id, PatientRepository $patientRepository, Request $request): Response
     {
+        $this->manager->clear();
         $patient = $patientRepository->find($id);
+        $medicalFile = $patient->getMedicalFile();
+        $form = $this->createForm(MedicalFileType::class, $medicalFile);
+        $form->handleRequest($request);
+        $medicalFileLines = $form['medicalFileLines']->getData();
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var MedicalFileLine $medicalFileLine */
+            foreach ($medicalFileLines as $medicalFileLine){
+                if($medicalFileLine->getStartDate() < $medicalFileLine->getEndDate()){
+                    $medicalFile->addMedicalFileLine($medicalFileLine);
+                    $this->manager->persist($medicalFileLine);
+                } else {
+                    $this->addFlash('danger_medicalFileLine', "La date de début doit être inférieur à la date de fin");
+                }
+            }
+            $this->manager->flush();
+        }
 
         return $this->renderForm('patient/includes/_medical_file.html.twig', [
-            'patient' => $patient
+            'patient' => $patient,
+            'form' => $form
         ]);
     }
 
@@ -131,6 +155,27 @@ class PatientController extends BaseController
         return $this->renderForm('patient/includes/_calendrier.html.twig', [
             'patient' => $patient
         ]);
+    }
+
+    #[Route('/patient/show/{id}/invoice', name: 'patient_show_factures')]
+    public function invoices(int $id, PatientRepository $patientRepository): Response
+    {
+        $patient = $patientRepository->find($id);
+
+        return $this->renderForm('patient/includes/invoice/_invoices.html.twig', [
+            'patient' => $patient
+        ]);
+    }
+
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     */
+    #[Route('/patient/medicalFileLine/delete/{id}', name: 'medical_file_line_delete')]
+    public function deleteMedicalFileLines(MedicalFileLine $medicalFileLine, MedicalFileLineRepository $medicalFileLineRepository): Response
+    {
+        $medicalFileLineRepository->remove($medicalFileLine);
+        return $this->json("Ok");
     }
 
 }

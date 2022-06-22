@@ -12,7 +12,7 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: ServiceRepository::class)]
 class Service extends EnumEntity
 {
-    #[ORM\OneToMany(mappedBy: 'service', targetEntity: MedicalFileLine::class)]
+    #[ORM\OneToMany(mappedBy: 'service', targetEntity: MedicalFileLine::class, orphanRemoval: "CASCADE")]
     private Collection $medicalFileLines;
 
     #[ORM\ManyToMany(targetEntity: Equipment::class, mappedBy: 'services')]

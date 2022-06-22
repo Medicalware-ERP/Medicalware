@@ -25,8 +25,19 @@ const initLinkButton = (link: Element) => {
     });
 }
 
-const loadTab = (url: string, link: Element) =>  {
+const loadTab = (url: string) =>  {
+    const link = document.querySelector(`nav button[data-url='${url}']`)
+    if(!(link instanceof HTMLElement)) {
+        throw new Error('No link found');
+    }
+    const name = link.dataset.name;
     initLinkButton(link);
+
+    container.innerHTML = `
+            <div class="d-flex justify-content-center align-items-center h-100">
+                <i class="fas fa-circle-notch fa-spin text-primary fz-32"></i>
+            </div>
+        `;
 
     return axios.request(
         {
@@ -38,51 +49,38 @@ const loadTab = (url: string, link: Element) =>  {
         }
     ).then(res => {
         container.innerHTML = res.data
-    });
+    }).then(r => {
+        if (!!name)
+        {
+            const event = new CustomEvent(`layout.${name}.loaded`);
+            document.dispatchEvent(event);
+        }
+        const event = new CustomEvent('layout.loaded');
+        document.dispatchEvent(event);
+    });;
 }
 
 links.forEach((link, key) => {
     link.addEventListener('click', (e) => {
         e.stopPropagation()
         const a = e.currentTarget as HTMLAnchorElement
-
         const url = a.dataset.url;
-        const name = a.dataset.name;
 
         if (!isText(url)) {
             return;
         }
-
-        container.innerHTML = `
-            <div class="d-flex justify-content-center align-items-center h-100">
-                <i class="fas fa-circle-notch fa-spin text-primary fz-32"></i>
-            </div>
-        `;
 
         history.pushState({
             key,
             url
         }, '', url);
 
-        loadTab(url, link).then(r => {
-            if (!!name)
-            {
-                const event = new CustomEvent(`layout.${name}.loaded`);
-                document.dispatchEvent(event);
-            }
-            const event = new CustomEvent('layout.loaded');
-            document.dispatchEvent(event);
-        });
+        loadTab(url);
     })
 });
 
-window.onpopstate = function(event) {
-    const link = document.querySelector(`nav button[data-url='${location.pathname}']`)
-    if(link == null) {
-        return;
-    }
-
-    loadTab(location.pathname,link);
+window.onpopstate = function() {
+    loadCurrentTab();
 };
 
 // A l'arrivé sur une tab, on la sélectionne
@@ -92,3 +90,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (link instanceof HTMLElement)
         initLinkButton(link);
 });
+
+export const loadCurrentTab = () => {
+    loadTab(location.pathname).then(
+        () => window.history.replaceState(null,"",location.pathname)
+    );
+}
+
+// @ts-ignore
+window.loadTab = loadCurrentTab;

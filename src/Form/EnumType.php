@@ -20,7 +20,6 @@ class EnumType extends AbstractType
             ])
             ->add('color', ColorType::class,[
                 "label" => "Couleur :"
-
             ])
             ->add('description', EditorType::class,[
                 "label" => "Description :",
