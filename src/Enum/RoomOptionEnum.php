@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Enum;
 
-
 use App\Entity\Room\RoomType;
 use JetBrains\PhpStorm\Pure;
 
