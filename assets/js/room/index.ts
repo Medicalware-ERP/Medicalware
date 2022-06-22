@@ -37,8 +37,6 @@ document.addEventListener('layout.rooms.loaded', () => {
     if (!!roomTable) generateDatable(roomTable as HTMLTableElement);
 });
 
-
-
 function initTypes(){
     // Mise en place du binding pour l'ajout d'un type
     const addButton = document.querySelector("#btn-add-room-type");
