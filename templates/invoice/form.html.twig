@@ -37,12 +37,11 @@
                    value="{{ invoice is defined ? "Modifier" : "Ajouter" }}">
         </aside>
         <main id="content_container" class="card" style="flex: 4">
-            <table class="datatable" style="border: 1px solid #edeff1;">
+            <table class="datatable w-100" style="border: 1px solid #edeff1; table-layout:fixed;">
                 <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Désignation</th>
-                    <th>Description</th>
+                    <th style="width: 300px">Désignation</th>
+                    <th style="width: 300px">Description</th>
                     <th style="width: 150px">Quantité</th>
                     <th style="width: 150px">Prix</th>
                     <th>Total ht</th>
@@ -52,7 +51,7 @@
                 {{ form_row(form.invoiceLines) }}
                 <tfoot>
                 <tr>
-                    <td colspan="7">
+                    <td colspan="6">
                         <button
                                 class="btn btn-success"
                                 data-collection-action="addElementToCollection"
