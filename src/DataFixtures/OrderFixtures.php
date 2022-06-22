@@ -9,6 +9,7 @@ use App\Entity\Accounting\OrderLine;
 use App\Entity\Patient;
 use App\Entity\Provider;
 use App\Entity\Stock\Equipment;
+use App\Entity\Tva;
 use App\Enum\Accounting\InvoiceStateEnum;
 use App\Enum\Accounting\OrderStateEnum;
 use App\Enum\Accounting\PaymentMethodEnum;
@@ -25,16 +26,13 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
         $faker = Factory::create("fr_FR");
         $equipments = $manager->getRepository(Equipment::class)->findAll();
         $providers = $manager->getRepository(Provider::class)->findAll();
+        $tvas = $manager->getRepository(Tva::class)->findAll();
 
         $states = (new OrderStateEnum())->getData();
         foreach ($states as $state) {
             $manager->persist($state);
         }
 
-        $tvas = (new TvaEnum())->getData();
-        foreach ($tvas as $t) {
-            $manager->persist($t);
-        }
 
         $paymentMethods =  (new PaymentMethodEnum())->getData();
 
@@ -86,6 +84,7 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return [
+            InvoiceFixtures::class,
             ProviderFixtures::class,
             StockFixtures::class
         ];
