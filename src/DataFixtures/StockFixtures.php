@@ -32,7 +32,7 @@ class StockFixtures extends Fixture implements DependentFixtureInterface
                 ->setName($faker->name)
                 ->setPrice(rand(3, 1000))
                 ->setProvider($provider)
-                ->addService($services[rand(0, 19)])
+                ->addService($services[rand(0, 16)])
             ;
             $stock->setEquipment($equipment);
             $stock->setQuantity(rand(0, 100));
