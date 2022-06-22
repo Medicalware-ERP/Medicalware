@@ -9,6 +9,10 @@
     outline: 0;
     transition: all .15s ease-in-out;
 
+    &[type="color"] {
+        padding: 0;
+    }
+
     &.danger{
         border: 1px solid red;
     }
