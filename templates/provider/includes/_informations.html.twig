@@ -1,5 +1,16 @@
 {% extends app.request.query.get('isAjax', false) ? 'layout_empty.html.twig' : 'provider/show.html.twig' %}
 
 {% block content %}
-    <p>Info de la piece</p>
+    <div class="d-flex flex-column gap-10">
+        <h2 class="margin-y-1">Informations</h2>
+        <p>{{ provider.name }}</p>
+        <p>{{ provider.address.street }}</p>
+        {% if provider.address.complementaryInfo is not null %}
+            <p>{{ provider.address.complementaryInfo }}</p>
+        {% endif %}
+        <p>{{ provider.address.postalCode }} {{ provider.address.city }}</p>
+        <p>{{ provider.email }}</p>
+        <p>{{ provider.phone | split('', 2) | join('.') }}</p>
+
+    </div>
 {% endblock %}

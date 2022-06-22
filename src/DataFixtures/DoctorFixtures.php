@@ -6,6 +6,7 @@ use App\Entity\Address;
 use App\Entity\Doctor;
 use App\Entity\UserType;
 use App\Enum\SpecialisationEnum;
+use App\Enum\UserTypeEnum;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -30,10 +31,12 @@ class DoctorFixtures extends Fixture
             $manager->persist($state);
         }
 
+        $profession = (new UserTypeEnum())->getData()[3];
+        $manager->persist($profession);
+
         for($i = 0; $i <= 20 ; $i++){
             $doctor = new Doctor();
             $specialisation = $states[rand(0, 16)];
-            $profession = new UserType("Docteur", "docteur");
             $address    = new Address($faker->streetName , $faker->city, $faker->postcode);
             $numberTrunced = substr($faker->e164PhoneNumber,5, strlen($faker->e164PhoneNumber));
             $doctor
@@ -49,7 +52,6 @@ class DoctorFixtures extends Fixture
                 ->setGender("M")
                 ->setRoles(["ROLE_ADMIN"])
                 ->setPassword($this->userPasswordHasher->hashPassword($doctor, 'admin'));
-            $manager->persist($profession);
             $manager->persist($doctor);
         }
         $manager->flush();

@@ -1,4 +1,4 @@
-@startuml
+@s tartuml
 abstract class Person {
  -String lastname
  -String firstname

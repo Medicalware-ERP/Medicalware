@@ -37,6 +37,10 @@ Encore
     .addEntry('invoice.datatable', './assets/js/invoice/datatable.ts')
     .addEntry('invoice.form', './assets/js/invoice/form.ts')
     .addEntry('service.index', './assets/js/service/service.ts')
+    .addEntry('stock.index', './assets/js/stock/datatable.ts')
+    .addEntry('stock.show', './assets/js/stock/show.ts')
+    .addEntry('order.datatable', './assets/js/order/datatable.ts')
+    .addEntry('order.form', './assets/js/order/form.ts')
 
     .addStyleEntry('room.show.style', './assets/styles/room/show.scss')
     .addStyleEntry('room.index.style', './assets/styles/room/index.scss')
@@ -105,7 +109,7 @@ Encore
 
     // uncomment if you use TypeScript
     .enableTypeScriptLoader()
-
+    .enablePostCssLoader()
     // uncomment if you use React
     //.enableReactPreset()
 

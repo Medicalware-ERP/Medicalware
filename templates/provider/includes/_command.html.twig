@@ -1,5 +1,21 @@
 {% extends app.request.query.get('isAjax', false) ? 'layout_empty.html.twig' : 'provider/show.html.twig' %}
 
 {% block content %}
-    <p>commandes</p>
+    <form id="filters">
+        <input type="hidden" name="provider" data-field="provider.id" data-condition="=" value="{{ provider.id }}">
+    </form>
+
+    <table id="table-order" class="datatable" data-url="{{ path('order_paginate') }}" data-filters="#filters">
+        <thead>
+        <tr>
+            <th>Référence</th>
+            <th>Fournisseur</th>
+            <th>Date prévue</th>
+            <th>Date livraison</th>
+            <th>Status</th>
+            <th>Total ttc</th>
+            <th>Détails</th>
+        </tr>
+        </thead>
+    </table>
 {% endblock %}

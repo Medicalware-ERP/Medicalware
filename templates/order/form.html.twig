@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form with ['order/form_theme/order_line.html.twig'] %}
+
+{% block title %}Facture{% endblock %}
+
+{% block body %}
+    <h4 class="title-list">
+        {% if order is defined %}
+            Modifier {{ order.reference }}
+        {% else %}
+            Ajouter
+        {% endif %}
+    </h4>
+    {{ form_start(form, {attr: {class: 'margin-0'}}) }}
+    <div class="d-flex">
+        <aside class="card margin-right-5 d-flex flex-column" style="flex: 1">
+            <div class="margin-bottom-15">
+                {{ form_row(form.reference) }}
+            </div>
+            <div class="margin-bottom-15">
+                {{ form_row(form.deliveryPlannedDate) }}
+            </div>
+            <div class="margin-bottom-15">
+                {{ form_row(form.provider) }}
+            </div>
+            <div class="margin-bottom-15">
+                {{ form_row(form.tva) }}
+            </div>
+            <div class="margin-bottom-15">
+                {{ form_row(form.paymentMethod) }}
+            </div>
+            <div class="margin-bottom-15">
+                {{ form_row(form.comment) }}
+            </div>
+            <input type="submit" class="btn btn-success justify-content-center"
+                   value="{{ order is defined ? "Modifier" : "Ajouter" }}">
+        </aside>
+        <main id="content_container" class="card" style="flex: 4">
+            <table class="datatable" style="border: 1px solid #edeff1;table-layout:fixed; ">
+                <thead>
+                <tr>
+                    <th style="width: 50px">#</th>
+                    <th style="width: 300px">Equipment</th>
+                    <th style="width: 300px">Description</th>
+                    <th style="width: 150px">Quantité</th>
+                    <th style="width: 150px">Prix</th>
+                    <th>Total ht</th>
+                    <th></th>
+                </tr>
+                </thead>
+                {{ form_row(form.orderLines) }}
+                <tfoot>
+                <tr>
+                    <td colspan="7">
+                        <button
+                                class="btn btn-success"
+                                data-collection-action="addElementToCollection"
+                                data-collection-id="{{ form.orderLines.vars.id }}"
+                                type="button"
+                        >
+                            <i class="icon fas fa-plus"></i>
+                            Ajouter
+                        </button>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </main>
+        {% do form.orderLines.setRendered %}
+        {% do form.deliveryDate.setRendered %}
+
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('form.collection') }}
+    {{ encore_entry_script_tags('order.form') }}
+{% endblock %}
+

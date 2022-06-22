@@ -22,7 +22,7 @@ abstract class DatatableRepository extends ServiceEntityRepository implements Da
      * @return Paginator
      * @throws ReflectionException
      */
-    public function paginate(int $currentPage, int $limit, string $query = null, \Closure $modifier = null): Paginator
+    public function paginate(int $currentPage, int $limit, string $query = null, \Closure $modifier = null, array $filters = []): Paginator
     {
         $queryBuilder = $this->createQueryBuilder('e');
         $expr = $queryBuilder->expr();
@@ -42,7 +42,6 @@ abstract class DatatableRepository extends ServiceEntityRepository implements Da
 
         }
 
-
         /** @var DatatableConfigColumn $column */
         foreach ($this->configureDatableColumns() as $column) {
             $this->getConfiguration()->addColumn($column);
@@ -52,6 +51,19 @@ abstract class DatatableRepository extends ServiceEntityRepository implements Da
 
         if($modifier != null){
             $modifier($queryBuilder);
+        }
+
+        foreach ($filters as $key => $filter) {
+            $field      = $filter['field'];
+            $condition  = $filter['condition'];
+            $value      =  $filter['value'];
+
+            if ($value !== "") {
+                $queryBuilder->andWhere($field.' '.$condition.' :'.$key);
+                $queryBuilder->setParameter($key, $value);
+            } else {
+                $queryBuilder->andWhere($field.' '.$condition);
+            }
         }
 
         $queryBuilder
@@ -67,7 +79,9 @@ abstract class DatatableRepository extends ServiceEntityRepository implements Da
     private function setJoin(iterable $joins , QueryBuilder $queryBuilder) {
         /** @var DatatableConfigJoin $join */
         foreach ($joins as $join) {
-            $this->getConfiguration()->addJoin($join);
+            if ($join->getClassName() === null) {
+                $this->getConfiguration()->addJoin($join);
+            }
 
             $queryBuilder->leftJoin($join->getAliasClassName().'.'.$join->getField(), $join->getAlias());
 

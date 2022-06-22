@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stock{% endblock %}
+
+{% block body %}
+    <div class="container-list">
+        <div class="card">
+            <h4 class="title-list">
+                Stock
+            </h4>
+            <hr>
+            <div class="row__datatable">
+                <div class="d-flex">
+                    <label for="input-search"></label>
+                    <input class="form-input" type="text" placeholder="Chercher ..." id="input-search" name="search"/>
+
+                    <label for="datatable-limit"></label>
+                    <select name="limit" id="datatable-limit" class="form-input">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                    </select>
+                </div>
+                <a class="btn btn-success" href="{{ path('stock_add') }}">
+                    <i class="fa fa-plus"></i>
+                    Ajouter un équipement
+                </a>
+            </div>
+
+            <form id="filters">
+                <input type="hidden" name="archived" data-field="e.archivedAt" data-condition="IS NULL" value="">
+            </form>
+
+            <table id="table-stock" class="datatable" data-url="{{ path('stock_paginate') }}" data-filters="#filters">
+                <thead>
+                <tr>
+                    <th>Référence</th>
+                    <th>Nom</th>
+                    <th>Prix</th>
+                    <th>Quantité</th>
+                    <th>Services</th>
+                    <th>Fournisseur</th>
+                    <th>Détails</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('stock.index') }}
+{% endblock %}

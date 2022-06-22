@@ -1,4 +1,4 @@
-import {$, simpleLoader, isText} from '../utils'
+import {$, simpleLoader, isText, findInDataset} from '../utils'
 
 type JSONResponse = {
     data: JSONDataCollection,
@@ -12,13 +12,42 @@ type JSONData = {
 
 type JSONDataCollection = Array<JSONData>;
 
-
+type Filter = {
+   [key: string]: {
+       field: string
+       condition: string
+       value: string
+   }
+};
 export default function generateDatable(table: HTMLTableElement) {
     let query: string = '';
     let page: number = 1;
     let limitSelect = $('#datatable-limit') as HTMLSelectElement;
-    let limit: number = parseInt(limitSelect?.value ?? 1);
+    let limit: number = parseInt(limitSelect?.value ?? 10);
     const inputSearch = $('#input-search');
+    let dataFilter: Filter = {};
+
+    const filtersId = table.dataset.filters;
+    if (isText(filtersId)) {
+        const filters = document.querySelector(filtersId);
+        if (filters instanceof HTMLFormElement) {
+            const formFilters = new FormData(filters);
+
+            formFilters.forEach((value, key) => {
+                const input = filters.querySelector(`[name="${key}"]`);
+
+                if (!(input instanceof HTMLElement)) {
+                    throw new Error('form field (input, select, ...) not found')
+                }
+                dataFilter[key] = {
+                    field: findInDataset(input, 'field'),
+                    condition: findInDataset(input, 'condition'),
+                    value: value as string
+                };
+            });
+        }
+    }
+
 
     const fetchData = async (): Promise<JSONResponse> => {
         const dataUrl = table.dataset.url;
@@ -31,6 +60,7 @@ export default function generateDatable(table: HTMLTableElement) {
         url.searchParams.set('query', query);
         url.searchParams.set('page', page.toString());
         url.searchParams.set('limit', limit.toString());
+        url.searchParams.set('filters', JSON.stringify(dataFilter));
 
         return await fetch(url.href).then(res => res.json())
     };

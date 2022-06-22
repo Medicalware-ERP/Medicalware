@@ -3,7 +3,7 @@
   padding: 0.45rem 0.9rem;
   font-size: .9rem;
   color: white;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   column-gap: 10px;
   font-weight: 400;
@@ -24,6 +24,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.btn-sm {
+  height: 30px;
 }
 
 .btn-primary {
@@ -63,6 +67,31 @@
 
   &:hover {
     background-color: var(--color-warning-light);
+  }
+}
+
+.dropdown {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  cursor: initial;
+  border: 1px solid lightblue;
+  position: absolute;
+  align-items: center;
+  width: 100%;
+  border-bottom-left-radius: 5px;
+  line-height: 35px;
+  background-color: var(--color-white);
+}
+
+.dropdown-link {
+  color: #6C757D;
+  cursor: pointer;
+  width: 100%;
+  border-bottom: 1px solid #80808033;
+  &:hover {
+    background-color: #F4F6FB;
   }
 }
 

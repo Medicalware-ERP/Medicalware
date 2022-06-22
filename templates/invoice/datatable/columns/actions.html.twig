@@ -1,6 +1,13 @@
 {% apply spaceless %}
-    <div class="d-flex justify-content-center">
-        <a class="btn-xs btn-primary margin-right-1" href="{{ path('invoice_show', {'id': invoice.id }) }}"><i class="fa fa-eye"></i></a>
+    <div class="d-flex justify-content-start gap-5">
+        <a class="btn-xs btn-primary" href="{{ path('invoice_show', {'id': invoice.id }) }}"><i class="fa fa-eye"></i></a>
         <a class="btn-xs btn-primary" href="{{ path('invoice_edit', {'id': invoice.id }) }}"><i class="fa fa-pen"></i></a>
+
+        {% set draft = constant('App\\Enum\\Accounting\\InvoiceStateEnum::DRAFT') %}
+        {% set refused = constant('App\\Enum\\Accounting\\InvoiceStateEnum::REFUSED') %}
+
+        {% if invoice.state.slug == draft or invoice.state.slug == refused %}
+            <a class="btn-xs btn-danger" data-remove-url="{{ path('invoice_delete', {'id': invoice.id }) }}"><i class="fa fa-trash"></i></a>
+        {% endif %}
     </div>
 {% endapply %}

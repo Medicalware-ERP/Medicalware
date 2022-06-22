@@ -30,10 +30,10 @@ class Room implements EntityInterface
     private ?RoomType $type = null;
 
     #[ORM\ManyToMany(targetEntity: RoomOption::class)]
-    private $options;
+    private Collection $options;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
-    private $archivedAt;
+    private ?\DateTimeImmutable $archivedAt = null;
 
     public function __construct()
     {
