@@ -29,7 +29,12 @@ class OrderLineType extends AbstractType
                 'constraints' => [
                     new NotBlank(message: 'Veuillez sélectionné un équipement')
                 ],
-                'label' => false
+                'label' => false,
+                'choice_attr' => function(Equipment $choice, $key, $value) {
+                    return [
+                        'data-provider-id' => $choice->getProvider()->getId()
+                    ];
+                },
             ])
             ->add('description', TextType::class, [
                 'label' => false,
