@@ -80,7 +80,8 @@ class OrderController extends BaseController
         }
 
         return $this->renderForm('order/form.html.twig', [
-            'form' => $form
+            'form' => $form,
+            'order' => $order
         ]);
     }
 

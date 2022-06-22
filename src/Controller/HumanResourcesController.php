@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Service\User\UserDataFormatter;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,8 +53,17 @@ class HumanResourcesController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword($userPasswordHasher->hashPassword($user, 'admin'));
-            $this->manager->persist($user);
-            $this->manager->flush();
+
+            try {
+                $this->manager->persist($user);
+                $this->manager->flush();
+
+            } catch (UniqueConstraintViolationException) {
+                $form->get('email')->addError(new FormError("Cette email est déjà utilisé"));
+                return $this->renderForm('human_resources/form.html.twig', [
+                    'form' => $form
+                ]);
+            }
 
             return $this->redirectToRoute("app_human_resources");
         }
@@ -71,8 +82,17 @@ class HumanResourcesController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->manager->persist($user);
-            $this->manager->flush();
+            try {
+                $this->manager->persist($user);
+                $this->manager->flush();
+            } catch (UniqueConstraintViolationException) {
+                $form->get('email')->addError(new FormError("Cette email est déjà utilisé"));
+                return $this->renderForm('human_resources/form.html.twig', [
+                    'form' => $form
+                ]);
+            }
+
+            return $this->redirectToRoute("app_human_resources");
         }
 
         return $this->renderForm('human_resources/form.html.twig', [

@@ -15,6 +15,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserType extends AbstractType
 {
@@ -26,6 +27,15 @@ class UserType extends AbstractType
         $builder
             ->add('lastName', TextType::class, [
                 'label' =>  'Nom'
+            ])
+            ->add('gender', ChoiceType::class, [
+                'label' => 'Genre:',
+                'placeholder' => 'Choisir un genre: ',
+                "constraints" => [new NotBlank()],
+                "choices" => [
+                    "M" => "M",
+                    "F" => "F"
+                ]
             ])
             ->add('firstName', TextType::class, [
                 'label' =>  'Prénom'
@@ -50,7 +60,8 @@ class UserType extends AbstractType
             ->add('profession')
             ->add('roles', SelectMultipleType::class, [
                 'label'     => 'Rôles',
-                'choices'   => RoleEnum::getChoiceList()
+                'choices'   => RoleEnum::getChoiceList(),
+                'required'  => false
             ])
         ;
     }

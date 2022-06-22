@@ -163,6 +163,7 @@ export default function generateDatable(table: HTMLTableElement) {
     if (limitSelect instanceof HTMLSelectElement) {
         limitSelect.addEventListener('change', async function () {
             limit = parseInt(this.value);
+            page = 1;
             await getData();
         });
     }
