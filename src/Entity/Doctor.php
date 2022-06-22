@@ -12,8 +12,8 @@ use phpDocumentor\Reflection\Types\String_;
 class Doctor extends User
 {
 
-    #[ORM\ManyToMany(targetEntity: Specialisation::class, inversedBy: 'doctors')]
-    private Collection $specialisations;
+    #[ORM\ManyToOne(targetEntity: Specialisation::class, inversedBy: 'doctors')]
+    private ?Specialisation $specialisation = null;
 
     #[ORM\OneToMany(mappedBy: 'doctor', targetEntity: MedicalFileLine::class)]
     private Collection $medicalFileLines;
@@ -24,33 +24,16 @@ class Doctor extends User
     public function __construct()
     {
         parent::__construct();
-        $this->specialisations = new ArrayCollection();
         $this->medicalFileLines = new ArrayCollection();
         $this->patients = new ArrayCollection();
     }
 
     /**
-     * @return Collection<int, Specialisation>
+     * @return Specialisation|null
      */
-    public function getSpecialisation(): Collection
+    public function getSpecialisation(): ?Specialisation
     {
-        return $this->specialisations;
-    }
-
-    public function addSpecialisation(Specialisation $specialisation): self
-    {
-        if (!$this->specialisations->contains($specialisation)) {
-            $this->specialisations[] = $specialisation;
-        }
-
-        return $this;
-    }
-
-    public function removeSpecialisation(Specialisation $specialisation): self
-    {
-        $this->specialisations->removeElement($specialisation);
-
-        return $this;
+        return $this->specialisation;
     }
 
     /**
@@ -109,6 +92,18 @@ class Doctor extends User
                 $patient->setDoctor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getFirstName() . " " . $this->getLastName();
+    }
+
+    public function setSpecialisation(?Specialisation $specialisation): self
+    {
+        $this->specialisation = $specialisation;
 
         return $this;
     }

@@ -44,7 +44,7 @@ class User extends Person implements UserInterface, PasswordAuthenticatedUserInt
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?DateTimeImmutable $leftAt = null;
 
-    #[ORM\ManyToOne(targetEntity: UserType::class, inversedBy: 'users')]
+    #[ORM\ManyToOne(targetEntity: UserType::class, cascade: ['persist'], inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
     private ?UserType $profession = null;
 
@@ -52,7 +52,7 @@ class User extends Person implements UserInterface, PasswordAuthenticatedUserInt
     private Collection $invoicesValidated;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: StockHistory::class)]
-    private $stockHistories;
+    private Collection $stockHistories;
 
     public function __construct()
     {
