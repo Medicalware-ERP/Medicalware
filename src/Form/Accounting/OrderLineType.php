@@ -14,6 +14,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Range;
 
 class OrderLineType extends AbstractType
 {
@@ -43,14 +44,24 @@ class OrderLineType extends AbstractType
             ->add('quantity', IntegerType::class, [
                 'label' => false,
                 'attr' => [
-                    'x-model.number' => 'qty'
-                ]
+                    'x-model.number' => 'qty',
+                    'min' => 0
+                ],
+                'constraints' => [
+                    new NotBlank(message: 'Veuillez saisir une quantité'),
+                    new Range(minMessage: 'Veuillez saisir une valeur supérieur ou égale à 0', min: 0),
+                ],
             ])
             ->add('price', IntegerType::class, [
                 'label' => false,
                 'attr' => [
-                    'x-model.number' => 'price'
-                ]
+                    'x-model.number' => 'price',
+                    'min' => 0
+                ],
+                'constraints' => [
+                    new NotBlank(message: 'Veuillez saisir un prix'),
+                    new Range(minMessage: 'Veuillez saisir une valeur supérieur ou égale à 0', min: 0),
+                ],
             ])
         ;
 
