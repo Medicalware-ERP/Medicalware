@@ -247,14 +247,18 @@ input {
 }
 
 .card {
+  background-color: #FFFFFF;
   width: 100%;
-  background-color: white;
   min-width:300px;
-  padding: 15px;
+  padding: 1em;
   box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
 
   &.bg-grey{
     background-color:#edf0f7;
+  }
+
+  &#content_container {
+    box-shadow: 25px 0 35px 0 rgba(154, 161, 171, 0.15);
   }
 }
 

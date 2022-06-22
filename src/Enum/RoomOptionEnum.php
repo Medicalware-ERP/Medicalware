@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Enum;
 
-use App\Entity\Room\RoomType;
+use App\Entity\Room\RoomOption;
 use JetBrains\PhpStorm\Pure;
 
 class RoomOptionEnum implements DataInitializerInterface
@@ -22,19 +22,19 @@ class RoomOptionEnum implements DataInitializerInterface
     public function getData(): array
     {
         return [
-            new RoomType(self::TV, "Télévision"),
-            new RoomType(self::BATHROOM, "Salle de bain"),
+            new RoomOption(self::TV, "Télévision"),
+            new RoomOption(self::BATHROOM, "Salle de bain"),
 
-            new RoomType(self::WATER_DISPENSER, "Fontaine à eau"),
+            new RoomOption(self::WATER_DISPENSER, "Fontaine à eau"),
 
-            new RoomType(self::PROJECTOR, "Rétroprojecteur"),
-            new RoomType(self::WHITE_BOARD, "Tableau blanc"),
-            new RoomType(self::ELECTRONIC_BOARD, "Tableau électronique"),
+            new RoomOption(self::PROJECTOR, "Rétroprojecteur"),
+            new RoomOption(self::WHITE_BOARD, "Tableau blanc"),
+            new RoomOption(self::ELECTRONIC_BOARD, "Tableau électronique"),
         ];
     }
 
     public function getEnum(): string
     {
-        return RoomType::class;
+        return RoomOption::class;
     }
 }

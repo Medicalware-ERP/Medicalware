@@ -33,13 +33,15 @@ class RoomType extends AbstractType
 
         $roomOptions = array_unique(array_merge($builder->getData()->getOptions()->toArray(), $roomOptions));
 
+
         $roomTypes = $this->manager->getRepository(\App\Entity\Room\RoomType::class)
             ->createQueryBuilder("e")
             ->andWhere("e.archivedAt is null")
             ->getQuery()
             ->getResult();
 
-        if ($builder->getData()->getType() instanceof RoomType) {
+
+        if ($builder->getData()->getType() instanceof \App\Entity\Room\RoomType) {
             $roomTypes[] = $builder->getData()->getType();
         }
         $roomTypes = array_unique($roomTypes);
