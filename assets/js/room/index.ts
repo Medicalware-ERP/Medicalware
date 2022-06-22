@@ -1,6 +1,6 @@
 import generateDatable from "../datatable/datatableGeneric";
 import {$} from "../utils";
-import {swaleWarning, swaleWarningAndRedirect} from "../util/swal";
+import {swaleDangerAndRedirect, swaleDanger} from "../util/swal";
 import Routing from "../Routing";
 import {openAjaxModal} from "../util/modal";
 
@@ -16,12 +16,14 @@ const archiveRoom = () => {
             id: button.dataset.room
         });
 
-        swaleWarning(text).then(r => {
-            fetch(url).then(() => {
-                if (table instanceof HTMLTableElement) {
-                    generateDatable(table);
-                }
-            });
+        swaleDanger(text).then(r => {
+            if (r.isConfirmed) {
+                fetch(url).then(() => {
+                    if (table instanceof HTMLTableElement) {
+                        generateDatable(table);
+                    }
+                });
+            }
         });
     };
 
@@ -67,12 +69,12 @@ function initTypes(){
         e.stopPropagation();
 
         const buttons = <HTMLInputElement>e.currentTarget;
-        const text: string = "Vous êtes sur le point d'archiver un type de salle."
+        const text: string = "Vous êtes sur le point de supprimer un type de salle."
         const url = Routing.generate('app_archive_room_type', {
             id: buttons.dataset.type
         });
 
-        swaleWarningAndRedirect(text, url);
+        swaleDangerAndRedirect(text, url);
     };
 
     $(".btn-delete-room-type", (elem: Node) => {
@@ -114,12 +116,12 @@ function initOptions(){
         e.stopPropagation();
 
         const button = <HTMLInputElement>e.currentTarget;
-        const text: string = "Vous êtes sur le point d'archiver une option de salle."
+        const text: string = "Vous êtes sur le point de supprimer une option de salle."
         const url = Routing.generate('app_archive_room_option', {
             id: button.dataset.option
         });
 
-        swaleWarningAndRedirect(text, url);
+        swaleDangerAndRedirect(text, url);
     };
 
     $(".btn-delete-room-option", (elem: Node) => {

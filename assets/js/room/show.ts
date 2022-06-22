@@ -1,5 +1,5 @@
 import {$, findInDataset} from "../utils";
-import { swaleWarningAndRedirect } from "../util/swal";
+import { swaleDangerAndRedirect } from "../util/swal";
 import Routing from "../Routing";
 import {Calendar} from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -7,19 +7,17 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import frLocale from '@fullcalendar/core/locales/fr';
 
-let showRoomCalendar: Calendar;
-
 const initShow = () => {
     const callback = (e: Event) => {
         e.stopPropagation();
 
         const button = <HTMLInputElement>e.currentTarget;
-        const text: string = "Vous êtes sur le point d'archiver une salle."
+        const text: string = "Vous êtes sur le point de supprimer une salle."
         const url = Routing.generate('app_archive_room', {
             id: button.dataset.room
         });
 
-        swaleWarningAndRedirect(text, url);
+        swaleDangerAndRedirect(text, url);
     };
 
     $(".btn-delete-room")?.addEventListener('click', callback);
@@ -31,6 +29,7 @@ document.addEventListener('layout.room-information.loaded', () => {
 });
 
 const initRoomPlanning = () => {
+    let showRoomCalendar: Calendar;
     const calendarElement: HTMLElement | null = document.getElementById("room-show-planning");
 
     const url = Routing.generate("event_resource_id",{
