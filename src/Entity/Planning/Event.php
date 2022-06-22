@@ -36,6 +36,10 @@ class Event
     #[ORM\OneToMany(mappedBy: 'event', targetEntity: Participant::class, orphanRemoval: true)]
     private Collection $attendees;
 
+    #[ORM\ManyToOne(targetEntity: EventType::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private $type;
+
     public function __construct()
     {
         $this->attendees = new ArrayCollection();
@@ -144,6 +148,18 @@ class Event
                 $attendee->setEvent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getType(): ?EventType
+    {
+        return $this->type;
+    }
+
+    public function setType(?EventType $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }
