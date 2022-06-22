@@ -36,7 +36,7 @@ Encore
     .addEntry('provider.show', './assets/js/provider/show.ts')
     .addEntry('invoice.datatable', './assets/js/invoice/datatable.ts')
     .addEntry('invoice.form', './assets/js/invoice/form.ts')
-    .addEntry('service.index', './assets/js/service/service.ts')
+    .addEntry('service.index', './assets/js/service/index.ts')
 
     .addStyleEntry('room.show.style', './assets/styles/room/show.scss')
     .addStyleEntry('room.index.style', './assets/styles/room/index.scss')

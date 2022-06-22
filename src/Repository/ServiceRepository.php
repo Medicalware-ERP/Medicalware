@@ -3,10 +3,14 @@
 namespace App\Repository;
 
 use App\Entity\Service;
+use App\Repository\Datatable\DatatableConfigColumn;
+use App\Repository\Datatable\DatatableConfigSearch;
+use App\Repository\Datatable\DatatableRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * @method Service|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,7 +18,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Service[]    findAll()
  * @method Service[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ServiceRepository extends ServiceEntityRepository
+class ServiceRepository extends DatatableRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -73,4 +77,23 @@ class ServiceRepository extends ServiceEntityRepository
         ;
     }
     */
+    #[Pure] public function configureDatableJoin(): array
+    {
+        return [];
+    }
+
+    #[Pure] public function configureDatableSearch(): array
+    {
+        return [
+            new DatatableConfigSearch('name'),
+            new DatatableConfigSearch('description'),
+        ];
+    }
+
+    #[Pure] public function configureDatableColumns(): array
+    {
+        return [
+            new DatatableConfigColumn('name'),
+        ];
+    }
 }

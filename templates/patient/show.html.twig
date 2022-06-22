@@ -17,9 +17,13 @@
                 <i class="fa fa-address-card"></i>
                 <span>Informations</span>
         </button>
-        <button class="btn-show d-flex align-items-center" data-url="{{ path('patient_show_medical_file', {id: patient.id}) }}">
+        <button class="btn-show d-flex align-items-center" data-name="medical_file" data-url="{{ path('patient_show_medical_file', {id: patient.id}) }}">
                 <i class="fa fa-folder-open"></i>
                 <span>Dossier médical</span>
+        </button>
+        <button class="btn-show d-flex align-items-center" data-url="{{ path('patient_show_factures', {id: patient.id}) }}">
+            <i class="fa fa-file-invoice"></i>
+            <span>Factures</span>
         </button>
         <button class="btn-show d-flex align-items-center" data-url="{{ path('patient_show_calendrier', {id: patient.id}) }}">
                 <i class="fa fa-calendar-alt"></i>
