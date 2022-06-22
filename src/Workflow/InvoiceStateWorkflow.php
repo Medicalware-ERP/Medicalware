@@ -13,5 +13,7 @@ class InvoiceStateWorkflow
     public const VALIDATE       = 'validate';
     public const REJECT         = 'reject';
     public const PAYED          = 'payed';
+    public const TO_DRAFT       = 'to_draft';
+
 
 }

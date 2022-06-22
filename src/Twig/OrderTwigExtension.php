@@ -23,6 +23,7 @@ class OrderTwigExtension extends AbstractExtension
            OrderStateWorkflow::VALIDATE   => 'Valider',
            OrderStateWorkflow::REJECT     => 'Refusé',
            OrderStateWorkflow::DELIVERED  => 'Livré',
-        };
+           OrderStateWorkflow::TO_DRAFT   => 'Brouillon',
+       };
     }
 }

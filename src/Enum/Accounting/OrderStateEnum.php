@@ -21,7 +21,7 @@ class OrderStateEnum implements DataInitializerInterface
             new OrderState(self::TO_VALIDATE, 'à valider', color: AppColorEnum::WARNING),
             new OrderState(self::VALIDATED, 'valider', color: AppColorEnum::PRIMARY),
             new OrderState(self::REFUSED, 'refusé', color: AppColorEnum::DANGER),
-            new OrderState(self::DELIVERY, 'payé', color: AppColorEnum::SUCCESS),
+            new OrderState(self::DELIVERY, 'livré', color: AppColorEnum::SUCCESS),
         ];
     }
 
