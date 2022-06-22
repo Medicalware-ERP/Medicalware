@@ -40,7 +40,7 @@ class DoctorFixtures extends Fixture
             $address    = new Address($faker->streetName , $faker->city, $faker->postcode);
             $numberTrunced = substr($faker->e164PhoneNumber,5, strlen($faker->e164PhoneNumber));
             $doctor
-                ->addSpecialisation($specialisation)
+                ->setSpecialisation($specialisation)
                 ->setLastName($faker->lastName)
                 ->setFirstName($faker->firstName)
                 ->setPhoneNumber("06". $numberTrunced)
@@ -49,8 +49,8 @@ class DoctorFixtures extends Fixture
                 ->setBirthdayDate(new DateTimeImmutable())
                 ->setEmail($faker->email)
                 ->setIsActive(true)
-                ->setGender("M")
-                ->setRoles(["ROLE_ADMIN"])
+                ->setGender("H")
+                ->setRoles(["ROLE_DOCTOR"])
                 ->setPassword($this->userPasswordHasher->hashPassword($doctor, 'admin'));
             $manager->persist($doctor);
         }

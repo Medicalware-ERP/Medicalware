@@ -2,7 +2,8 @@
 
 namespace App\Form;
 
-use App\Entity\User;
+use App\Entity\Doctor;
+use App\Entity\Specialisation;
 use App\Enum\RoleEnum;
 use App\Form\Base\SelectMultipleType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -13,19 +14,13 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class UserType extends AbstractType
+class DoctorType extends AbstractType
 {
-    public const FORM_NAME  = 'user';
-    public const FORM_ID    = 'test';
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-
         $builder
             ->add('lastName', TextType::class, [
                 'label' =>  'Nom'
@@ -35,7 +30,7 @@ class UserType extends AbstractType
                 'placeholder' => 'Choisir un genre: ',
                 "constraints" => [new NotBlank()],
                 "choices" => [
-                    "M" => "M",
+                    "H" => "H",
                     "F" => "F"
                 ]
             ])
@@ -58,25 +53,19 @@ class UserType extends AbstractType
             ])
             ->add('address', AddressType::class, [
                 'label' => false
-            ]);
-
-            if($builder->getData()->getId() == null || $builder->getData()->getProfession()->getId() != "1"){
-                $builder->add('profession')
-                    ->add('roles', SelectMultipleType::class, [
-                        'label'     => 'Rôles',
-                        'choices'   => RoleEnum::getChoiceList(),
-                        'required'  => false
-                    ]);
-            }
-
+            ])
+            ->add('specialisation', EntityType::class, [
+                'class' => Specialisation::class,
+                'label' => 'Spécialisation:',
+                "constraints" => [new NotBlank()],
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
-            'form_name'  => self::FORM_NAME,
-            'form_id'    => self::FORM_ID,
+            'data_class' => Doctor::class,
         ]);
     }
 }
