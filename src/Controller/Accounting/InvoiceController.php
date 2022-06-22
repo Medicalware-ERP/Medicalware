@@ -83,7 +83,7 @@ class InvoiceController extends BaseController
      * @throws NotFoundExceptionInterface
      */
     #[Route('/invoice/paginate', name: 'invoice_json')]
-    public function paginate(Request $request, InvoiceDataFormatter $dataFormatter ): Response
+    public function paginate(Request $request, InvoiceDataFormatter $dataFormatter): Response
     {
         return $this->paginateRequest(Invoice::class, $request, $dataFormatter);
     }

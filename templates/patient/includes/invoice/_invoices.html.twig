@@ -20,20 +20,18 @@
                 </div>
             </div>
 
-            <table id="table-patients" class="datatable" data-url="{{ path('invoice_json') }}">
+            <table id="table-invoice" class="datatable" data-url="{{ path('patient_invoice_json', {id: patient.id}) }}">
                 <thead>
                 <tr>
                     <th>Référence</th>
+                    <th>Patient</th>
                     <th>Date</th>
                     <th>Prix</th>
-                    <th>Statut</th>
+                    <th>Status</th>
+                    <th>Détails</th>
                 </tr>
                 </thead>
             </table>
         </div>
     </div>
-{% endblock %}
-{% block javascripts %}
-    {{ parent() }}
-    {{ encore_entry_script_tags('invoice.datatable') }}
 {% endblock %}

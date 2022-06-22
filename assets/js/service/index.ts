@@ -2,7 +2,7 @@ import generateDatable from "../datatable/datatableGeneric";
 import {$} from "../utils";
 import {openAjaxModal} from "../util/modal";
 import Routing from "../Routing";
-import {swaleWarningAndRedirect} from "../util/swal";
+import {swaleDangerAndRedirect} from "../util/swal";
 
 const addButton = document.querySelector("#add_service");
 
@@ -28,7 +28,7 @@ const callBackDeleteService = () => {
                 class : "App\\Entity\\Service",
                 id: button?.dataset.service
             });
-            swaleWarningAndRedirect(text, url);
+            swaleDangerAndRedirect(text, url);
         })
     });
 }

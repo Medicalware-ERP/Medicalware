@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Accounting\Invoice;
 use App\Entity\MedicalFile;
 use App\Entity\MedicalFileLine;
 use App\Entity\Patient;
@@ -11,6 +12,7 @@ use App\Form\PatientType;
 use App\Form\UserType;
 use App\Repository\MedicalFileLineRepository;
 use App\Repository\PatientRepository;
+use App\Service\Invoice\InvoiceDataFormatter;
 use App\Service\Patient\PatientDataFormatter;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
@@ -52,6 +54,22 @@ class PatientController extends BaseController
         };
 
         return $this->paginateRequest(Patient::class, $request, $patientDataFormatter, $modifier);
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/patient/{id}/invoice/paginate', name: 'patient_invoice_json')]
+    public function paginateInvoicesOfPatient(Request $request, InvoiceDataFormatter $dataFormatter, int $id): Response
+    {
+        $patient = $this->manager->find(Patient::class, $id) ?? throw new NotFoundHttpException("Patient non trouvé");
+
+        $modifier = function(QueryBuilder $queryBuilder) use ($patient) {
+            $queryBuilder->andWhere("e.patient=" . $patient->getId());
+        };
+
+        return $this->paginateRequest(Invoice::class, $request, $dataFormatter, $modifier);
     }
 
     #[Route('/patient/add', name: 'app_add_patient')]
@@ -134,11 +152,12 @@ class PatientController extends BaseController
                 if($medicalFileLine->getStartDate() < $medicalFileLine->getEndDate()){
                     $medicalFile->addMedicalFileLine($medicalFileLine);
                     $this->manager->persist($medicalFileLine);
+                    $this->manager->flush();
                 } else {
                     $this->addFlash('danger_medicalFileLine', "La date de début doit être inférieur à la date de fin");
                 }
             }
-            $this->manager->flush();
+
         }
 
         return $this->renderForm('patient/includes/_medical_file.html.twig', [
