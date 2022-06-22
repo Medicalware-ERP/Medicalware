@@ -16,16 +16,16 @@ abstract class EnumEntity
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $name;
+    private ?string $name = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $slug;
+    private ?string $slug = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $description;
+    private ?string $description = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $color;
+    private ?string $color = null;
 
     public function getId(): ?int
     {
@@ -91,6 +91,6 @@ abstract class EnumEntity
 
     public function __toString(): string
     {
-        return $this->getName();
+        return $this->getName() ?? '';
     }
 }
