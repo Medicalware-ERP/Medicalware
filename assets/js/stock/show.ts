@@ -15,7 +15,7 @@ const initCommandTab = () => {
 
 const initInformationTab = () => {
     const btn = $('#askOrder') as HTMLElement;
-    btn.addEventListener('click', () => {
+    btn?.addEventListener('click', () => {
         if (btn.getAttribute('disabled') !== null) {
             return
         }

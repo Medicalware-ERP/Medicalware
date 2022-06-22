@@ -81,6 +81,11 @@ export default function generateDatable(table: HTMLTableElement) {
 
         const datas: JSONResponse = await fetchData();
         table.tBodies.item(0)?.remove();
+        let hideCols: string[] = [];
+
+        if (isText(table.dataset.hideCol)) {
+            hideCols = table.dataset.hideCol.split(",") ;
+        }
 
         if (datas.data.length > 0) {
             let tbody = table.createTBody();
@@ -88,6 +93,9 @@ export default function generateDatable(table: HTMLTableElement) {
                 let row = tbody.insertRow();
 
                 Object.keys(data).forEach(key => {
+                    if (hideCols.includes(key)) {
+                        return;
+                    }
                     let cell = row.insertCell();
                     cell.innerHTML = data[key];
                 });

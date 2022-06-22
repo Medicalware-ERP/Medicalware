@@ -5,11 +5,10 @@
         <input type="hidden" name="equipment" data-field="equipment.id" data-condition="=" value="{{ stock.equipment.id }}">
     </form>
 
-    <table id="table-order" class="datatable" data-url="{{ path('order_paginate') }}" data-filters="#filters">
+    <table id="table-order" class="datatable" data-url="{{ path('order_paginate') }}" data-filters="#filters" data-hide-col="provider">
         <thead>
         <tr>
             <th>Référence</th>
-            <th>Fournisseur</th>
             <th>Date prévue</th>
             <th>Date livraison</th>
             <th>Status</th>
