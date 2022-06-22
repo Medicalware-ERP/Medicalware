@@ -82,14 +82,17 @@ class InvoiceStateSubscriber implements EventSubscriberInterface
         } catch (LoaderError|RuntimeError|SyntaxError $e) {
         }
 
-        $email = (new Email())
-            ->from('admin@medicalware.com')
-            ->to(...$emails)
-            ->subject('Validation facture')
-            ->html($html)
-        ;
+        if (count($emails) > 0) {
+            $email = (new Email())
+                ->from('admin@medicalware.com')
+                ->to(...$emails)
+                ->subject('Validation facture')
+                ->html($html)
+            ;
 
-        $this->mailer->send($email);
+            $this->mailer->send($email);
+        }
+
     }
 
     public static function getSubscribedEvents(): array
