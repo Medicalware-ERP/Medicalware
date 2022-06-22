@@ -39,7 +39,6 @@ class PatientFixtures extends Fixture
         for($i = 0; $i <= 20 ; $i++){
             $patient = new Patient();
             $medicalFile = new MedicalFile();
-            $medicalFile->setNumberFile($faker->randomNumber(8));
             $numberTrunced = substr($faker->e164PhoneNumber,5, strlen($faker->e164PhoneNumber));
             $address    = new Address($faker->streetName, $faker->city, $faker->postcode);
             $patient->setFirstName($faker->firstName)
