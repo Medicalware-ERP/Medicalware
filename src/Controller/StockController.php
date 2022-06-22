@@ -140,11 +140,9 @@ class StockController extends BaseController
                 $mailer->send($email);
             }
         } catch (\Exception|TransportExceptionInterface) {
-            $this->addFlash('danger', 'Une erreur est survenue lors de l\'envoie du mail');
+
         }
 
-
-        $this->addFlash('success', 'Votre mail à bien étais envoyé');
-        return $this->redirectToRoute('stock_show_information', ['id' => $stock->getId()]);
+        return $this->json('ok');
     }
 }

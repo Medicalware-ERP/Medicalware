@@ -36,6 +36,11 @@
   &:hover {
     background-color: var(--color-primary-light);
   }
+
+  &:disabled {
+    background-color: var(--color-primary-light);
+    cursor: default;
+  }
 }
 
 .btn-secondary {
