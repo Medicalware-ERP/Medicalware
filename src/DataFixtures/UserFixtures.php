@@ -3,7 +3,6 @@
 namespace App\DataFixtures;
 
 use App\Entity\Address;
-use App\Entity\EnumEntity;
 use App\Entity\User;
 use App\Entity\UserType;
 use App\Enum\UserTypeEnum;
@@ -28,7 +27,9 @@ class UserFixtures extends Fixture
 
         $user       = new User();
         $address    = new Address("50 rue de la rue", "Marseille", "13015");
-        $profession = new UserType("Admin", "admin");
+        $professions = (new UserTypeEnum())->getData();
+        $length     = count($professions) - 1;
+        $profession = $professions[rand(0, $length)];
 
         $user
             ->setLastName('Boulakhlas')
@@ -39,6 +40,7 @@ class UserFixtures extends Fixture
             ->setBirthdayDate(new DateTimeImmutable())
             ->setEmail('admin@medicalware.fr')
             ->setIsActive(true)
+            ->setGender("M")
             ->setRoles(["ROLE_ADMIN"])
             ->setPassword($this->userPasswordHasher->hashPassword($user, 'admin'))
         ;
@@ -57,6 +59,7 @@ class UserFixtures extends Fixture
             ->setPhoneNumber('0713124578')
             ->setProfession($profession1)
             ->setAddress($address1)
+            ->setGender("M")
             ->setBirthdayDate(new DateTimeImmutable())
             ->setEmail('admin@medicfdfalware.fr')
             ->setIsActive(false)
@@ -78,6 +81,7 @@ class UserFixtures extends Fixture
             ->setPhoneNumber('0712454578')
             ->setProfession($profession2)
             ->setAddress($address2)
+            ->setGender("M")
             ->setBirthdayDate(new DateTimeImmutable())
             ->setEmail('admin@medicalwafsdfsdre.fr')
             ->setIsActive(true)

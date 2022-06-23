@@ -1,0 +1,7 @@
+
+{% apply spaceless %}
+    <div class="d-flex justify-content-center">
+        <a class="btn-xs btn-primary" href="{{ path('edit_enum', {id: enum.id}) }}"><i class="fa fa-pen"></i></a>
+        <a class="btn-xs btn-danger" href="{{ path('service_delete', {id: enum.id}) }}"><i class="fa fa-trash"></i></a>
+    </div>
+{% endapply %}

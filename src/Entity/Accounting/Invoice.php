@@ -11,8 +11,10 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: InvoiceRepository::class)]
+#[UniqueEntity('reference')]
 class Invoice
 {
     #[ORM\Id]
@@ -54,11 +56,14 @@ class Invoice
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $comment = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private ?string $reference = null;
+
+    private string $workflowState = 'draft';
 
     public function __construct()
     {
+        $this->reference = '#'.uniqid();
         $this->date         = new DateTime();
         $this->invoiceLines = new ArrayCollection();
     }
@@ -221,5 +226,44 @@ class Invoice
     public function __toString(): string
     {
         return $this->reference;
+    }
+
+    public function calculateTotalHt() {
+        $total = 0;
+
+        foreach ($this->getInvoiceLines() as $invoiceLine) {
+            $total += $invoiceLine->getHt();
+        }
+
+        return $total;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWorkflowState(): string
+    {
+        return $this->state->getSlug() ?? $this->workflowState;
+    }
+
+    /**
+     * @param string $workflowState
+     */
+    public function setWorkflowState(string $workflowState): void
+    {
+        $this->workflowState = $workflowState;
+    }
+
+    public function calculate(): self
+    {
+        $ht = 0;
+        foreach ($this->getInvoiceLines() as $invoiceLine) {
+            $ht += $invoiceLine->calculateHt();
+        }
+
+        $this->setHt($ht);
+        $this->setTtc($ht * $this->getTva()->value());
+
+        return $this;
     }
 }

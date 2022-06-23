@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stock{% endblock %}
+
+{% block body %}
+    <h4 class="title-list">
+        {% if stock is defined %}
+            Modifier
+        {% else %}
+            Ajouter
+        {% endif %}
+    </h4>
+    <div class="card">
+        <div class="wrapper">
+            {{ form_start(form) }}
+            <div class="container__row">
+                <div>
+                    {{ form_row(form.equipment.reference) }}
+                    {{ form_row(form.equipment.name) }}
+                    {{ form_row(form.equipment.price) }}
+                    {{ form_row(form.equipment.services) }}
+                </div>
+                <div>
+                    {{ form_row(form.equipment.provider) }}
+                    {{ form_row(form.quantity) }}
+                </div>
+            </div>
+            <input class="center-input-submit btn btn-success" type="submit" value="{{ stock is defined ? "Modifier" : "Ajouter" }}">
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

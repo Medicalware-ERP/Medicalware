@@ -3,7 +3,7 @@
     {% if user.avatar is not null %}
         {{ user.avatar }}
     {% else %}
-        <div class="avatar-default">
+        <div class="avatar-default {{ class|default('') }}">
             <span>{{ user.firstName|slice(0,1)|upper ~ user.lastName|slice(0,1)|upper }}</span>
         </div>
     {% endif %}

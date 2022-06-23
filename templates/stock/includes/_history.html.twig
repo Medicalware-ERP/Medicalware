@@ -1,0 +1,17 @@
+{% extends app.request.query.get('isAjax', false) ? 'layout_empty.html.twig' : 'stock/show.html.twig' %}
+
+{% block content %}
+
+    {% for history in stock.stockHistories  %}
+        <div class="border margin-top-15 padding-15" style="background-color: #2e9ad044;">
+            <div class="d-flex justify-content-between align-items-center">
+                <p>{{ history.user ?? '-' }}</p>
+                <p>{{ history.date | date('d/m/Y') }}</p>
+            </div>
+            <hr style="background-color: #2e9ad020;">
+            <div>
+                <p>{{ history.content }}</p>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

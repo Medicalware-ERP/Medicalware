@@ -1,106 +1,38 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout_show.html.twig' %}
 
-{% block title %}{{ patient.firstName }}{{ patient.lastName }}{% endblock %}
+{% block title %}{{ patient.firstName }} {{ patient.lastName }}{% endblock %}
 
-{% block body %}
-    <div id="user-details-container">
-        <div class="card">
-            <div class="row">
-                {% if patient.avatar is not null %}
-                    <img class="avatar" src="https://cdn.pixabay.com/photo/2015/03/03/08/55/portrait-657116_960_720.jpg" />
-                    {# Todo : mettre l'image #}
-                {% else %}
-                    <div class="avatar avatar-text">
-                        <span>
-                            {{ patient.firstName|first|upper ~ patient.lastName|first|upper }}
-                        </span>
-                    </div>
-                {% endif %}
-            </div>
-
-            <div class="row">
-                <div class="left-item">
-                    Numéro de sécurité sociale :
-                </div>
-
-                <div class="right-item">
-                    {{ patient.numberSocialSecurity }}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="left-item">
-                    Nom :
-                </div>
-
-                <div class="right-item">
-                    {{ patient.lastName }}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="left-item">
-                    Prénom :
-                </div>
-
-                <div class="right-item">
-                    {{ patient.firstName }}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="left-item">
-                    Adresse :
-                </div>
-
-                <div class="right-item">
-                    {{ patient.address }}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="left-item">
-                    Email :
-                </div>
-
-                <div class="right-item">
-                    {{ patient.email }}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="left-item">
-                    Téléphone :
-                </div>
-
-                <div class="right-item">
-                    {{ patient.phoneNumber }}
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="left-item">
-                    Âge :
-                </div>
-
-                <div class="right-item">
-                    {{ date().diff(date(patient.birthdayDate)).y }} ans ({{ patient.birthdayDate|date('d/m/Y') }})
-                </div>
-            </div>
-            <div class="row row-actions">
-                <div class="left-item">
-                    #{{ patient.id }}
-                </div>
-
-                <div class="right-item">
-                    <a class="btn btn-warning" href="{{ path('app_edit_patient', {'id': patient.id}) }}">
-                        Éditer
-                    </a>
-                </div>
-            </div>
-
+{% block aside_header %}
+    <header class="d-flex" style="align-items: center">
+        <div class="avatar-default margin-right-10" style="">
+            <span>{{ patient.lastName|slice(0,2)|upper }}</span>
         </div>
-    </div>
-
+        <span class="title">{{  patient }}</span>
+    </header>
 {% endblock %}
 
+{% block aside_nav %}
+    <nav class="d-flex" style="flex-direction: column; gap: 10px; align-items:flex-start; width:100%;">
+        <button class="btn-show d-flex align-items-center" data-url="{{ path('patient_show_information', {id: patient.id}) }}">
+                <i class="fa fa-address-card"></i>
+                <span>Informations</span>
+        </button>
+        <button class="btn-show d-flex align-items-center" data-name="medical_file" data-url="{{ path('patient_show_medical_file', {id: patient.id}) }}">
+                <i class="fa fa-folder-open"></i>
+                <span>Dossier médical</span>
+        </button>
+        <button class="btn-show d-flex align-items-center" data-name="invoice" data-url="{{ path('patient_show_factures', {id: patient.id}) }}">
+            <i class="fa fa-file-invoice"></i>
+            <span>Factures</span>
+        </button>
+        <button class="btn-show d-flex align-items-center" data-url="{{ path('patient_show_calendrier', {id: patient.id}) }}">
+                <i class="fa fa-calendar-alt"></i>
+                <span>Calendrier</span>
+        </button>
+    </nav>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('patient.show') }}
+{% endblock %}

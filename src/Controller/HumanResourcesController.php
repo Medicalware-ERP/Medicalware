@@ -2,12 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Doctor;
 use App\Entity\User;
+use App\Enum\UserTypeEnum;
+use App\Form\DoctorType;
 use App\Form\UserType;
 use App\Service\User\UserDataFormatter;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +23,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HumanResourcesController extends BaseController
 {
-
     public function __construct(private readonly EntityManagerInterface $manager)
     {
     }
@@ -28,7 +32,6 @@ class HumanResourcesController extends BaseController
     {
         return $this->render('human_resources/index.html.twig');
     }
-
 
     /**
      * @param Request $request
@@ -53,8 +56,17 @@ class HumanResourcesController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword($userPasswordHasher->hashPassword($user, 'admin'));
-            $this->manager->persist($user);
-            $this->manager->flush();
+
+            try {
+                $this->manager->persist($user);
+                $this->manager->flush();
+
+            } catch (UniqueConstraintViolationException) {
+                $form->get('email')->addError(new FormError("Cette email est déjà utilisé"));
+                return $this->renderForm('human_resources/form.html.twig', [
+                    'form' => $form
+                ]);
+            }
 
             return $this->redirectToRoute("app_human_resources");
         }
@@ -64,17 +76,58 @@ class HumanResourcesController extends BaseController
         ]);
     }
 
+    #[Route('/doctor/add', name: 'app_add_doctor')]
+    public function addDoctor(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
+    {
+        $doctor = new Doctor();
+
+        $form = $this->createForm(DoctorType::class, $doctor);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $doctor->setPassword($userPasswordHasher->hashPassword($doctor, 'admin'));
+            $doctor->setProfession((new UserTypeEnum())->getData()[3]);
+            $doctor->setRoles(["ROLE_DOCTOR"]);
+
+            try {
+                $this->manager->persist($doctor);
+                $this->manager->flush();
+
+            } catch (UniqueConstraintViolationException) {
+                $form->get('email')->addError(new FormError("Cet email est déjà utilisé"));
+                return $this->renderForm('human_resources/doctor/form.html.twig', [
+                    'form' => $form
+                ]);
+            }
+
+            return $this->redirectToRoute("app_human_resources");
+        }
+
+        return $this->renderForm('human_resources/doctor/form.html.twig', [
+            'form' => $form
+        ]);
+    }
+
     #[Route('/user/edit/{id}', name: 'app_edit_user')]
     public function edit(Request $request, int $id): Response
     {
-        $user = $this->manager->find(User::class, $id) ?? throw new NotFoundHttpException("Utilisateur non trouvée");
+        $user = $this->manager->find(User::class, $id) ?? throw new NotFoundHttpException("Utilisateur non trouvé");
 
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->manager->persist($user);
-            $this->manager->flush();
+            try {
+                $this->manager->persist($user);
+                $this->manager->flush();
+            } catch (UniqueConstraintViolationException) {
+                $form->get('email')->addError(new FormError("Cette email est déjà utilisé"));
+                return $this->renderForm('human_resources/form.html.twig', [
+                    'form' => $form
+                ]);
+            }
+
+            return $this->redirectToRoute("app_human_resources");
         }
 
         return $this->renderForm('human_resources/form.html.twig', [

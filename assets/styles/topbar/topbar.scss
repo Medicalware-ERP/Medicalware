@@ -70,8 +70,11 @@
 
         small.profile-role {
           color: var(--color-white);
-          display: flex;
-          flex-direction: column;
+          display: block;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          width: 130px;
+          overflow: hidden;
 
           &:first-child {
             font-weight: bold;

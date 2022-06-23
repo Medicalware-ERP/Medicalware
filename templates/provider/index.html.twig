@@ -4,12 +4,10 @@
 
 {% block body %}
     <div class="container-list">
-
+        <h4 class="title-list">
+            Fournisseurs
+        </h4>
         <div class="card">
-            <h4 class="title-list">
-                Fournisseurs
-            </h4>
-            <hr>
             <div class="row__datatable">
                 <div class="d-flex">
                     <label for="input-search"></label>
@@ -28,7 +26,11 @@
                 </a>
             </div>
 
-            <table id="table-provider" class="datatable" data-url="{{ path('provider_json') }}">
+            <form id="filters">
+                <input type="hidden" name="archived" data-field="e.archivedAt" data-condition="IS NULL" value="">
+            </form>
+
+            <table id="table-provider" class="datatable" data-url="{{ path('provider_json') }}" data-filters="#filters">
                 <thead>
                 <tr>
                     <th>Nom</th>

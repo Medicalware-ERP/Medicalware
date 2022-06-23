@@ -13,7 +13,7 @@ import Alpine from 'alpinejs';
 
 // start the Stimulus application
 import '../bootstrap';
-
+import {initFormCollection} from "./util/form_collection";
 window.Alpine = Alpine;
 
 Alpine.start();

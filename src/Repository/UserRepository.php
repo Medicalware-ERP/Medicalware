@@ -29,7 +29,40 @@ class UserRepository extends DatatableRepository implements PasswordUpgraderInte
         parent::__construct($registry, User::class);
     }
 
+    /**
+     * @param string $slug
+     * @return User[]
+     */
+    public function findByProfession(string $slug): array
+    {
+        $qb = $this->createQueryBuilder('user');
 
+        $qb
+            ->join('user.profession', 'profession')
+            ->where('profession.slug = :slug')
+            ->setParameter('slug', $slug)
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param string $slug
+     * @return string[]
+     */
+    public function findEmailsByProfession(string $slug): array
+    {
+        $qb = $this->createQueryBuilder('user');
+
+        $qb
+            ->select('user.email')
+            ->join('user.profession', 'profession')
+            ->where('profession.slug = :slug')
+            ->setParameter('slug', $slug)
+        ;
+
+        return $qb->getQuery()->getResult(Doctrine\ORM\AbstractQuery::HYDRATE_SCALAR_COLUMN);
+    }
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */

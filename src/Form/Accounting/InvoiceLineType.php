@@ -3,13 +3,14 @@
 namespace App\Form\Accounting;
 
 use App\Entity\Accounting\InvoiceLine;
+use App\Form\Base\FloatType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Range;
 
 class InvoiceLineType extends AbstractType
 {
@@ -25,14 +26,23 @@ class InvoiceLineType extends AbstractType
             ->add('quantity', IntegerType::class, [
                 'label' => false,
                 'attr' => [
-                    'x-model.number' => 'qty'
-                ]
+                    'x-model.number' => 'qty',
+                    'min' => 0
+                ],
+                'constraints' => [
+                    new NotBlank(message: 'Veuillez saisir une quantité'),
+                    new Range(minMessage: 'Veuillez saisir une valeur supérieur ou égale à 0', min: 0),
+                ],
             ])
-            ->add('price', IntegerType::class, [
+            ->add('price', FloatType::class, [
                 'label' => false,
                 'attr' => [
-                    'x-model.number' => 'price'
-                ]
+                    'x-model.number' => 'price',
+                ],
+                'constraints' => [
+                    new NotBlank(message: 'Veuillez saisir un prix'),
+                    new Range(minMessage: 'Veuillez saisir une valeur supérieur ou égale à 0', min: 0),
+                ],
             ])
         ;
     }

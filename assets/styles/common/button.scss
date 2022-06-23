@@ -3,7 +3,7 @@
   padding: 0.45rem 0.9rem;
   font-size: .9rem;
   color: white;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   column-gap: 10px;
   font-weight: 400;
@@ -13,6 +13,11 @@
   border-radius: 0.15rem;
   box-shadow: 0 2px 6px 0 rgb(23 34 23 / 50%);
   transition: all .15s ease-in-out;
+}
+
+.center-input-submit{
+  margin: auto;
+  display: flex;
 }
 
 .btn-xs {
@@ -26,11 +31,20 @@
   justify-content: center;
 }
 
+.btn-sm {
+  height: 30px;
+}
+
 .btn-primary {
   background-color: var(--color-primary);
 
   &:hover {
     background-color: var(--color-primary-light);
+  }
+
+  &:disabled {
+    background-color: var(--color-primary-light);
+    cursor: default;
   }
 }
 
@@ -40,6 +54,11 @@
   &:hover {
     background-color: var(--color-secondary-light);
   }
+
+  &:disabled {
+    background-color: var(--color-secondary-light);
+    cursor: default;
+  }
 }
 
 .btn-danger {
@@ -47,6 +66,11 @@
 
   &:hover {
     background-color: var(--color-danger-light);
+  }
+
+  &:disabled {
+    background-color: var(--color-danger-light);
+    cursor: default;
   }
 }
 
@@ -56,6 +80,11 @@
   &:hover {
     background-color: var(--color-success-light);
   }
+
+  &:disabled {
+    background-color: var(--color-success-light);
+    cursor: default;
+  }
 }
 
 .btn-warning {
@@ -63,5 +92,84 @@
 
   &:hover {
     background-color: var(--color-warning-light);
+  }
+
+  &:disabled {
+    background-color: var(--color-warning-light);
+    cursor: default;
+  }
+}
+
+.dropdown {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  cursor: initial;
+  border: 1px solid lightblue;
+  position: absolute;
+  align-items: center;
+  width: 100%;
+  border-bottom-left-radius: 5px;
+  line-height: 35px;
+  background-color: var(--color-white);
+}
+
+.dropdown-link {
+  color: #6C757D;
+  cursor: pointer;
+  width: 100%;
+  border-bottom: 1px solid #80808033;
+  &:hover {
+    background-color: #F4F6FB;
+  }
+}
+
+.btn-show {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  font-weight: 500;
+  width:100%;
+  transition:background 0.1s ease-in;
+
+  span{
+    margin: auto auto auto 20px;
+  }
+
+  i,span{
+    color: #6C757D;
+    transition:color 0.1s ease-in;
+  }
+
+  &.active{
+    background:#edf0f7;
+
+    i,span {
+      color:#2401cc;
+    }
+
+    i{
+      transform:rotate(360deg);
+    }
+  }
+
+  i{
+    width:30px;
+    transition:transform 0.5s ease-in-out;
+  }
+
+  &:hover{
+    background:#edf0f7;
+
+    i,span {
+      color:#2401cc;
+    }
+
+    i{
+      transform:rotate(360deg);
+    }
   }
 }

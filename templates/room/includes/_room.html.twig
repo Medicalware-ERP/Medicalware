@@ -1,0 +1,30 @@
+{% extends app.request.query.get('isAjax', false) ? 'layout_empty.html.twig' : 'room/index.html.twig' %}
+
+{% block content %}
+    <div class="row__datatable">
+        <div class="d-flex">
+            <input class="form-input" type="text" placeholder="Chercher ..." id="input-search" name="search"/>
+            <label for="datatable-limit"></label>
+            <select name="limit" id="datatable-limit" class="form-input">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+            </select>
+        </div>
+        <a class="btn btn-success" href="{{ path('app_add_room') }}">
+            <i class="fa fa-plus"></i>
+            Ajouter une salle
+        </a>
+    </div>
+
+    <table id="table-rooms" class="datatable" data-url="{{ path('rooms_json') }}">
+        <thead>
+        <tr>
+            <th>Libellé</th>
+            <th>Capacité</th>
+            <th>Type</th>
+            <th>Détails</th>
+        </tr>
+        </thead>
+    </table>
+{% endblock %}

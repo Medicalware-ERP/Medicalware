@@ -11,7 +11,7 @@
         {% endif %}
     </h4>
     <div class="card">
-        <div class="wrapper">
+        <div class="d-flex justify-content-center">
             {{ form_start(form) }}
             {{ form_rest(form) }}
             <input type="submit" class="btn btn-success" value="{{ user is defined ? "Modifier" : "Ajouter" }}">

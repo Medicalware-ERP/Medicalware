@@ -23,18 +23,30 @@ class DatatableConfigField
     }
 
 
+    private function findClassName(iterable $joins, string &$className): void
+    {
+        /** @var DatatableConfigJoin $join */
+        foreach ($joins as $join) {
+            if ($join->getAlias() === $this->aliasJoinField) {
+                $className = $join->getTargetClassName();
+                break;
+            }
+            if ($join->getChildren()->count() > 0) {
+                $this->findClassName($join->getChildren(), $className);
+            }
+        }
+    }
     /**
      * @throws ReflectionException
      */
     public function isFieldValid(): bool
     {
-        $clasName = $this->datatableConfig->getClassName();
 
-        foreach ($this->datatableConfig->getJoins() as $join) {
-            if ($join->getAlias() === $this->aliasJoinField) {
-                $clasName = $join->getTargetClassName();
-                break;
-            }
+        $clasName = $this->datatableConfig->getClassName();
+        $this->findClassName($this->datatableConfig->getJoins(), $clasName);
+
+        if (!is_string($clasName)) {
+            return false;
         }
 
         $reflectionClass = new ReflectionClass($clasName);

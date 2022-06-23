@@ -1,0 +1,33 @@
+{% extends 'layout_show.html.twig' %}
+
+{% block title %}Stock{% endblock %}
+
+{% block aside_header %}
+    <header class="d-flex" style="align-items: center">
+        <i class="margin-right-10 fa fa-cube"></i>
+        <span class="title">Piece : {{ stock.equipment.reference }}</span>
+    </header>
+{% endblock %}
+
+{% block aside_nav %}
+    <nav class="d-flex" style="flex-direction: column; gap: 20px">
+        <button class="btn-show d-flex align-items-center" data-name="information" data-url="{{ path('stock_show_information', {id: stock.id}) }}">
+            <i class="margin-right-5 fa fa-address-card"></i>
+            <span>Informations</span>
+        </button>
+        <button class="btn-show d-flex align-items-center" data-name="command" data-url="{{ path('stock_show_command', {id: stock.id}) }}">
+            <i class="margin-right-5 fa fa-receipt"></i>
+            <span>Commandes</span>
+        </button>
+        <button class="btn-show d-flex align-items-center" data-name="history" data-url="{{ path('stock_show_history', {id: stock.id}) }}">
+            <i class="margin-right-5 fa fa-history"></i>
+            <span>Historique</span>
+        </button>
+    </nav>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('stock.show') }}
+{% endblock %}
+

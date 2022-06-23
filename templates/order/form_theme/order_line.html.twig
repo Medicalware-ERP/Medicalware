@@ -1,0 +1,46 @@
+{% extends 'form/form_div_layout.html.twig' %}
+
+{% block _order_orderLines_row %}
+    <tbody
+            {% with {attr: attr|merge({
+                'data-prototype': form_row(form.vars.prototype),
+                'data-prototype-name': form.vars.prototype.vars.name,
+                'data-widget-counter': form.children|length,
+                id: form.vars.id,
+            })} %}{{ block('attributes') }}{% endwith %}
+    >
+    {% for formInvoiceLines in form.children %}
+        {{ form_row(formInvoiceLines) }}
+    {% endfor %}
+    </tbody>
+{% endblock %}
+
+{% block _order_orderLines_entry_row %}
+    {% set qty = form.quantity.vars.value| default(0) %}
+    {% set price = form.price.vars.value| default(0) %}
+
+    <tr
+            {% with {attr: row_attr|merge({
+                id: form.vars.id,
+                class: 'order_line'
+            })} %}{{ block('attributes') }}{% endwith %}
+    >
+        <td>{{ form_row(form.equipment, {attr: {class: 'w-100 equipment_select'}}) }}</td>
+        <td>{{ form_row(form.description, {attr: {class: 'w-100'}}) }}</td>
+        <td>{{ form_row(form.quantity, {attr: {class: 'w-100 qty_select'}}) }}</td>
+        <td><span data-price></span>€</td>
+        <td><span data-total></span>€</td>
+        <td>
+            <button
+                    class="btn btn-danger"
+                    data-element-remove="{{ form.vars.id }}"
+                    {% if form.vars.value.id is defined %}
+                        data-element-remove-id="{{ form.vars.value.id }}"
+                    {% endif %}
+                    type="button"
+            >
+                <i class="icon fas fa-times"></i>
+            </button>
+        </td>
+    </tr>
+{% endblock %}

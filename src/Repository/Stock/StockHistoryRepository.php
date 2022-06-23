@@ -1,31 +1,31 @@
 <?php
 
-namespace App\Repository;
+namespace App\Repository\Stock;
 
-use App\Entity\ServiceSpecialisation;
+use App\Entity\Stock\StockHistory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method ServiceSpecialisation|null find($id, $lockMode = null, $lockVersion = null)
- * @method ServiceSpecialisation|null findOneBy(array $criteria, array $orderBy = null)
- * @method ServiceSpecialisation[]    findAll()
- * @method ServiceSpecialisation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method StockHistory|null find($id, $lockMode = null, $lockVersion = null)
+ * @method StockHistory|null findOneBy(array $criteria, array $orderBy = null)
+ * @method StockHistory[]    findAll()
+ * @method StockHistory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ServiceSpecialisationRepository extends ServiceEntityRepository
+class StockHistoryRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, ServiceSpecialisation::class);
+        parent::__construct($registry, StockHistory::class);
     }
 
     /**
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function add(ServiceSpecialisation $entity, bool $flush = true): void
+    public function add(StockHistory $entity, bool $flush = true): void
     {
         $this->_em->persist($entity);
         if ($flush) {
@@ -37,7 +37,7 @@ class ServiceSpecialisationRepository extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function remove(ServiceSpecialisation $entity, bool $flush = true): void
+    public function remove(StockHistory $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);
         if ($flush) {
@@ -46,7 +46,7 @@ class ServiceSpecialisationRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return ServiceSpecialisation[] Returns an array of ServiceSpecialisation objects
+    //  * @return StockHistory[] Returns an array of StockHistory objects
     //  */
     /*
     public function findByExampleField($value)
@@ -63,7 +63,7 @@ class ServiceSpecialisationRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?ServiceSpecialisation
+    public function findOneBySomeField($value): ?StockHistory
     {
         return $this->createQueryBuilder('s')
             ->andWhere('s.exampleField = :val')

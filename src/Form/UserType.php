@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\User;
 use App\Enum\RoleEnum;
 use App\Form\Base\SelectMultipleType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -15,6 +16,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserType extends AbstractType
 {
@@ -23,9 +25,19 @@ class UserType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+
         $builder
             ->add('lastName', TextType::class, [
                 'label' =>  'Nom'
+            ])
+            ->add('gender', ChoiceType::class, [
+                'label' => 'Genre:',
+                'placeholder' => 'Choisir un genre: ',
+                "constraints" => [new NotBlank()],
+                "choices" => [
+                    "M" => "M",
+                    "F" => "F"
+                ]
             ])
             ->add('firstName', TextType::class, [
                 'label' =>  'Prénom'
@@ -46,13 +58,17 @@ class UserType extends AbstractType
             ])
             ->add('address', AddressType::class, [
                 'label' => false
-            ])
-            ->add('profession')
-            ->add('roles', SelectMultipleType::class, [
-                'label'     => 'Rôles',
-                'choices'   => RoleEnum::getChoiceList()
-            ])
-        ;
+            ]);
+
+            if($builder->getData()->getId() == null || $builder->getData()->getProfession()->getId() != "1"){
+                $builder->add('profession')
+                    ->add('roles', SelectMultipleType::class, [
+                        'label'     => 'Rôles',
+                        'choices'   => RoleEnum::getChoiceList(),
+                        'required'  => false
+                    ]);
+            }
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void

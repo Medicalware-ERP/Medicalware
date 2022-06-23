@@ -2,11 +2,16 @@
 
 namespace App\Repository\Stock;
 
+use App\Entity\Stock\Equipment;
 use App\Entity\Stock\Stock;
+use App\Repository\Datatable\DatatableConfigJoin;
+use App\Repository\Datatable\DatatableConfigSearch;
+use App\Repository\Datatable\DatatableRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use ReflectionException;
 
 /**
  * @method Stock|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,18 +19,14 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Stock[]    findAll()
  * @method Stock[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class StockRepository extends ServiceEntityRepository
+class StockRepository extends DatatableRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Stock::class);
     }
 
-    /**
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
-    public function add(Stock $entity, bool $flush = true): void
+     public function add(Stock $entity, bool $flush = true): void
     {
         $this->_em->persist($entity);
         if ($flush) {
@@ -33,11 +34,7 @@ class StockRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
-    public function remove(Stock $entity, bool $flush = true): void
+     public function remove(Stock $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);
         if ($flush) {
@@ -45,32 +42,35 @@ class StockRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return Stock[] Returns an array of Stock objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @throws ReflectionException
+     */
+    public function configureDatableJoin(): array
     {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $equipment = new DatatableConfigJoin('equipment');
 
-    /*
-    public function findOneBySomeField($value): ?Stock
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $equipment->addChildren(new DatatableConfigJoin('provider', className: Equipment::class));
+        $equipment->addChildren(new DatatableConfigJoin('services', className: Equipment::class));
+
+        return [
+            $equipment
+        ];
     }
-    */
+
+    public function configureDatableSearch(): array
+    {
+        return [
+            new DatatableConfigSearch('name', 'provider'),
+            new DatatableConfigSearch('name', 'equipment'),
+            new DatatableConfigSearch('reference', 'equipment'),
+            new DatatableConfigSearch('name', 'services'),
+        ];
+    }
+
+    public function configureDatableColumns(): array
+    {
+        return [
+
+        ];
+    }
 }

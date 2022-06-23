@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Accounting\Invoice;
+use App\Entity\Stock\StockHistory;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -43,17 +44,21 @@ class User extends Person implements UserInterface, PasswordAuthenticatedUserInt
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?DateTimeImmutable $leftAt = null;
 
-    #[ORM\ManyToOne(targetEntity: UserType::class, inversedBy: 'users')]
+    #[ORM\ManyToOne(targetEntity: UserType::class, cascade: ['persist'], inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
     private ?UserType $profession = null;
 
     #[ORM\OneToMany(mappedBy: 'validatedBy', targetEntity: Invoice::class)]
-    private $invoicesValidated;
+    private Collection $invoicesValidated;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: StockHistory::class)]
+    private Collection $stockHistories;
 
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
         $this->invoicesValidated = new ArrayCollection();
+        $this->stockHistories = new ArrayCollection();
     }
 
     public function getEmail(): ?string
@@ -186,6 +191,36 @@ class User extends Person implements UserInterface, PasswordAuthenticatedUserInt
             // set the owning side to null (unless already changed)
             if ($invoicesValidated->getValidatedBy() === $this) {
                 $invoicesValidated->setValidatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, StockHistory>
+     */
+    public function getStockHistories(): Collection
+    {
+        return $this->stockHistories;
+    }
+
+    public function addStockHistory(StockHistory $stockHistory): self
+    {
+        if (!$this->stockHistories->contains($stockHistory)) {
+            $this->stockHistories[] = $stockHistory;
+            $stockHistory->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStockHistory(StockHistory $stockHistory): self
+    {
+        if ($this->stockHistories->removeElement($stockHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($stockHistory->getUser() === $this) {
+                $stockHistory->setUser(null);
             }
         }
 

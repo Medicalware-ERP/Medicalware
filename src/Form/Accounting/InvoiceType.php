@@ -55,22 +55,10 @@ class InvoiceType extends AbstractType
                 'by_reference' => false,
             ]);
 
-        $builder->get('invoiceLines')->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-            /** @var Collection<InvoiceLine> $invoiceLines */
-            $invoiceLines = $event->getData();
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             /** @var Invoice $invoice */
-            $invoice      = $event->getForm()->getParent()->getData();
-
-            $ht = 0;
-            foreach ($invoiceLines as $invoiceLine) {
-                $lineHt = $invoiceLine->getPrice() * $invoiceLine->getQuantity();
-                $invoiceLine->setHt($lineHt);
-                $ht += $lineHt;
-            }
-
-            $invoice->setHt($ht);
-            $invoice->setTtc($ht * 1.2);
-
+            $invoice      =  $event->getData();
+            $invoice->calculate();
         });
     }
 
