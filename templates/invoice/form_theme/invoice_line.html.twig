@@ -32,6 +32,9 @@
         <td>
             <button
                     class="btn btn-danger"
+                    {% if form.vars.value.id is defined %}
+                        data-element-remove-id="{{ form.vars.value.id }}"
+                    {% endif %}
                     data-element-remove="{{ form.vars.id }}"
                     type="button"
             >

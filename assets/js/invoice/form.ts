@@ -1,11 +1,12 @@
 import {initFormCollection} from "../util/form_collection";
-import {$} from "../utils";
+import {$, findInDataset} from "../utils";
+import Routing from "../Routing";
+import axios from "axios";
 
 initFormCollection();
 
 document.addEventListener('collection.element.added', (e: Event) => {
     const tr = (e as CustomEvent).detail.element as HTMLTableRowElement;
-    console.log(tr.querySelector('.qty_element'))
 
     tr.querySelector('.qty_element')?.addEventListener('change', function () {
         initTotalInvoice();
@@ -14,6 +15,10 @@ document.addEventListener('collection.element.added', (e: Event) => {
     tr.querySelector('.price_element')?.addEventListener('change', function () {
         initTotalInvoice();
     });
+});
+
+document.addEventListener('collection.element.removed', (e: Event) => {
+    initTotalInvoice();
 });
 
 
@@ -47,4 +52,33 @@ const initInputListener = () => {
 document.addEventListener('DOMContentLoaded', function () {
     initTotalInvoice();
     initInputListener();
+
+    $('[data-element-remove-id]', (btn: HTMLElement) => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+
+            const addToCollectionBtn = document.querySelector('[data-collection-id]');
+            if (!(addToCollectionBtn instanceof HTMLElement)) {
+                return;
+            }
+
+            const collectionId = findInDataset(addToCollectionBtn, 'collectionId');
+
+            const collection = document.getElementById(collectionId);
+            if (!(collection instanceof HTMLElement)) {
+                throw new Error('Collection not found for id ' + collectionId);
+            }
+
+            let btn = e.currentTarget as HTMLElement;
+            const elementId = findInDataset(btn, 'elementRemove');
+            document.getElementById(elementId)?.remove();
+            let couter = parseInt(findInDataset(collection, 'widgetCounter'));
+            couter--;
+            collection.dataset.widgetCounter = couter.toString();
+
+            const  id =  findInDataset(btn, 'elementRemoveId');
+            const url = Routing.generate('invoice_delete_line', {id})
+            axios.get(url).then(() => initTotalInvoice());
+        });
+    });
 });

@@ -4,9 +4,11 @@ namespace App\Controller\Accounting;
 
 use App\Controller\BaseController;
 use App\Entity\Accounting\Invoice;
+use App\Entity\Accounting\InvoiceLine;
 use App\Entity\Accounting\InvoiceState;
 use App\Enum\Accounting\InvoiceStateEnum;
 use App\Form\Accounting\InvoiceType;
+use App\Repository\Accounting\InvoiceLineRepository;
 use App\Repository\Accounting\InvoiceRepository;
 use App\Service\Invoice\InvoiceDataFormatter;
 use App\Workflow\InvoiceStateWorkflow;
@@ -16,6 +18,7 @@ use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -118,5 +121,14 @@ class InvoiceController extends BaseController
         $content = $pdf->getOutputFromHtml($html);
 
         return new PdfResponse($content, 'facture_'.$invoice->getDate()->format('d_m_Y').".pdf");
+    }
+
+    #[Route('/invoice/delete/{id}/line', name: 'invoice_delete_line')]
+    public function deleteLine(InvoiceLine $order, InvoiceLineRepository $repository): JsonResponse
+    {
+        $repository->remove($order);
+
+        return $this->json('ok');
+
     }
 }
