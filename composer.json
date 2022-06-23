@@ -100,6 +100,13 @@
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
             "ckeditor:install": "symfony-cmd"
         },
+        "compile": [
+            "php bin/console doctrine:database:drop --if-exists -f",
+            "php bin/console doctrine:database:create",
+            "php bin/console doctrine:schema:update -f",
+            "php bin/console doctrine:fixtureload -n",
+            "php bin/console app:data:init"
+        ],
         "post-install-cmd": [
             "@auto-scripts"
         ],
