@@ -34,7 +34,8 @@ class OrderLineType extends AbstractType
                 'label' => false,
                 'choice_attr' => function(Equipment $choice, $key, $value) {
                     return [
-                        'data-provider-id' => $choice->getProvider()->getId()
+                        'data-provider-id' => $choice->getProvider()->getId(),
+                        'data-price' => $choice->getPrice(),
                     ];
                 },
             ])
@@ -45,7 +46,6 @@ class OrderLineType extends AbstractType
             ->add('quantity', IntegerType::class, [
                 'label' => false,
                 'attr' => [
-                    'x-model.number' => 'qty',
                     'min' => 0
                 ],
                 'constraints' => [
@@ -56,7 +56,7 @@ class OrderLineType extends AbstractType
             ->add('price', FloatType::class, [
                 'label' => false,
                 'attr' => [
-                    'x-model.number' => 'price',
+
                 ],
                 'constraints' => [
                     new NotBlank(message: 'Veuillez saisir un prix'),
