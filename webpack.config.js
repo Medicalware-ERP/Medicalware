@@ -41,7 +41,6 @@ Encore
     .addEntry('order.datatable', './assets/js/order/datatable.ts')
     .addEntry('order.form', './assets/js/order/form.ts')
     .addEntry('service.index', './assets/js/service/index.ts')
-    .addEntry('doctor.datatable', './assets/js/doctor/datatable.ts')
 
 
     .addStyleEntry('room.show.style', './assets/styles/room/show.scss')

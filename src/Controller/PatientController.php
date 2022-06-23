@@ -18,6 +18,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use Knp\Snappy\Pdf;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,6 +27,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class PatientController extends BaseController
 {
@@ -195,6 +198,16 @@ class PatientController extends BaseController
     {
         $medicalFileLineRepository->remove($medicalFileLine);
         return $this->json("Ok");
+    }
+
+    #[Route('/medicalFile/{id}/export/pdf', name: 'medical_file_export_pdf')]
+    public function exportPdf(MedicalFile $medicalFile, Pdf $pdf, SluggerInterface $slugger): PdfResponse
+    {
+        $html    = $this->renderView('patient/includes/_pdf.html.twig', ['medicalFile' => $medicalFile]);
+        $content = $pdf->getOutputFromHtml($html);
+        $fileName = $slugger->slug("Dossier médical de ". $medicalFile->getPatient()->getLastName() . " " . $medicalFile->getPatient()->getFirstName());
+
+        return new PdfResponse($content, $fileName);
     }
 
 }
