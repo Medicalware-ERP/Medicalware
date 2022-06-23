@@ -1,15 +1,18 @@
 import {$, findInDataset} from "../utils";
 import {swaleWarning, swaleDangerAndRedirect} from "../util/swal";
 import Routing from "../Routing";
+import {DateSelectArg} from '@fullcalendar/common';
 import {Calendar} from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import frLocale from '@fullcalendar/core/locales/fr';
-import interactionPlugin, { Draggable } from '@fullcalendar/interaction';
+import interactionPlugin, {DateClickArg, Draggable} from '@fullcalendar/interaction';
 import generateDatable from "../datatable/datatableGeneric";
 import axios from "axios";
 import {loadCurrentTab} from "../layout/layout_show";
+import {openAjaxModal} from "../util/modal";
+import {importSelect2} from "../app";
 
 const initShow = () => {
     const callback = (e: Event) => {
@@ -35,13 +38,14 @@ document.addEventListener('layout.room-information.loaded', () => {
 const initRoomPlanning = () => {
     let showRoomCalendar: Calendar;
     const calendarElement: HTMLElement | null = document.getElementById("room-show-planning");
+    const roomId = findInDataset($("#room-show-planning") as HTMLElement, "roomId");
 
     if (!(!!calendarElement))
         return;
 
     const url = Routing.generate("event_resource_id",{
         class : "App\\Entity\\Room\\Room",
-        id: findInDataset($("#room-show-planning") as HTMLElement, "roomId")
+        id: roomId
     })
 
     showRoomCalendar = new Calendar(calendarElement, {
@@ -72,11 +76,15 @@ const initRoomPlanning = () => {
         },
         eventDrop: info => editEventDate(info),
         eventResize: info => editEventDate(info),
-        dateClick: info => console.error("TODO, envoyé sur formulaire modal, et pre remplir info de date et allDays", info),
-        select: info => console.error("TODO, envoyé sur formulaire modal, et pre remplir info de date et allDays", info)
+        dateClick: info => openPlanningFormModal(info, roomId),
+        select: info => openPlanningFormModal(info, roomId)
     });
 
     showRoomCalendar.render();
+
+    document.querySelector("#btn-room-planning-add")?.addEventListener("click", () => {
+        openPlanningFormModal(null, roomId);
+    });
 }
 
 document.addEventListener('layout.room-planning.loaded', () => {
@@ -92,7 +100,7 @@ const editEventDate = (info: any) => {
     // TODO : toLocaleString() convertie le UTC en +2, il faut empêcher ça
     const dateStart = info?.event?.start;
     const dateEnd = info?.event?.end;
-    const text = `Vous allez déplacer l'évènement sur la période du ${dateStart?.toLocaleString()} au ${dateEnd?.toLocaleString()}`;
+    const text = `Vous allez déplacer l'évènement sur la période du ${dateStart?.toLocaleString('fr-FR', { timeZone: 'UTC' })} au ${dateEnd?.toLocaleString('fr-FR', { timeZone: 'UTC' })}`;
 
     swaleWarning(text).then(res => {
         if (res.isConfirmed) {
@@ -110,3 +118,44 @@ const editEventDate = (info: any) => {
         }
     });
 }
+
+const openPlanningFormModal = (info: DateClickArg | DateSelectArg | null, roomId: string, eventId: string | null = null) =>
+{
+    // S'il y a un eventId, il s'agit d'une édition
+    if (!!eventId) {
+        // TODO : Édition d'un évènement
+    } else {
+        //Sinon, d'un ajout
+        let allDay: boolean = false;
+        let startAt: string = "";
+        let endAt: string = "";
+        console.log(info, allDay)
+        if (info !== null) {
+            allDay = info.allDay;
+
+            // Si c'est DateClickArg
+            if ("dateStr" in info && info.dateStr) {
+                startAt = info.dateStr;
+                endAt = info.dateStr;
+            } else if ("startStr" in info && info.startStr) {
+                // Sinon si c'est DateSelectArg
+                startAt = info.startStr;
+                endAt = info.endStr;
+            }
+        }
+
+        const url = Routing.generate("event_add",{
+            class : "App\\Entity\\Room\\Room",
+            id: roomId,
+            allDay: allDay,
+            startAt: startAt,
+            endAt: endAt
+        });
+
+        openAjaxModal(url, `Ajouter un évènement à la salle #${roomId}`);
+    }
+}
+
+document.addEventListener("modal.loaded", () => {
+    importSelect2(true);
+})

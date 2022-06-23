@@ -34,7 +34,12 @@ export const openAjaxModal = (url: string, title: string = "Header modal", id : 
     }
     modalTitle.innerHTML = title.toUpperCase();
     modalBody.innerHTML = simpleLoaderModal();
-    axios.get(url).then(res => {
+    axios.get(url)
+        .then(res => {
         $(modalBody).html(res.data)
-    });
+        })
+        .then(res => {
+            const event = new CustomEvent('modal.loaded');
+            document.dispatchEvent(event);
+        });
 }

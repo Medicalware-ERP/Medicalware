@@ -25,11 +25,22 @@ class EventController extends BaseController
         $event = new Event();
         $class = $request->query->get("class");
         $id = $request->query->get("id");
-
+        $allDay = $request->query->get("allDay") == "true";
+        $startAt = $request->query->get("startAt");
+        $endAt = $request->query->get("endAt");
         $event->setResourceClass($class);
         $event->setResourceId($id);
+        $event->setAllDay($allDay);
+        $event->setStartAt(new \DateTime($startAt));
 
-        $form = $this->createForm(EventType::class, $event);
+        if ($endAt != null )
+            $endAt = (new \DateTime($endAt))->modify("-1 day");
+        else
+            $endAt = (new \DateTime());
+
+        $event->setEndAt($endAt);
+
+        $form = $this->createForm(EventType::class, $event, [ "action" => $request->getUri() ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -40,7 +51,7 @@ class EventController extends BaseController
             return $this->redirect($referer);
         }
 
-        return $this->renderForm("event/form.html.twig", [
+        return $this->renderForm("event/_form.html.twig", [
             "form" => $form
         ]);
     }
