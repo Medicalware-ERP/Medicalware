@@ -6,6 +6,8 @@ use App\Repository\Planning\EventRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints\Range;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
@@ -13,35 +15,51 @@ class Event
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups("main")]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups("main")]
     private ?string $title = null;
 
     #[ORM\Column(type: 'datetime')]
+    #[Groups("main")]
+    #[Range(maxMessage: "La date de début doit être inférieur à la date de fin", maxPropertyPath: "endAt")]
     private ?\DateTimeInterface $startAt = null;
 
     #[ORM\Column(type: 'datetime')]
+    #[Groups("main")]
+    #[Range(minMessage: "La date de fin doit être supérieur à la date de début", minPropertyPath: "startAt")]
     private ?\DateTimeInterface $endAt = null;
 
     #[ORM\Column(type: 'integer')]
+    #[Groups("main")]
     private ?int $resourceId = null;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups("main")]
     private ?string $resourceClass = null;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups("main")]
     private ?string $color = null;
 
-    #[ORM\OneToMany(mappedBy: 'event', targetEntity: Participant::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'event', targetEntity: Participant::class, orphanRemoval: true, cascade: ["persist", "remove"] )]
+    #[Groups("main")]
     private Collection $attendees;
 
     #[ORM\ManyToOne(targetEntity: EventType::class)]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups("main")]
     private $type;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups("main")]
     private $description;
+
+    #[ORM\Column(type: 'boolean')]
+    #[Groups("main")]
+    private bool $allDay = false;
 
     public function __construct()
     {
@@ -175,6 +193,18 @@ class Event
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getAllDay(): ?bool
+    {
+        return $this->allDay;
+    }
+
+    public function setAllDay(bool $allDay): self
+    {
+        $this->allDay = $allDay;
 
         return $this;
     }

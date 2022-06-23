@@ -1,11 +1,15 @@
 import {$, findInDataset} from "../utils";
-import { swaleDangerAndRedirect } from "../util/swal";
+import {swaleWarning, swaleDangerAndRedirect} from "../util/swal";
 import Routing from "../Routing";
 import {Calendar} from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import frLocale from '@fullcalendar/core/locales/fr';
+import interactionPlugin, { Draggable } from '@fullcalendar/interaction';
+import generateDatable from "../datatable/datatableGeneric";
+import axios from "axios";
+import {loadCurrentTab} from "../layout/layout_show";
 
 const initShow = () => {
     const callback = (e: Event) => {
@@ -41,19 +45,24 @@ const initRoomPlanning = () => {
     })
 
     showRoomCalendar = new Calendar(calendarElement, {
-        plugins: [ dayGridPlugin, timeGridPlugin, listPlugin ],
+        plugins: [ dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin ],
         initialView: 'dayGridMonth',
         headerToolbar: {
             left: 'prev,next today',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,listWeek'
         },
+        editable: true,
+        dayMaxEvents: true, // when too many events in a day, show the popover
+        selectable: true,
         locale: frLocale,
         timeZone: "UTC",
+        events: { url: url },
         eventDataTransform: (data) => {
             // On transforme nos datas en objet que le calendrier peux traiter
             return {
-                allDay: false,
+                id: data.id,
+                allDay: !!data.allDay,
                 start: data.startAt,
                 end: data.endAt,
                 title: data.title,
@@ -61,7 +70,10 @@ const initRoomPlanning = () => {
                 backgroundColor: data.color
             };
         },
-        events: { url: url }
+        eventDrop: info => editEventDate(info),
+        eventResize: info => editEventDate(info),
+        dateClick: info => console.error("TODO, envoyé sur formulaire modal, et pre remplir info de date et allDays", info),
+        select: info => console.error("TODO, envoyé sur formulaire modal, et pre remplir info de date et allDays", info)
     });
 
     showRoomCalendar.render();
@@ -75,3 +87,26 @@ document.addEventListener('DOMContentLoaded', () => {
     initShow();
     initRoomPlanning();
 });
+
+const editEventDate = (info: any) => {
+    // TODO : toLocaleString() convertie le UTC en +2, il faut empêcher ça
+    const dateStart = info?.event?.start;
+    const dateEnd = info?.event?.end;
+    const text = `Vous allez déplacer l'évènement sur la période du ${dateStart?.toLocaleString()} au ${dateEnd?.toLocaleString()}`;
+
+    swaleWarning(text).then(res => {
+        if (res.isConfirmed) {
+
+            const url = Routing.generate("event_edit_time", {
+                id: info?.event?.id,
+                startAt: dateStart?.toISOString(),
+                endAt: dateEnd?.toISOString()
+            });
+
+            axios.get(url).then();
+
+        } else {
+            info.revert();
+        }
+    });
+}

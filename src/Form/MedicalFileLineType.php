@@ -23,11 +23,15 @@ class MedicalFileLineType extends AbstractType
             ->add('startDate', DateTimeType::class, [
                 'label' => false,
                 'widget' => 'single_text',
+                'error_bubbling' => true,
                 'input_format' => 'yyyy-MM-dd  HH:mm:ss'
             ])
             ->add('endDate', DateTimeType::class, [
                 'label' => false,
-                'widget' => "single_text"
+                'error_bubbling' => true,
+                'compound' => false,
+                'widget' => "single_text",
+                'input_format' => 'yyyy-MM-dd  HH:mm:ss'
             ])
             ->add('doctor', EntityType::class, [
                 'label' => false,
