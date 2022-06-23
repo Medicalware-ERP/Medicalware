@@ -1,7 +1,14 @@
 {% extends app.request.query.get('isAjax', false) ? 'layout_empty.html.twig' : 'room/show.html.twig' %}
 
 {% block content %}
+    <div class="d-flex flex-column gap-10">
+        <div class="d-flex justify-content-end">
+            <a class="btn btn-success" href="{{ path('event_add', { class: "App\\Entity\\Room\\Room", id: room.id }) }}">
+                <i class="fa fa-plus"></i>
+                Ajouter un évènement
+            </a>
+        </div>
 
-    <div id="room-show-planning" data-room-id="{{ room.id }}"></div>
-
+        <div id="room-show-planning" data-room-id="{{ room.id }}"></div>
+    </div>
 {% endblock %}

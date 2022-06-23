@@ -17,11 +17,13 @@ class InvoiceTwigExtension extends AbstractExtension
 
     public function translateInvoiceWorkflow(string $transition): string
     {
+        dump($transition);
        return match ($transition) {
            InvoiceStateWorkflow::TO_VALIDATE => 'A valider',
            InvoiceStateWorkflow::VALIDATE   => 'Valider',
            InvoiceStateWorkflow::REJECT     => 'Refusé',
            InvoiceStateWorkflow::PAYED      => 'Payé',
+           InvoiceStateWorkflow::TO_DRAFT   => 'Brouillon',
         };
     }
 }

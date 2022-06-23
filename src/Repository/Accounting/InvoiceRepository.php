@@ -51,7 +51,9 @@ class InvoiceRepository extends DatatableRepository
     {
         return [
             new DatatableConfigSearch('reference'),
-            new DatatableConfigSearch('name', 'patient')
+            new DatatableConfigSearch('name', 'patient'),
+            new DatatableConfigSearch('firstName', 'patient'),
+            new DatatableConfigSearch('lastName', 'patient')
         ];
     }
 

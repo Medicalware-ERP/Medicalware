@@ -45,11 +45,8 @@ class DatatableConfigField
         $clasName = $this->datatableConfig->getClassName();
         $this->findClassName($this->datatableConfig->getJoins(), $clasName);
 
-        foreach ($this->datatableConfig->getJoins() as $join) {
-            if ($join->getAlias() === $this->aliasJoinField) {
-                $clasName = $join->getTargetClassName();
-                break;
-            }
+        if (!is_string($clasName)) {
+            return false;
         }
 
         $reflectionClass = new ReflectionClass($clasName);

@@ -13,5 +13,7 @@ class OrderStateWorkflow
     public const VALIDATE       = 'validate';
     public const REJECT         = 'reject';
     public const DELIVERED      = 'delivered';
+    public const TO_DRAFT       = 'to_draft';
+
 
 }

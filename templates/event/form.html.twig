@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Événement{% endblock %}
+
+{% block body %}
+    <div id="form-event" class="card">
+        {{ form_start(form) }}
+            <div id="form-event-body">
+                <div class="d-flex gap-10">
+                    <div class="column">
+                        {{ form_row(form.title) }}
+
+                        {{ form_row(form.startAt) }}
+
+                        {{ form_row(form.attendees) }}
+                    </div>
+
+                    <div class="column">
+                        {{ form_row(form.type) }}
+
+                        {{ form_row(form.endAt) }}
+
+                        {{ form_row(form.color) }}
+                    </div>
+                </div>
+
+
+            <div class="d-flex flex-column" style="gap: 10px;">
+                {{ form_row(form.description) }}
+            </div>
+
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <input type="submit" class="btn btn-success" value="Enregistrer">
+        </div>
+    {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

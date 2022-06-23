@@ -48,9 +48,9 @@ class StockRepository extends DatatableRepository
     public function configureDatableJoin(): array
     {
         $equipment = new DatatableConfigJoin('equipment');
-        $equipment
-            ->addChildren(new DatatableConfigJoin('provider', className: Equipment::class))
-        ;
+
+        $equipment->addChildren(new DatatableConfigJoin('provider', className: Equipment::class));
+        $equipment->addChildren(new DatatableConfigJoin('services', className: Equipment::class));
 
         return [
             $equipment
@@ -62,6 +62,8 @@ class StockRepository extends DatatableRepository
         return [
             new DatatableConfigSearch('name', 'provider'),
             new DatatableConfigSearch('name', 'equipment'),
+            new DatatableConfigSearch('reference', 'equipment'),
+            new DatatableConfigSearch('name', 'services'),
         ];
     }
 

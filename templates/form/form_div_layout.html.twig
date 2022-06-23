@@ -185,6 +185,11 @@
     {{ block('form_widget_simple') }}
 {%- endblock integer_widget -%}
 
+{%- block float_widget -%}
+    {%- set type = type|default('number') -%}
+    {{ block('form_widget_simple') }}
+{%- endblock float_widget -%}
+
 {%- block money_widget -%}
     {{ money_pattern|form_encode_currency(block('form_widget_simple')) }}
 {%- endblock money_widget -%}

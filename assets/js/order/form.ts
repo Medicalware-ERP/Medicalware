@@ -1,5 +1,7 @@
 import {initFormCollection} from "../util/form_collection";
 import {$, findInDataset} from "../utils";
+import Routing from "../Routing";
+import axios from "axios";
 
 initFormCollection();
 
@@ -39,6 +41,35 @@ document.addEventListener('collection.element.added', (e: Event) => {
 
 document.addEventListener('DOMContentLoaded', (e: Event) => {
     initEquipmentSelect(false);
+
+    $('[data-element-remove-id]', (btn: HTMLElement) => {
+        btn.addEventListener('click', e => {
+            e.stopPropagation();
+
+            const addToCollectionBtn = document.querySelector('[data-collection-id]');
+            if (!(addToCollectionBtn instanceof HTMLElement)) {
+                return;
+            }
+
+            const collectionId = findInDataset(addToCollectionBtn, 'collectionId');
+
+            const collection = document.getElementById(collectionId);
+            if (!(collection instanceof HTMLElement)) {
+                throw new Error('Collection not found for id ' + collectionId);
+            }
+
+            let btn = e.currentTarget as HTMLElement;
+            const elementId = findInDataset(btn, 'elementRemove');
+            document.getElementById(elementId)?.remove();
+            let couter = parseInt(findInDataset(collection, 'widgetCounter'));
+            couter--;
+            collection.dataset.widgetCounter = couter.toString();
+
+            const  id =  findInDataset(btn, 'elementRemoveId');
+            const url = Routing.generate('order_delete_line', {id})
+            axios.get(url).then(r => r);
+        });
+    })
 });
 
 

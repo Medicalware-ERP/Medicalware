@@ -4,6 +4,7 @@ namespace App\Form\Accounting;
 
 use App\Entity\Accounting\OrderLine;
 use App\Entity\Stock\Equipment;
+use App\Form\Base\FloatType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -52,11 +53,10 @@ class OrderLineType extends AbstractType
                     new Range(minMessage: 'Veuillez saisir une valeur supérieur ou égale à 0', min: 0),
                 ],
             ])
-            ->add('price', IntegerType::class, [
+            ->add('price', FloatType::class, [
                 'label' => false,
                 'attr' => [
                     'x-model.number' => 'price',
-                    'min' => 0
                 ],
                 'constraints' => [
                     new NotBlank(message: 'Veuillez saisir un prix'),

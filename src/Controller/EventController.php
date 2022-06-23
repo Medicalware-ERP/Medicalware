@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Planning\Event;
+use App\Form\EventType;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Util\Json;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,32 @@ class EventController extends BaseController
 {
     public function __construct(private readonly EntityManagerInterface $manager)
     {
+    }
+
+    #[Route('/event/add', name: 'event_add')]
+    public function add(Request $request): Response
+    {
+        $event = new Event();
+        $class = $request->query->get("class");
+        $id = $request->query->get("id");
+
+        $event->setResourceClass($class);
+        $event->setResourceId($id);
+
+        $form = $this->createForm(EventType::class, $event);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->manager->persist($event);
+            $this->manager->flush();
+
+            $referer = $request->headers->get('referer');
+            return $this->redirect($referer);
+        }
+
+        return $this->renderForm("event/form.html.twig", [
+            "form" => $form
+        ]);
     }
 
     // Retourne les évènements lié à un type de ressource (Ex: Les events des Rooms)

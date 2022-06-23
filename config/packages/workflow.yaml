@@ -27,6 +27,9 @@ framework:
             payed:
               from: validated
               to: payed
+            to_draft:
+              from: refused
+              to: draft
       order_validation:
         type: 'state_machine'
         marking_store:
@@ -54,3 +57,6 @@ framework:
           delivered:
             from: validated
             to: delivery
+          to_draft:
+            from: refused
+            to: draft

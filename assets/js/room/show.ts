@@ -32,13 +32,13 @@ const initRoomPlanning = () => {
     let showRoomCalendar: Calendar;
     const calendarElement: HTMLElement | null = document.getElementById("room-show-planning");
 
-    const url = Routing.generate("event_resource_id",{
-        class : "App\\Entity\\Room\\RoomType",
-        id: findInDataset($("#room-show-planning") as HTMLElement, "roomId")
-    });
-
     if (!(!!calendarElement))
         return;
+
+    const url = Routing.generate("event_resource_id",{
+        class : "App\\Entity\\Room\\Room",
+        id: findInDataset($("#room-show-planning") as HTMLElement, "roomId")
+    })
 
     showRoomCalendar = new Calendar(calendarElement, {
         plugins: [ dayGridPlugin, timeGridPlugin, listPlugin ],

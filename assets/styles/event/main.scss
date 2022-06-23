@@ -1,0 +1,20 @@
+#form-event {
+    #form-event-body {
+      display: flex;
+      flex-direction: column;
+      row-gap: 1em;
+      width: 50%;
+
+      .column {
+        display: flex;
+        flex-direction: column;
+        row-gap: 1em;
+        width: 50%;
+
+        input, select, .select2-selection {
+          width: 100%;
+          min-height: 41.38px; /* tout les inputs à la même hauteur */
+        }
+      }
+    }
+}
