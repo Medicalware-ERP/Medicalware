@@ -62,7 +62,6 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
 
             $date = $faker->dateTimeBetween('-1 years');
             $order
-                ->setReference('#'.uniqid())
                 ->setDeliveryPlannedDate($date)
                 ->setState($state)
                 ->setTva($tva)

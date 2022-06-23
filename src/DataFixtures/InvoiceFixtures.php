@@ -45,6 +45,7 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
                 $invoiceLine = new InvoiceLine();
 
                 $invoiceLine
+                    ->setReference($faker->paragraph(1))
                     ->setDescription($faker->paragraph(1))
                     ->setPrice($faker->numberBetween(1, 999))
                     ->setQuantity($faker->numberBetween(1, 10))
@@ -55,7 +56,6 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
 
 
             $invoice
-                ->setReference('#'.uniqid())
                 ->setDate($faker->dateTimeBetween('-1 years'))
                 ->setState($state)
                 ->setTva($tva)

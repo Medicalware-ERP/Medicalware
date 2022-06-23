@@ -57,7 +57,7 @@ class Invoice
     private ?string $comment = null;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
-    private ?string $reference = null;
+    private ?string $reference;
 
     private string $workflowState = 'draft';
 
