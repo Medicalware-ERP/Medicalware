@@ -11,6 +11,7 @@ use App\Entity\User;
 use App\Form\Base\EditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -56,9 +57,6 @@ class EventType extends AbstractType
                     "class" => "d-block margin-bottom-5"
                 ]
             ])
-            ->add('color', ColorType::class,[
-                "label" => "Couleur"
-            ])
             ->add('attendees', SelectMultipleType::class, [
                 "label" => "Participants",
                 "required" => false,
@@ -66,7 +64,17 @@ class EventType extends AbstractType
                 "mapped" => false,
                 "choice_label" => function($a) { return $a; }
             ])
+            ->add('allDay', CheckboxType::class, [
+                "label" => "Toute la journée",
+                "required" => false
+            ])
         ;
+
+        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $formEvents) {
+            /** @var Event $event */
+            $event = $formEvents->getData();
+            $event->setColor($event->getType()->getColor());
+        });
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $formEvents) {
             /** @var Event $event */
