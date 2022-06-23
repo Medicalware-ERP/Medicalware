@@ -2,21 +2,36 @@
 
 namespace App\Form;
 
+use App\Entity\Patient;
 use App\Entity\Planning\Event;
 use App\Entity\Planning\Participant;
+use App\Form\Base\SelectMultipleType;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\User;
 use App\Form\Base\EditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EventType extends AbstractType
 {
+    public function __construct(private readonly EntityManagerInterface $manager)
+    {
+
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $choices = $this->manager->getRepository(User::class)->findAll();
+        $choices = array_merge($choices, $this->manager->getRepository(Patient::class)->findAll());
+
         $builder
             ->add('title', TextType::class,[
                 "label" => "Titre"
@@ -44,13 +59,28 @@ class EventType extends AbstractType
             ->add('color', ColorType::class,[
                 "label" => "Couleur"
             ])
-            ->add('attendees', EntityType::class, [
+            ->add('attendees', SelectMultipleType::class, [
                 "label" => "Participants",
-                "class" => Participant::class,
-                "multiple" => true,
-                "required" => false
+                "required" => false,
+                "choices" => $choices,
+                "mapped" => false,
+                "choice_label" => function($a) { return $a; }
             ])
         ;
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $formEvents) {
+            /** @var Event $event */
+            $event = $formEvents->getData();
+            $formData = $formEvents->getForm();
+
+            foreach ($formData->get("attendees")->getData() as $participant) {
+                $attendee = new Participant();
+                $attendee->setResourceId($participant->getId());
+                $attendee->setResourceClass($participant::class);
+
+                $event->addAttendee($attendee);
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

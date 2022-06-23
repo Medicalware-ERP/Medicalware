@@ -32,3 +32,8 @@ services:
     App\Command\DataInitCommand:
         arguments:
             - !tagged 'app.enums'
+
+    app.participant.subscriber:
+        class: "App\\EventSubscriber\\ParticipantSubscriber"
+        tags:
+            - { name: "doctrine.orm.entity_listener", entity: "App\\Entity\\Planning\\Participant", event: "postLoad", lazy: true }
