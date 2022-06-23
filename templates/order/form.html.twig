@@ -51,7 +51,7 @@
                 {{ form_row(form.orderLines) }}
                 <tfoot>
                 <tr>
-                    <td colspan="6">
+                    <td colspan="5">
                         <button
                                 class="btn btn-success"
                                 data-collection-action="addElementToCollection"
@@ -61,6 +61,9 @@
                             <i class="icon fas fa-plus"></i>
                             Ajouter
                         </button>
+                    </td>
+                    <td>
+                       <span data-total-lines></span> €
                     </td>
                 </tr>
                 </tfoot>

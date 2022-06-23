@@ -24,6 +24,17 @@ const initTr = (tr : HTMLTableRowElement) => {
         const total = qty * parseInt(price);
         spanPrice.innerHTML = price;
         spanTotal.innerHTML = total.toString()
+
+        const orderTotalSpan = document.querySelector('[data-total-lines]') as HTMLElement;
+        const spanTotalLines = document.querySelectorAll('span[data-total]');
+
+        let orderTotal = 0;
+
+        spanTotalLines.forEach(span => {
+            orderTotal += parseInt(span.innerHTML);
+        });
+
+        orderTotalSpan.innerHTML = orderTotal.toString();
     };
 
     select.addEventListener('change', callback);
@@ -64,8 +75,22 @@ document.addEventListener('collection.element.added', (e: Event) => {
     initEquipmentSelect(true, tr);
 });
 
+const initListener = () => {
+    $('.order_line', (tr: HTMLTableRowElement) => {
+        initTr(tr);
+    });
+};
+
+document.addEventListener('collection.element.removed', (e: Event) => {
+    initListener();
+});
+
 document.addEventListener('DOMContentLoaded', (e: Event) => {
     initEquipmentSelect(false);
+
+
+
+    initListener();
 
     $('[data-element-remove-id]', (btn: HTMLElement) => {
         btn.addEventListener('click', e => {
@@ -92,13 +117,11 @@ document.addEventListener('DOMContentLoaded', (e: Event) => {
 
             const  id =  findInDataset(btn, 'elementRemoveId');
             const url = Routing.generate('order_delete_line', {id})
-            axios.get(url).then(r => r);
+            axios.get(url).then(() => initListener());
         });
     });
 
     provider?.addEventListener('change', () => initEquipmentSelect());
 
-    $('.order_line', (tr: HTMLTableRowElement) => {
-        initTr(tr);
-    });
+
 });

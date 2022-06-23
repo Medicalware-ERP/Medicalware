@@ -26,12 +26,15 @@
     >
         <td>{{ form_row(form.reference, {attr: {class: 'w-100'}}) }}</td>
         <td>{{ form_row(form.description, {attr: {class: 'w-100'}}) }}</td>
-        <td>{{ form_row(form.quantity, {attr: {class: 'w-100'}}) }}</td>
-        <td>{{ form_row(form.price, {attr: {class: 'w-100'}}) }}</td>
-        <td><span x-text="total.toFixed(2)"></span>€</td>
+        <td>{{ form_row(form.quantity, {attr: {class: 'w-100 qty_element'}}) }}</td>
+        <td>{{ form_row(form.price, {attr: {class: 'w-100 price_element'}}) }}</td>
+        <td><span data-total x-text="total.toFixed(2)"></span>€</td>
         <td>
             <button
                     class="btn btn-danger"
+                    {% if form.vars.value.id is defined %}
+                        data-element-remove-id="{{ form.vars.value.id }}"
+                    {% endif %}
                     data-element-remove="{{ form.vars.id }}"
                     type="button"
             >

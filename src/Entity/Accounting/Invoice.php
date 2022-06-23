@@ -11,8 +11,10 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: InvoiceRepository::class)]
+#[UniqueEntity('reference')]
 class Invoice
 {
     #[ORM\Id]
@@ -54,13 +56,14 @@ class Invoice
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $comment = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private ?string $reference = null;
 
     private string $workflowState = 'draft';
 
     public function __construct()
     {
+        $this->reference = '#'.uniqid();
         $this->date         = new DateTime();
         $this->invoiceLines = new ArrayCollection();
     }

@@ -32,6 +32,8 @@ export const initFormCollection = () => {
             let btn = e.currentTarget as HTMLElement;
             const elementId = findInDataset(btn, 'elementRemove');
             document.getElementById(elementId)?.remove();
+            const event = new CustomEvent('collection.element.removed');
+            document.dispatchEvent(event);
             let couter = parseInt(findInDataset(collection, 'widgetCounter'));
             couter--;
             collection.dataset.widgetCounter = couter.toString();

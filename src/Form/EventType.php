@@ -74,6 +74,19 @@ class EventType extends AbstractType
             /** @var Event $event */
             $event = $formEvents->getData();
             $event->setColor($event->getType()->getColor());
+
+            /** @var \DateTime $startAt */
+            $startAt = $event->getStartAt();
+
+            /** @var \DateTime $endAt */
+            $endAt = $event->getEndAt();
+
+            // Si le allDay est vrai, on set le temps à minuit et +1j pour le dernier jour
+            if ($event->getAllDay())
+            {
+                $event->setStartAt($startAt->setTime(0, 0 ,0));
+                $event->setEndAt($endAt->setTime(0, 0 ,0)->modify("+1 day"));
+            }
         });
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $formEvents) {

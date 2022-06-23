@@ -54,6 +54,7 @@ const initRoomPlanning = () => {
         },
         editable: true,
         dayMaxEvents: true, // when too many events in a day, show the popover
+        selectable: true,
         locale: frLocale,
         timeZone: "UTC",
         events: { url: url },
@@ -70,7 +71,9 @@ const initRoomPlanning = () => {
             };
         },
         eventDrop: info => editEventDate(info),
-        eventResize: info => editEventDate(info)
+        eventResize: info => editEventDate(info),
+        dateClick: info => console.error("TODO, envoyé sur formulaire modal, et pre remplir info de date et allDays", info),
+        select: info => console.error("TODO, envoyé sur formulaire modal, et pre remplir info de date et allDays", info)
     });
 
     showRoomCalendar.render();
