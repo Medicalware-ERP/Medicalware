@@ -35,11 +35,11 @@
                     </div>
                     <div class="profile-right">
                         <span class="profile-username">{{ app.user.firstName ~ " " ~ app.user.lastName }}</span>
-                        <small class="profile-role">{{ app.user.profession }}</small>
+                        <small title="{{ app.user.profession }}" class="profile-role">{{ app.user.profession }}</small>
                     </div>
                     <div class="sub-menu-profile">
                         <span class="sub-menu-profile-title">Bienvenue !</span>
-                        <div class="sub-menu-container-link">
+                        <div class="sub-menu-container-link w-100">
                             <a href="#" class="sub-menu-profile-link"><i class="fa fa-user"></i>Mon profil</a>
                             <a href="#" class="sub-menu-profile-link"><i class="fas fa-sign-out-alt"></i>Déconnexion</a>
                         </div>
@@ -47,9 +47,13 @@
                 </div>
             </div>
         </div>
-
+        {% include '_modal.html.twig' %}
         <main class="dashboard-section">
             <div class="dashboard-content">
+                <div class="margin-bottom-10">
+                    {% include "_alerts.html.twig" %}
+                </div>
+
                 {% block body %}{% endblock %}
             </div>
         </main>

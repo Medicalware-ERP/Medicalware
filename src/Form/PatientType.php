@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Patient;
 use App\Form\Base\PhoneType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -21,13 +22,23 @@ class PatientType extends AbstractType
         $builder
             ->add('lastName', TextType::class, [
                 'label' =>  'Nom',
+                'attr' => array(
+                    'placeholder' => 'Nom'
+                ),
                 "constraints" => [new NotBlank()]
             ])
             ->add('firstName', TextType::class, [
                 'label' =>  'Prénom',
+                'attr' => array(
+                    'placeholder' => 'Prénom'
+                ),
                 "constraints" => [new NotBlank()]
             ])
-            ->add('phoneNumber', PhoneType::class)
+            ->add('phoneNumber', PhoneType::class, [
+                'attr' => array(
+                    'placeholder' => 'Ex: 06 18 61 51 28'
+                ),
+            ])
             ->add('birthdayDate', DateType::class, [
                 'label' => 'Date de naissance',
                 "constraints" => [new NotBlank()],
@@ -35,6 +46,9 @@ class PatientType extends AbstractType
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Email',
+                'attr' => array(
+                    'placeholder' => 'Ex: example@example.com'
+                ),
                 "constraints" => [new NotBlank()]
             ])
             ->add('address', AddressType::class, [
@@ -43,7 +57,20 @@ class PatientType extends AbstractType
             ])
             ->add('numberSocialSecurity', TextType::class, [
                 'label' => 'Numéro de sécurité sociale',
-                "constraints" => [new NotBlank()]
+                'attr' => array(
+                    'placeholder' => 'Ex: 1 74 39 67 053 855 60'
+                ),
+                "constraints" => [new NotBlank()],
+                "help" => "Votre numéro doit faire 15 chiffres."
+            ])
+            ->add('gender', ChoiceType::class, [
+                'label' => 'Genre:',
+                'placeholder' => 'Choisir un genre: ',
+                "constraints" => [new NotBlank()],
+                "choices" => [
+                    "M" => "M",
+                    "F" => "F"
+                ]
             ])
         ;
     }

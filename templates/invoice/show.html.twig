@@ -4,12 +4,38 @@
 
 {% block body %}
     <div class="card margin-bottom-20">
-        <div>
-            {{ invoice.state }}
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                {% include 'include/_badge_enum.html.twig' with { enum: invoice.state } %}
+            </div>
+            <div class="d-flex gap-5">
+                {% set transitions = workflow_transitions(invoice) %}
+
+                {% if transitions| length > 0 %}
+                    <div class="p-relative" x-data="{ open: false }">
+                        <button class="btn btn-sm btn-primary w-100" @click="open = !open;">
+                            Statut <i class="fa" :class=" open ? 'fa-angle-up' : 'fa-angle-down' "></i>
+                        </button>
+                        <div x-show="open" x-cloak @click.outside="open = false"
+                             class="dropdown margin-top-5 " style="background-color: white; ">
+
+                                {% for transition in transitions  %}
+                                    <a href="{{ path('invoice_workflow_transition', {id: invoice.id, transition: transition.name}) }}" class="dropdown-link">
+                                        {{ transition.name | translate_invoice_workflow }}
+                                    </a>
+                                {% endfor %}
+
+                        </div>
+                    </div>
+                {% endif %}
+
+                <a href="{{ path('invoice_export_pdf', { id: invoice.id }) }}" class="btn btn-sm btn-primary">Exporter <i class="fa fa-file-download"></i></a>
+                <a href="{{ path('invoice_edit', {id:invoice.id}) }}" class="btn btn-sm btn-primary">Modifier <i class="fa fa-pen"></i></a>
+            </div>
         </div>
     </div>
     <div class="card">
-        <h4>{{ invoice }}</h4>
+        {{ include('invoice/includes/_content.html.twig') }}
     </div>
 {% endblock %}
 

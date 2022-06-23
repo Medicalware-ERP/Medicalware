@@ -1,0 +1,40 @@
+#room-details-container {
+
+  .room-informations {
+    display: flex;
+    flex-direction: column;
+    gap:1em;
+
+    .row {
+      display: flex;
+
+      div:first-child {
+        width: 15em;
+      }
+    }
+
+    .row-actions {
+
+      justify-content: space-between;
+
+      #actions-room-id {
+        display: flex;
+        align-self: flex-end;
+        font-weight: lighter;
+        font-style: italic;
+        height: 100%;
+      }
+
+      .actions-buttons-container {
+        display: flex;
+
+        a:not(:last-child) {
+          margin-right: 1em;
+        }
+
+      }
+    }
+
+  }
+
+}

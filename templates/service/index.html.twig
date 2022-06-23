@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Services{% endblock %}
+
+{% block body %}
+    <div class="container-list-users">
+        <h4 class="title margin-bottom-5">
+            Services
+        </h4>
+        <div class="card">
+            <div class="row__datatable">
+                <div class="d-flex">
+                    <label for="input-search"></label>
+                    <input class="form-input" type="text" placeholder="Chercher ..." id="input-search" name="search"/>
+
+                    <label for="datatable-limit"></label>
+                    <select name="limit" id="datatable-limit" class="form-input">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                    </select>
+                </div>
+                <button class="btn btn-success" id="add_service">
+                    <i class="fa fa-plus"></i>
+                    Ajouter un service
+                </button>
+            </div>
+
+            <table id="table-services" class="datatable" data-url="{{ path('service_json') }}">
+                <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('service.index') }}
+{% endblock %}

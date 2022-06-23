@@ -1,4 +1,4 @@
-$spaces: 20;
+$spaces: 400;
 @mixin margin($size) {
   margin: $size + px;
 }
@@ -49,6 +49,11 @@ $spaces: 20;
   padding-bottom: $size + px;
 }
 
+@mixin gap($size) {
+  gap: $size + px;
+}
+
+
 @for $i from 0 through $spaces {
   .margin-#{$i} {
     @include margin($i);
@@ -86,10 +91,18 @@ $spaces: 20;
   .padding-bottom-#{$i} {
     @include padding-bottom($i);
   }
+  .gap-#{$i} {
+    @include gap($i);
+  }
 }
 
 .d-flex {
+  display: -webkit-box; /* wkhtmltopdf uses this one */
   display: flex;
+}
+
+.d-block {
+  display:block;
 }
 
 .flex-column {
@@ -98,6 +111,10 @@ $spaces: 20;
 
 .flex-row {
   flex-direction: row;
+}
+
+.margin-left-auto{
+  margin-left:auto;
 }
 
 .justify-content-between {
@@ -132,6 +149,16 @@ $spaces: 20;
   height: 100%;
 }
 
+.w-50{
+  width:50%;
+}
+
+.label{
+  font-weight: 500;
+  color: #313a46;
+  font-size: 0.95rem;
+}
+
 .text-primary {
   color: var(--color-primary);
 }
@@ -148,12 +175,24 @@ $spaces: 20;
   color: var(--color-danger);
 }
 
+.text-warning {
+  color: var(--color-warning);
+}
+
+.text-success {
+  color: var(--color-success);
+}
+
 .text-center {
   text-align: center;
 }
 
 .fz-32 {
   font-size: 2rem;
+}
+
+.fz-16 {
+  font-size: 16px;
 }
 
 /* Toggle is active or not */
@@ -224,12 +263,88 @@ input {
 }
 
 .card {
+  background-color: #FFFFFF;
   width: 100%;
-  background-color: white;
-  padding: 15px;
+  min-width:300px;
+  padding: 1em;
   box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
+
+  &.bg-grey{
+    background-color:#edf0f7;
+  }
+
+  &#content_container {
+    box-shadow: 25px 0 35px 0 rgba(154, 161, 171, 0.15);
+  }
 }
 
 .width-auto {
   width: auto;
 }
+
+.p-relative {
+  position: relative;
+}
+
+.p-absolute {
+  position: absolute;
+}
+
+.border {
+  border: 1px solid var(--color-secondary-light);
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.gap-5 {
+  gap: 5px;
+}
+
+.gap-10 {
+  gap: 10px;
+}
+
+.img-md {
+  width: 70px;
+  height: 70px;
+  font-size: 1.5rem;
+}
+
+.title{
+  font-weight:500;
+  color:#6C757D;
+}
+
+.alert-danger{
+  padding: 1rem;
+  margin: 10px;
+  background-color: var(--color-danger-light);
+  color: white;
+  border-radius: 10px;
+  box-shadow: 0px 0px 0px 5px rgb(100 100 100 / 28%);
+  text-align: center;
+}
+
+.badge {
+  border-radius: 10px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  color: white;
+  font-weight: bold;
+
+  &.danger{
+    background-color: var(--color-danger);
+  }
+
+  &.success{
+    background-color: var(--color-success);
+  }
+
+  &.secondary {
+    background-color: var(--color-secondary);
+  }
+
+}
+

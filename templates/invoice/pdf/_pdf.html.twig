@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Facture {{ invoice }}</title>
+    <link rel="stylesheet" href="{{ absolute_url(asset('build/app.css')) }}">
+    <style>
+        hr{
+            height: 1px;
+            background-color: #e5e5e5;
+            border: none;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+<div class="d-flex align-items-center gap-10">
+    <img src="{{ asset('build/images/logo.png') }}" alt="logo" width="100"/>
+    <div>
+        <h4>MedicalWare</h4>
+        <p>22 Rue John Maynard Keynes</p>
+        <p>13013 Marseille</p>
+        <p>06 51 57 91 73</p>
+    </div>
+</div>
+
+<div class="margin-top-20" style="float: right">
+   {# <div class="avatar-default img-md" style="background-color: #0F2544">
+        <span>{{ invoice.patient.firstName|slice(0,1)|upper ~ invoice.patient.lastName|slice(0,1)|upper }}</span>
+    </div>#}
+    <div>
+        <p>{{ invoice.patient }}</p>
+        <p>{{ invoice.patient.address.street }}</p>
+        <p>{{ invoice.patient.address.complementaryInfo }}</p>
+        <p>{{ invoice.patient.address.postalCode ~ ' ' ~ invoice.patient.address.city }} </p>
+    </div>
+</div>
+<div style="clear: both"></div>
+<div>
+    <p class="margin-bottom-15">Facture : {{ invoice }}</p>
+    <p class="margin-bottom-15">Date : {{ invoice.date|date('d/m/Y') }}</p>
+    <p class="">Description : {{ invoice.comment|default('Aucune description')|raw }}</p>
+</div>
+
+<div class="margin-top-20">
+    <table class="datatable" style="border: 1px solid #edeff1;">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Désignation</th>
+            <th>Description</th>
+            <th  style="min-width: 50px">Quantité</th>
+            <th style="min-width: 100px">Prix</th>
+            <th style="min-width: 100px">Total ht</th>
+        </tr>
+        </thead>
+        <tbody>
+        {# @var line \App\Entity\Accounting\InvoiceLine #}
+        {% for line in invoice.invoiceLines %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ line.reference }}</td>
+                <td>{{ line.description ?? '-' }}</td>
+                <td>{{ line.quantity }}</td>
+                <td>{{ line.price }} €</td>
+                <td>{{ line.ht }} €</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="margin-top-20">
+    <div class="padding-10" style="width: 300px;border: 1px solid #edeff1;float:right">
+        <p class="d-flex justify-content-between">
+            <span>Total H.T</span>
+            <span>{{ invoice.ht }} €</span>
+        </p>
+        <p class="d-flex justify-content-between">
+            <span>Tva</span>
+            <span>{{ invoice.tva }}</span>
+        </p>
+        <hr>
+        <h4 class="d-flex justify-content-between">
+            <span>Total TTC</span>
+            <span>{{ invoice.ttc }} €</span>
+        </h4>
+    </div>
+</div>
+</body>
+</html>

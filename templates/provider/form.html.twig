@@ -23,7 +23,7 @@
                 {{ form_row(form.address) }}
             </div>
 
-            <input class="btn btn-success" type="submit" value="Ajouter">
+            <input class="btn btn-success" type="submit" value="{{ provider is defined ? "Modifier" : "Ajouter" }}">
             {{ form_end(form) }}
         </div>
     </div>

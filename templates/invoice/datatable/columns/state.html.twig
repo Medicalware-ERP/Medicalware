@@ -1,4 +1,4 @@
 
 {% apply spaceless %}
-    {{ invoice.state }}
+    {{ include('include/_badge_enum.html.twig', {enum: invoice.state}) }}
 {% endapply %}

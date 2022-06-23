@@ -28,13 +28,23 @@ Encore
 
     .addEntry('human_resources.show', './assets/js/human_resources/show.ts')
     .addEntry('human_resources.datatable', './assets/js/human_resources/datatable.ts')
+    .addEntry('room.index', './assets/js/room/index.ts')
+    .addEntry('room.show', './assets/js/room/show.ts')
     .addEntry('patient.datatable', './assets/js/patient/datatable.ts')
+    .addEntry('patient.show', './assets/js/patient/show.ts')
     .addEntry('provider.datatable', './assets/js/provider/datatable.ts')
     .addEntry('provider.show', './assets/js/provider/show.ts')
     .addEntry('invoice.datatable', './assets/js/invoice/datatable.ts')
     .addEntry('invoice.form', './assets/js/invoice/form.ts')
+    .addEntry('stock.index', './assets/js/stock/datatable.ts')
+    .addEntry('stock.show', './assets/js/stock/show.ts')
+    .addEntry('order.datatable', './assets/js/order/datatable.ts')
+    .addEntry('order.form', './assets/js/order/form.ts')
+    .addEntry('service.index', './assets/js/service/index.ts')
 
 
+    .addStyleEntry('room.show.style', './assets/styles/room/show.scss')
+    .addStyleEntry('room.index.style', './assets/styles/room/index.scss')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

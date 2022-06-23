@@ -1,7 +1,8 @@
 
 {% apply spaceless %}
-    <div class="d-flex justify-content-center">
-        <a class="btn-xs btn-primary margin-right-10" href="{{ path('provider_show_information', {id: provider.id}) }}"><i class="fa fa-eye"></i></a>
+    <div class="d-flex justify-content-start gap-5">
+        <a class="btn-xs btn-primary" href="{{ path('provider_show_information', {id: provider.id}) }}"><i class="fa fa-eye"></i></a>
         <a class="btn-xs btn-primary" href="{{ path('provider_edit', {id: provider.id}) }}"><i class="fa fa-pen"></i></a>
+        <a class="btn-xs btn-danger" data-remove-url="{{ path('provider_remove', {'id': provider.id }) }}"><i class="fa fa-trash"></i></a>
     </div>
 {% endapply %}

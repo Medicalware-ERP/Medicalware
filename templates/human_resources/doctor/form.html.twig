@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un docteur{% endblock %}
+
+{% block body %}
+    <h4 class="title-list">
+            Ajouter
+    </h4>
+    <div class="card">
+        <div class="d-flex justify-content-center">
+            {{ form_start(form) }}
+            {{ form_rest(form) }}
+            <input type="submit" class="btn btn-success" value="Ajouter">
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+

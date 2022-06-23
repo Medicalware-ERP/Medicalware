@@ -1,0 +1,58 @@
+{% extends app.request.query.get('isAjax', false) ? 'layout_empty.html.twig' : 'patient/show.html.twig' %}
+
+{% block content %}
+    <section class="card__informations">
+        <div class="d-flex align-items-center">
+            <i class="fa fa-check-circle margin-right-5"></i>
+            <span class="date_show">Date de naissance: {{ patient.birthdayDate|date("d/m/Y") }}</span>
+        </div>
+        <hr>
+        <h2 class="margin-bottom-10 d-flex align-items-center">Patient:<span class="pastille green"></span>{{ patient.id }}</h2>
+        <div class="card d-flex bg-grey">
+            <div class="wrapper">
+                <div class="sommet"></div>
+                <div class="corps">
+                    <div class="circle">
+                        <div class="black-point"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="left_card">
+                <div class="margin-bottom-10 d-flex align-items-center">
+                    <span class="label__show">Num. securité sociale:</span>
+                    <small class="margin-left-20">{{ patient.numberSocialSecurity }}</small>
+                </div>
+                <div class="margin-bottom-10 d-flex align-items-center">
+                    <span class="label__show">Email:</span>
+                    <small class="margin-left-20">{{ patient.email }}</small>
+                </div>
+                <div class="margin-bottom-10 d-flex align-items-center">
+                    <span class="label__show">Genre:</span>
+                    <small class="margin-left-20">{{ patient.gender }}</small>
+                </div>
+                <div class="margin-bottom-10 d-flex align-items-center">
+                    <span class="label__show">Téléphone:</span>
+                    <small class="margin-left-20">{{ patient.phoneNumber | split('', 2) |join('.') }}</small>
+                </div>
+            </div>
+            <div class="right_card margin-left-10">
+                <div class="margin-bottom-10 d-flex align-items-center">
+                    <span class="label__show">Rue:</span>
+                    <small class="margin-left-20">{{ patient.address.street }}</small>
+                </div>
+                <div class="margin-bottom-10 d-flex align-items-center">
+                    <span class="label__show">Infos complémentaire:</span>
+                    <small class="margin-left-20">{{ patient.address.complementaryInfo ? patient.address.complementaryInfo : "Non renseignée" }}</small>
+                </div>
+                <div class="margin-bottom-10 d-flex align-items-center">
+                    <span class="label__show">Ville:</span>
+                    <small class="margin-left-20">{{ patient.address.city }}</small>
+                </div>
+                <div class="margin-bottom-10 d-flex align-items-center">
+                    <span class="label__show">Code postal:</span>
+                    <small class="margin-left-20">{{ patient.address.postalCode }}</small>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

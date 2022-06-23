@@ -37,22 +37,21 @@
                    value="{{ invoice is defined ? "Modifier" : "Ajouter" }}">
         </aside>
         <main id="content_container" class="card" style="flex: 4">
-            <table class="datatable" style="border: 1px solid #edeff1;">
+            <table class="datatable w-100">
                 <thead>
                 <tr>
-                    <th>#</th>
                     <th>Désignation</th>
                     <th>Description</th>
-                    <th style="width: 150px">Quantité</th>
-                    <th style="width: 150px">Prix</th>
-                    <th>Total ht</th>
+                    <th>Quantité</th>
+                    <th>Prix</th>
+                    <th style="width:150px">Total ht</th>
                     <th></th>
                 </tr>
                 </thead>
                 {{ form_row(form.invoiceLines) }}
                 <tfoot>
                 <tr>
-                    <td colspan="7">
+                    <td colspan="5">
                         <button
                                 class="btn btn-success"
                                 data-collection-action="addElementToCollection"
@@ -62,6 +61,9 @@
                             <i class="icon fas fa-plus"></i>
                             Ajouter
                         </button>
+                    </td>
+                    <td>
+                        <span data-total-lines></span> €
                     </td>
                 </tr>
                 </tfoot>
@@ -76,6 +78,5 @@
     {{ parent() }}
     {{ encore_entry_script_tags('form.collection') }}
     {{ encore_entry_script_tags('invoice.form') }}
-
 {% endblock %}
 

@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
+use Symfony\Component\Validator\Constraints\Valid;
 
 #[ORM\Entity(repositoryClass: MedicalFileRepository::class)]
 class MedicalFile
@@ -16,11 +17,12 @@ class MedicalFile
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\OneToOne(targetEntity: Patient::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy:"medicalFile", targetEntity: Patient::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?Patient $patient = null;
 
-    #[ORM\OneToMany(mappedBy: 'medicalFile', targetEntity: MedicalFileLine::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'medicalFile', targetEntity: MedicalFileLine::class, cascade: ['persist', 'remove'], orphanRemoval: true )]
+    #[Valid()]
     private Collection $medicalFileLines;
 
     #[Pure] public function __construct()

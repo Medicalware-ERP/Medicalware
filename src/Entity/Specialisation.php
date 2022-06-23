@@ -11,7 +11,7 @@ use JetBrains\PhpStorm\Pure;
 #[ORM\Entity(repositoryClass: SpecialisationRepository::class)]
 class Specialisation extends EnumEntity
 {
-    #[ORM\ManyToMany(targetEntity: Doctor::class, mappedBy: 'specialisations')]
+    #[ORM\OneToMany(mappedBy: 'specialisation', targetEntity: Doctor::class)]
     private Collection $doctors;
 
     #[Pure] public function __construct(string $slug, string $name)
@@ -32,7 +32,7 @@ class Specialisation extends EnumEntity
     {
         if (!$this->doctors->contains($doctor)) {
             $this->doctors[] = $doctor;
-            $doctor->addSpecialisation($this);
+            $doctor->setSpecialisation($this);
         }
 
         return $this;
@@ -41,7 +41,7 @@ class Specialisation extends EnumEntity
     public function removeDoctor(Doctor $doctor): self
     {
         if ($this->doctors->removeElement($doctor)) {
-            $doctor->removeSpecialisation($this);
+            $doctor->setSpecialisation(null);
         }
 
         return $this;

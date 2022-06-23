@@ -22,7 +22,7 @@
                 <li><a class="link_name" href="#">Planning</a></li>
             </ul>
         </li>
-        <li id="accountent">
+        <li class="drawer-links">
             <div class="icon-link">
                 <a href="#">
                     <i class="fa fa-money-check-alt"></i>
@@ -33,16 +33,16 @@
             <ul class="sub-menu">
                 <li><a class="link_name" href="#">Comptabilité</a></li>
                 <li><a href="{{ path('invoice_index') }}">Factures</a></li>
-                <li><a href="#">Commandes d'achats</a></li>
+                <li><a href="{{ path('order_index') }}">Commandes d'achats</a></li>
             </ul>
         </li>
         <li>
-            <a href="{{ path('provider_index') }}">
+            <a href="{{ path('stock_index') }}">
                 <i class="fa fa-box"></i>
                 <span class="link_name">Stock</span>
             </a>
             <ul class="sub-menu blank">
-                <li><a class="link_name" href="{{ path('provider_index') }}">Stock</a></li>
+                <li><a class="link_name" href="{{ path('stock_index') }}">Stock</a></li>
             </ul>
         </li>
         <li>
@@ -55,21 +55,21 @@
             </ul>
         </li>
         <li>
-            <a href="#">
+            <a href="{{ path('service_index') }}">
                 <i class="fas fa-cubes"></i>
                 <span class="link_name">Services</span>
             </a>
             <ul class="sub-menu blank">
-                <li><a class="link_name" href="#">Services</a></li>
+                <li><a class="link_name" href="{{ path('service_index') }}">Services</a></li>
             </ul>
         </li>
         <li>
-            <a href="#">
+            <a href="{{ path('index_room') }}">
                 <i class="fa fa-door-open"></i>
                 <span class="link_name">Salles</span>
             </a>
             <ul class="sub-menu blank">
-                <li><a class="link_name" href="#">Salles</a></li>
+                <li><a class="link_name" href="{{ path('index_room') }}">Salles</a></li>
             </ul>
         </li>
         <li>

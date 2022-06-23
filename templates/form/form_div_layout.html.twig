@@ -185,6 +185,11 @@
     {{ block('form_widget_simple') }}
 {%- endblock integer_widget -%}
 
+{%- block float_widget -%}
+    {%- set type = type|default('number') -%}
+    {{ block('form_widget_simple') }}
+{%- endblock float_widget -%}
+
 {%- block money_widget -%}
     {{ money_pattern|form_encode_currency(block('form_widget_simple')) }}
 {%- endblock money_widget -%}
@@ -288,7 +293,7 @@
 {%- block form_label -%}
     {% if label is not same as(false) -%}
         {% if not compound -%}
-            {% set label_attr = label_attr|merge({'for': id, 'class' : 'label__row'}) %}
+            {% set label_attr = label_attr|merge({'for': id, 'class' : 'label__row ' ~ label_attr.class|default('')}) %}
         {%- endif -%}
         {% if required -%}
             {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
@@ -329,7 +334,8 @@
     {%- if help is not empty -%}
         {%- set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ ' help-text')|trim}) -%}
         <p id="{{ id }}_help"{% with { attr: help_attr } %}{{ block('attributes') }}{% endwith %}>
-            {%- if translation_domain is same as(false) -%}
+            <small class="text-secondary d-flex margin-top-5" style="position: absolute;"><i class="fa fa-info-circle margin-right-5"></i>
+                {%- if translation_domain is same as(false) -%}
                 {%- if help_html is same as(false) -%}
                     {{- help -}}
                 {%- else -%}
@@ -342,6 +348,7 @@
                     {{- help|trans(help_translation_parameters, translation_domain)|raw -}}
                 {%- endif -%}
             {%- endif -%}
+            </small>
         </p>
     {%- endif -%}
 {%- endblock form_help %}
@@ -364,10 +371,11 @@
    {% set row_attr = row_attr|merge({"class" : "card__row"}) %}
     <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
         {{- form_label(form) -}}
-        <div class="{{ compound ? "" : "input-container" }}">
+        <div class="{{ compound ? "" : "input-container" }} {{ form.vars.help ? "margin-bottom-8" : "" }}">
             {{- form_widget(form, widget_attr) -}}
             {{- form_errors(form) -}}
             {{- form_help(form) -}}
+
         </div>
     </div>
 {%- endblock form_row -%}
@@ -456,7 +464,7 @@
 
 {%- block widget_attributes -%}
     {%- set checkbox = checkbox|default(false) -%}
-    class="form-input {{ not valid ? "danger"}} {{ checkbox ? "width-auto" }}" id="{{ id }}" name="{{ full_name }}"
+    class="form-input {{ attr.class|default('') }} {{ not valid ? "danger"}} {{ checkbox ? "width-auto" }}" id="{{ id }}" name="{{ full_name }}"
     {%- if disabled %} disabled="disabled"{% endif -%}
     {%- if required %} required="required"{% endif -%}
     {{ block('attributes') }}

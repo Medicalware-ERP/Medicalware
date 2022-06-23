@@ -1,0 +1,62 @@
+framework:
+    workflows:
+      invoice_validation:
+          type: 'state_machine'
+          marking_store:
+            type: 'method'
+            property: 'workflowState'
+          initial_marking: draft
+          supports:
+              - App\Entity\Accounting\Invoice
+          places:
+            - draft
+            - to_validate
+            - validated
+            - payed
+            - refused
+          transitions:
+            to_validate:
+                from: draft
+                to: to_validate
+            validate:
+                from: to_validate
+                to: validated
+            reject:
+              from: to_validate
+              to: refused
+            payed:
+              from: validated
+              to: payed
+            to_draft:
+              from: refused
+              to: draft
+      order_validation:
+        type: 'state_machine'
+        marking_store:
+          type: 'method'
+          property: 'workflowState'
+        initial_marking: draft
+        supports:
+          - App\Entity\Accounting\Order
+        places:
+          - draft
+          - to_validate
+          - validated
+          - delivery
+          - refused
+        transitions:
+          to_validate:
+            from: draft
+            to: to_validate
+          validate:
+            from: to_validate
+            to: validated
+          reject:
+            from: to_validate
+            to: refused
+          delivered:
+            from: validated
+            to: delivery
+          to_draft:
+            from: refused
+            to: draft
