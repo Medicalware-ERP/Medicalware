@@ -26,18 +26,18 @@ class EventTypeEnum implements DataInitializerInterface
     public function getData(): array
     {
         return [
-            new EventType(self::LEAVE, "Congé"),
-            new EventType(self::PAID_LEAVE, "Congé payé"),
-            new EventType(self::SENIORITY_LEAVE, "Congé d'ancienneté"),
-            new EventType(self::MEDICAL_LEAVE, "Congé médical"),
-            new EventType(self::SPECIAL_LEAVE, "Congé spécial (mariage, enterrement ect...)"),
-            new EventType(self::SICK_LEAVE, "Arrêt maladie"),
-            new EventType(self::RDV, "Rendez-vous"),
-            new EventType(self::FORMATION, "Formation"),
-            new EventType(self::CONSULTATION, "Consultation"),
-            new EventType(self::BUSINESS_TRIP, "Déplacement professionnel"),
-            new EventType(self::PRIVATE, "Privé"),
-            new EventType(self::PERSONAL, "Personnel")
+            new EventType(self::LEAVE, "Congé", "Congé non payé", "#3199ff"),
+            new EventType(self::PAID_LEAVE, "Congé payé", "Congé payé", "#0080ff"),
+            new EventType(self::SENIORITY_LEAVE, "Congé d'ancienneté", "Congé d'ancienneté", "#297bcc"),
+            new EventType(self::MEDICAL_LEAVE, "Congé médical", "Congé lié à une raison médical", "#055fb8"),
+            new EventType(self::SPECIAL_LEAVE, "Congé spécial (mariage, enterrement ect...)", "Congé lié à une raison spéciale", "#4475a5"),
+            new EventType(self::SICK_LEAVE, "Arrêt maladie", "Arrêt maladie", "#5e84ff"),
+            new EventType(self::RDV, "Rendez-vous", "Rendez-vous", "#ffb267"),
+            new EventType(self::FORMATION, "Formation", "Formation", "#8fce00"),
+            new EventType(self::CONSULTATION, "Consultation", "Consultation", "#ce7e00"),
+            new EventType(self::BUSINESS_TRIP, "Déplacement professionnel", "Déplacement professionnel", "#674ea7"),
+            new EventType(self::PRIVATE, "Privé", "Privé", "#42af9d"),
+            new EventType(self::PERSONAL, "Personnel", "Personnel", "#8e51f2")
         ];
     }
 

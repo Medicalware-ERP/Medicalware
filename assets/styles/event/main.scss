@@ -11,9 +11,22 @@
         row-gap: 1em;
         width: 50%;
 
-        input, select, .select2-selection {
+        input:not([type="checkbox"]), select, .select2-selection, #checkbox-input-container {
           width: 100%;
           min-height: 41.38px; /* tout les inputs à la même hauteur */
+        }
+
+        .checkbox-allday-container {
+
+          input[type="checkbox"] {
+            width: 100%;
+            height: 20px;
+          }
+
+          .subtitle {
+            font-size: .8em;
+            font-style: italic;
+          }
         }
       }
     }

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Planning\Event;
+use App\Entity\Planning\Participant;
 use App\Form\EventType;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Util\Json;
@@ -10,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class EventController extends BaseController
 {
@@ -43,13 +45,31 @@ class EventController extends BaseController
         ]);
     }
 
+    #[Route('/event/edit/time', name: 'event_edit_time')]
+    public function editTime(Request $request): Response
+    {
+        $id = $request->query->get("id");
+        $startAt = new \DateTime($request->query->get("startAt"));
+        $endAt = new \DateTime($request->query->get("endAt"));
+
+        $event = $this->manager->getRepository(Event::class)->find($id);
+
+        $event->setStartAt($startAt);
+        $event->setEndAt($endAt);
+
+        $this->manager->persist($event);
+        $this->manager->flush();
+
+        return $this->json("Succes");
+    }
+
     // Retourne les évènements lié à un type de ressource (Ex: Les events des Rooms)
     #[Route('/event/resource/{class}', name: 'event_resource_class')]
     public function getEventsResourceClass(Request $request, string $class): Response
     {
         $data = $this->manager->getRepository(Event::class)->findBy(["resourceClass" => $class]) ?? throw new NotFoundHttpException("Entité non trouvée");
 
-        return $this->json($data);
+        return $this->json($data, context: [AbstractNormalizer::GROUPS => [ "main" ] ]);
     }
 
     // Retourne les évènements lié à une ressource bien précise (Ex: Les events de la Room ayant pour id: 13)
@@ -58,7 +78,7 @@ class EventController extends BaseController
     {
         $data = $this->manager->getRepository(Event::class)->findBy(["resourceClass" => $class, "resourceId" => $id]) ?? throw new NotFoundHttpException("Entité non trouvée");
 
-        return $this->json($data);
+        return $this->json($data, context: [AbstractNormalizer::GROUPS => [ "main" ] ]);
     }
 
     // Retourne un évènements précis, suivant son id
@@ -67,6 +87,6 @@ class EventController extends BaseController
     {
         $data = $this->manager->find(Event::class, $id) ?? throw new NotFoundHttpException("Entité non trouvée");
 
-        return $this->json($data);
+        return $this->json($data, context: [AbstractNormalizer::GROUPS => [ "main" ] ]);
     }
 }

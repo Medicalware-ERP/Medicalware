@@ -20,7 +20,18 @@
 
                         {{ form_row(form.endAt) }}
 
-                        {{ form_row(form.color) }}
+                        <div class="d-flex flex-column checkbox-allday-container">
+
+                            {{ form_label(form.allDay) }}
+
+                            <div id="checkbox-input-container" class="d-flex align-items-center">
+                                {{ form_widget(form.allDay) }}
+                            </div>
+
+                            <span class="subtitle">Si vous cocher cette case, les horaires des dates ne seront pas prise en compte</span>
+
+                        </div>
+
                     </div>
                 </div>
 
