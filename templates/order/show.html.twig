@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Facture{% endblock %}
+{% block title %}Commande d'achat{% endblock %}
 
 {% block body %}
     <div class="card margin-bottom-20">
@@ -37,35 +37,35 @@
     <div class="card">
         <div class="d-flex align-items-center gap-10">
             <img src="{{ asset('build/images/logo.png') }}" alt="logo" width="100"/>
-            <div>
-                <h4>MedicalWare</h4>
-                <p>22 Rue John Maynard Keynes</p>
-                <p>13013 Marseille</p>
-                <p>06 51 57 91 73</p>
+            <div class="d-flex flex-column gap-5">
+                <h4 class="title">MedicalWare</h4>
+                <p class="label">22 Rue John Maynard Keynes</p>
+                <p class="label">13013 Marseille</p>
+                <p class="label">06 51 57 91 73</p>
             </div>
         </div>
 
         <div class="d-flex align-items-center gap-10 justify-content-end">
-
-            <div>
-                <p>{{ order.provider }}</p>
-                <p>{{ order.provider.address.street }}</p>
-                <p>{{ order.provider.address.complementaryInfo }}</p>
-                <p>{{ order.provider.address.postalCode ~ ' ' ~ order.provider.address.city }} </p>
+            <div class="d-flex flex-column gap-5">
+                <p class="label">{{ order.provider }}</p>
+                <p class="label">{{ order.provider.address.street }}</p>
+                <p class="label">{{ order.provider.address.complementaryInfo }}</p>
+                <p class="label">{{ order.provider.address.postalCode ~ ' ' ~ order.provider.address.city }} </p>
             </div>
         </div>
 
         <div>
-            <p class="margin-bottom-15">Facture : {{ order }}</p>
-            <p class="margin-bottom-15">Date prévue: {{ order.deliveryPlannedDate|date('d/m/Y') }}</p>
+            <p class="label margin-bottom-15">Commande d'achat de {{ order }}</p>
+            <p class="label margin-bottom-15">Prévue pour le {{ order.deliveryPlannedDate|date('d/m/Y') }}</p>
             {% if order.deliveryDate is not null %}
-                <p class="margin-bottom-15">Date de livraison: {{ order.deliveryDate|date('d/m/Y') }}</p>
+                <p class="margin-bottom-15">A livrer pour le {{ order.deliveryDate|date('d/m/Y') }}</p>
             {% endif %}
-            <p class="">Description : {{ order.comment|default('Aucune description')|raw }}</p>
+            <hr>
+            <p class="label">{{ order.comment|default('Aucune description')|raw }}</p>
         </div>
 
         <div class="margin-top-20">
-            <table class="datatable" style="border: 1px solid #edeff1;">
+            <table class="datatable fixed">
                 <thead>
                 <tr>
                     <th>#</th>
@@ -80,12 +80,12 @@
                 {# @var line \App\Entity\Accounting\OrderLine #}
                 {% for line in order.orderLines %}
                     <tr>
-                        <td>{{ loop.index }}</td>
-                        <td>{{ line.equipment }}</td>
-                        <td>{{ line.description ?? '-' }}</td>
-                        <td>{{ line.quantity }}</td>
-                        <td>{{ line.price }} €</td>
-                        <td>{{ line.ht }} €</td>
+                        <td title="{{ loop.index }}">{{ loop.index }}</td>
+                        <td title="{{ line.equipment }}">{{ line.equipment }}</td>
+                        <td title="{{ line.description ?? '-' }}">{{ line.description ?? '-' }}</td>
+                        <td title="{{ line.quantity }}">{{ line.quantity }}</td>
+                        <td title="{{ line.price }} €">{{ line.price }} €</td>
+                        <td title="{{ line.ht }} €">{{ line.ht }} €</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -93,19 +93,19 @@
         </div>
 
         <div class="margin-top-20 d-flex justify-content-end">
-            <div class="d-flex flex-column justify-content-between border padding-10" style="width: 300px;">
+            <div class="d-flex flex-column justify-content-between padding-10" style="width: 300px;box-shadow: 0px 0px 10px 0px rgba(105 ,105, 105,0.5);">
                 <p class="d-flex justify-content-between">
-                    <span>Total H.T</span>
-                    <span>{{ order.ht }} €</span>
+                    <span class="label">Total H.T</span>
+                    <span class="label">{{ order.ht }} €</span>
                 </p>
                 <p class="d-flex justify-content-between">
-                    <span>Tva</span>
-                    <span>{{ order.tva }}</span>
+                    <span class="label">Tva</span>
+                    <span class="label">{{ order.tva }}</span>
                 </p>
                 <hr>
                 <h4 class="d-flex justify-content-between">
-                    <span>Total TTC</span>
-                    <span>{{ order.ttc }} €</span>
+                    <span class="title">Total TTC</span>
+                    <span class="title">{{ order.ttc }} €</span>
                 </h4>
             </div>
         </div>

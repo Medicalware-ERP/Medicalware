@@ -1,4 +1,4 @@
-$spaces: 20;
+$spaces: 400;
 @mixin margin($size) {
   margin: $size + px;
 }
@@ -149,7 +149,15 @@ $spaces: 20;
   height: 100%;
 }
 
+.w-50{
+  width:50%;
+}
 
+.label{
+  font-weight: 500;
+  color: #313a46;
+  font-size: 0.95rem;
+}
 
 .text-primary {
   color: var(--color-primary);
@@ -318,3 +326,25 @@ input {
   box-shadow: 0px 0px 0px 5px rgb(100 100 100 / 28%);
   text-align: center;
 }
+
+.badge {
+  border-radius: 10px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  color: white;
+  font-weight: bold;
+
+  &.danger{
+    background-color: var(--color-danger);
+  }
+
+  &.success{
+    background-color: var(--color-success);
+  }
+
+  &.secondary {
+    background-color: var(--color-secondary);
+  }
+
+}
+

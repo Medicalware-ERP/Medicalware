@@ -62,7 +62,8 @@ class ProviderController extends BaseController
         }
 
         return $this->renderForm('provider/form.html.twig', [
-            'form' => $form
+            'form' => $form,
+            'provider' => $provider
         ]);
     }
 

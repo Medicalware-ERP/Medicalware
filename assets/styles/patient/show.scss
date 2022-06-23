@@ -9,10 +9,18 @@
   }
 
   .pastille{
-    background-color:var(--color-success);
     border-radius:50%;
     width:15px;
     height:15px;
+
+    &.green{
+      background-color:var(--color-success);
+    }
+
+    &.red{
+      background-color:var(--color-danger);
+    }
+
   }
 
   .date_show{

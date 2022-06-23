@@ -81,7 +81,8 @@ class StockController extends BaseController
         }
 
         return $this->renderForm('stock/form.html.twig', [
-            'form' => $form
+            'form' => $form,
+            'stock' => $stock
         ]);
     }
 

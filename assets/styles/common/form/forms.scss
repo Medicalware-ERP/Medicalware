@@ -3,11 +3,16 @@
     padding: 0.45rem 0.9rem;
     font-weight: 100;
     color: #6c757d;
+    height:100%;
     border-radius: 0.25rem;
     width: 250px;
     margin-right: 15px;
     outline: 0;
     transition: all .15s ease-in-out;
+
+    &[type="checkbox"] {
+        height:auto;
+    }
 
     &[type="color"] {
         padding: 0;
