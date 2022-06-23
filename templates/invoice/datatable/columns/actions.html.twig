@@ -7,10 +7,14 @@
 
         {% if invoice.state.slug == draft  %}
             <a class="btn-xs btn-primary" href="{{ path('invoice_edit', {'id': invoice.id }) }}"><i class="fa fa-pen"></i></a>
+        {% else %}
+            <button class="btn-xs btn-primary" disabled><i class="fa fa-pen"></i></button>
         {% endif %}
 
         {% if invoice.state.slug == draft or invoice.state.slug == refused %}
             <a class="btn-xs btn-danger" data-remove-url="{{ path('invoice_delete', {'id': invoice.id }) }}"><i class="fa fa-trash"></i></a>
+        {% else %}
+            <button class="btn-xs btn-danger" disabled><i class="fa fa-trash"></i></button>
         {% endif %}
     </div>
 {% endapply %}
