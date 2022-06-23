@@ -24,6 +24,17 @@ const initTr = (tr : HTMLTableRowElement) => {
         const total = qty * parseInt(price);
         spanPrice.innerHTML = price;
         spanTotal.innerHTML = total.toString()
+
+        const orderTotalSpan = document.querySelector('[data-total-lines]') as HTMLElement;
+        const spanTotalLines = document.querySelectorAll('span[data-total]');
+
+        let orderTotal = 0;
+
+        spanTotalLines.forEach(span => {
+            orderTotal += parseInt(span.innerHTML);
+        });
+
+        orderTotalSpan.innerHTML = orderTotal.toString();
     };
 
     select.addEventListener('change', callback);
