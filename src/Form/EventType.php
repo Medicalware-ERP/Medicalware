@@ -81,9 +81,7 @@ class EventType extends AbstractType
             /** @var \DateTime $endAt */
             $endAt = $event->getEndAt();
 
-            // Si les deux jours sont different, on set le allDay à true (pour le resize dans calendar)
-            $event->setAllDay($startAt->format("d") != $endAt->format("d") || $event->getAllDay());
-
+            // Si le allDay est vrai, on set le temps à minuit et +1j pour le dernier jour
             if ($event->getAllDay())
             {
                 $event->setStartAt($startAt->setTime(0, 0 ,0));
