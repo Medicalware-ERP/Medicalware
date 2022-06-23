@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints\Range;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
@@ -23,10 +24,12 @@ class Event
 
     #[ORM\Column(type: 'datetime')]
     #[Groups("main")]
+    #[Range(maxMessage: "La date de début doit être inférieur à la date de fin", maxPropertyPath: "endAt")]
     private ?\DateTimeInterface $startAt = null;
 
     #[ORM\Column(type: 'datetime')]
     #[Groups("main")]
+    #[Range(minMessage: "La date de fin doit être supérieur à la date de début", minPropertyPath: "startAt")]
     private ?\DateTimeInterface $endAt = null;
 
     #[ORM\Column(type: 'integer')]
