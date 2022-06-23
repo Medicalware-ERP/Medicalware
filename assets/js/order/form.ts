@@ -7,6 +7,30 @@ initFormCollection();
 
 let provider = document.querySelector('#order_provider') as HTMLSelectElement;
 
+const initTr = (tr : HTMLTableRowElement) => {
+    const select = tr.querySelector('.equipment_select') as HTMLSelectElement;
+    const callback = () => {
+        const option = select.querySelector(`option[value="${select.selectedIndex}"]`);
+        if (!(option instanceof HTMLOptionElement)){
+            return;
+        }
+        const price = option.dataset.price as string;
+        const spanPrice = tr.querySelector('span[data-price]') as HTMLElement;
+        const spanTotal = tr.querySelector('span[data-total]') as HTMLElement;
+        const qtyElement = tr.querySelector('.qty_select') as HTMLInputElement;
+        qtyElement.addEventListener('change', callback)
+        const qty = isNaN(parseInt(qtyElement.value)) ? 0: parseInt(qtyElement.value);
+
+        const total = qty * parseInt(price);
+        spanPrice.innerHTML = price;
+        spanTotal.innerHTML = total.toString()
+    };
+
+    select.addEventListener('change', callback);
+
+    callback();
+}
+
 const initEquipmentSelect = (removeSelected = true, customElement : HTMLElement|null = null) => {
     const providerId = provider.value;
     const callback = (option: HTMLOptionElement) => {
@@ -36,6 +60,7 @@ const initEquipmentSelect = (removeSelected = true, customElement : HTMLElement|
 
 document.addEventListener('collection.element.added', (e: Event) => {
     const tr = (e as CustomEvent).detail.element as HTMLTableRowElement;
+    initTr(tr);
     initEquipmentSelect(true, tr);
 });
 
@@ -69,8 +94,11 @@ document.addEventListener('DOMContentLoaded', (e: Event) => {
             const url = Routing.generate('order_delete_line', {id})
             axios.get(url).then(r => r);
         });
-    })
+    });
+
+    provider?.addEventListener('change', () => initEquipmentSelect());
+
+    $('.order_line', (tr: HTMLTableRowElement) => {
+        initTr(tr);
+    });
 });
-
-
-provider?.addEventListener('change', () => initEquipmentSelect());
