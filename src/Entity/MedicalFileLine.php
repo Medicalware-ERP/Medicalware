@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\MedicalFileLineRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\Range;
 
 #[ORM\Entity(repositoryClass: MedicalFileLineRepository::class)]
 class MedicalFileLine
@@ -30,9 +31,11 @@ class MedicalFileLine
     private ?Disease $disease = null;
 
     #[ORM\Column(type: 'datetime')]
+    #[Range(maxMessage: "La date de début: {{ value }} doit être inférieur à la date de fin", maxPropertyPath: "endDate")]
     private ?\DateTimeInterface $startDate = null;
 
     #[ORM\Column(type: 'datetime')]
+    #[Range(minMessage: "La date de fin: {{ value }} doit être supérieur à la date de début", minPropertyPath: "startDate")]
     private ?\DateTimeInterface $endDate = null;
 
     public function getId(): ?int

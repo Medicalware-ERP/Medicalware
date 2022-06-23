@@ -150,17 +150,9 @@ class PatientController extends BaseController
         $form->handleRequest($request);
         $medicalFileLines = $form['medicalFileLines']->getData();
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var MedicalFileLine $medicalFileLine */
-            foreach ($medicalFileLines as $medicalFileLine){
-                if($medicalFileLine->getStartDate() < $medicalFileLine->getEndDate()){
-                    $medicalFile->addMedicalFileLine($medicalFileLine);
-                    $this->manager->persist($medicalFileLine);
-                    $this->manager->flush();
-                } else {
-                    $this->addFlash('danger_medicalFileLine', "La date de début doit être inférieur à la date de fin");
-                }
-            }
 
+            $this->manager->persist($medicalFile);
+            $this->manager->flush();
         }
 
         return $this->renderForm('patient/includes/_medical_file.html.twig', [

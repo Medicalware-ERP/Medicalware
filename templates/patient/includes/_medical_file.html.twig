@@ -67,16 +67,10 @@
     <hr>
     <main id="container__folder_medical">
         <h3 class="label__show margin-bottom-10">Consultations</h3>
-        {% for type, messages in app.flashes %}
-            {% for message in messages %}
-                {% if type == 'danger_medicalFileLine' %}
-                    <div class="alert-danger" role="alert">
-                        {{ message }}
-                    </div>
-                {% endif %}
-            {% endfor %}
-        {% endfor %}
         {{ form_start(form) }}
+
+            {{ form_errors(form) }}
+
             <table class="table_medical_file_line">
                 <thead class="table_medical_file_line_header">
                     <th>Medecin</th>
