@@ -8,7 +8,6 @@ import generateDatable from "../datatable/datatableGeneric";
 const initMedicalFileTab = () => {
     initFormCollection();
     $("[data-element-remove]", (deleteBtn: HTMLElement) => {
-        console.log(deleteBtn);
         deleteBtn.addEventListener('click', () => {
             const id = parseInt(findInDataset(deleteBtn, "elementId"));
             console.log(id);
@@ -19,8 +18,7 @@ const initMedicalFileTab = () => {
                 id
             });
             axios.get(url).then(() => {
-
-                loadCurrentTab()
+                deleteBtn.parentElement?.parentElement?.remove();
             })
         })
     });
