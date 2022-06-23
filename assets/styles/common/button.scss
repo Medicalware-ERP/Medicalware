@@ -49,6 +49,11 @@
   &:hover {
     background-color: var(--color-secondary-light);
   }
+
+  &:disabled {
+    background-color: var(--color-secondary-light);
+    cursor: default;
+  }
 }
 
 .btn-danger {
@@ -56,6 +61,11 @@
 
   &:hover {
     background-color: var(--color-danger-light);
+  }
+
+  &:disabled {
+    background-color: var(--color-danger-light);
+    cursor: default;
   }
 }
 
@@ -65,6 +75,11 @@
   &:hover {
     background-color: var(--color-success-light);
   }
+
+  &:disabled {
+    background-color: var(--color-success-light);
+    cursor: default;
+  }
 }
 
 .btn-warning {
@@ -72,6 +87,11 @@
 
   &:hover {
     background-color: var(--color-warning-light);
+  }
+
+  &:disabled {
+    background-color: var(--color-warning-light);
+    cursor: default;
   }
 }
 

@@ -1,13 +1,20 @@
+{% set draft = constant('App\\Enum\\Accounting\\OrderStateEnum::DRAFT') %}
+{% set refused = constant('App\\Enum\\Accounting\\OrderStateEnum::REFUSED') %}
+
 {% apply spaceless %}
     <div class="d-flex justify-content-start gap-5">
         <a class="btn-xs btn-primary" href="{{ path('order_show', {'id': order.id }) }}"><i class="fa fa-eye"></i></a>
-        <a class="btn-xs btn-primary" href="{{ path('order_edit', {'id': order.id }) }}"><i class="fa fa-pen"></i></a>
 
-        {% set draft = constant('App\\Enum\\Accounting\\OrderStateEnum::DRAFT') %}
-        {% set refused = constant('App\\Enum\\Accounting\\OrderStateEnum::REFUSED') %}
+        {% if order.state.slug == draft  %}
+            <a class="btn-xs btn-primary" href="{{ path('order_edit', {'id': order.id }) }}"><i class="fa fa-pen"></i></a>
+        {% else %}
+            <button class="btn-xs btn-primary" disabled><i class="fa fa-pen"></i></button>
+        {% endif %}
 
         {% if order.state.slug == draft or order.state.slug == refused %}
             <a class="btn-xs btn-danger" data-remove-url="{{ path('order_delete', {'id': order.id }) }}"><i class="fa fa-trash"></i></a>
+        {% else %}
+            <button class="btn-xs btn-danger" disabled><i class="fa fa-trash"></i></button>
         {% endif %}
 
     </div>
