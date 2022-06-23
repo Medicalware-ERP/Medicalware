@@ -15,12 +15,14 @@ use App\Repository\Accounting\OrderRepository;
 use App\Service\Order\OrderDataFormatter;
 use App\Workflow\InvoiceStateWorkflow;
 use App\Workflow\OrderStateWorkflow;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,8 +63,13 @@ class OrderController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($order);
-            $entityManager->flush();
+            try {
+                $entityManager->persist($order);
+                $entityManager->flush();
+
+            } catch (UniqueConstraintViolationException $exception) {
+                $form->get('reference')->addError(new FormError("Cette référence est déjà utilisé"));
+            }
         }
 
         return $this->renderForm('order/form.html.twig', [
@@ -77,8 +84,12 @@ class OrderController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($order);
-            $entityManager->flush();
+            try {
+                $entityManager->persist($order);
+                $entityManager->flush();
+            } catch (UniqueConstraintViolationException $exception) {
+                $form->get('reference')->addError(new FormError("Cette référence est déjà utilisé"));
+            }
         }
 
         return $this->renderForm('order/form.html.twig', [

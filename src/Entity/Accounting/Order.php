@@ -10,9 +10,11 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
+#[UniqueEntity('reference')]
 class Order implements EntityInterface
 {
     #[ORM\Id]
@@ -20,7 +22,7 @@ class Order implements EntityInterface
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private ?string $reference = null;
 
     #[ORM\Column(type: 'float')]
@@ -61,6 +63,8 @@ class Order implements EntityInterface
 
     public function __construct()
     {
+        $this->reference = '#'.uniqid();
+        $this->deliveryPlannedDate = new \DateTime();
         $this->orderLines = new ArrayCollection();
     }
 

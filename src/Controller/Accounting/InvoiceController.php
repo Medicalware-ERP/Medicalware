@@ -12,12 +12,14 @@ use App\Repository\Accounting\InvoiceLineRepository;
 use App\Repository\Accounting\InvoiceRepository;
 use App\Service\Invoice\InvoiceDataFormatter;
 use App\Workflow\InvoiceStateWorkflow;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,7 +52,11 @@ class InvoiceController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $invoiceRepository->add($invoice);
+            try {
+                $invoiceRepository->add($invoice);
+            }catch (UniqueConstraintViolationException $exception) {
+                $form->get('reference')->addError(new FormError("Cette référence est déjà utilisé"));
+            }
         }
 
         return $this->render('invoice/form.html.twig', [
@@ -65,7 +71,11 @@ class InvoiceController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $invoiceRepository->add($invoice);
+            try {
+                $invoiceRepository->add($invoice);
+            }catch (UniqueConstraintViolationException $exception) {
+                $form->get('reference')->addError(new FormError("Cette référence est déjà utilisé"));
+            }
         }
 
         return $this->render('invoice/form.html.twig', [
