@@ -17,7 +17,7 @@ const initShow = () => {
     };
 
     $(".btn-delete-room")?.addEventListener('click', callback);
-}
+};
 
 document.addEventListener('layout.room-information.loaded', () => {
     initShow();
@@ -27,7 +27,7 @@ const initRoomCalendar = () => {
     const roomId: number = parseInt(findInDataset($("#room-show-planning") as HTMLElement, "roomId"));
 
     declareCalendar("room-show-planning", roomId, "App\\Entity\\Room\\Room");
-}
+};
 
 document.addEventListener('layout.room-planning.loaded', () => {
     initRoomCalendar();

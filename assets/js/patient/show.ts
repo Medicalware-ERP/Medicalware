@@ -4,6 +4,7 @@ import axios from "axios";
 import {loadCurrentTab} from "../layout/layout_show";
 import {initFormCollection} from "../util/form_collection";
 import generateDatable from "../datatable/datatableGeneric";
+import {declareCalendar} from "../util/planning";
 
 const initMedicalFileTab = () => {
     initFormCollection();
@@ -19,10 +20,10 @@ const initMedicalFileTab = () => {
             });
             axios.get(url).then(() => {
                 deleteBtn.parentElement?.parentElement?.remove();
-            })
-        })
+            });
+        });
     });
-}
+};
 
 const initInvoiceTab = () => {
     const table = $("#table-invoice")
@@ -31,14 +32,27 @@ const initInvoiceTab = () => {
     }
 };
 
-document.addEventListener( 'layout.medical_file.loaded', (e) => {
-    initMedicalFileTab();
-})
-document.addEventListener( 'layout.invoice.loaded', (e) => {
-    initInvoiceTab();
-})
+const initPatientCalendar = () => {
+    const patientId: number = parseInt(findInDataset($("#patient-show-planning") as HTMLElement, "patientId"));
 
-document.addEventListener( 'DOMContentLoaded', (e) => {
+    declareCalendar("patient-show-planning", patientId, "App\\Entity\\Patient");
+};
+
+document.addEventListener( 'layout.medical_file.loaded', () => {
+    initMedicalFileTab();
+});
+
+document.addEventListener( 'layout.invoice.loaded', () => {
+    initInvoiceTab();
+});
+
+document.addEventListener( 'layout.patient_show_calendrier.loaded', () => {
+    console.log("dam patient show claendar")
+    initPatientCalendar();
+});
+
+document.addEventListener( 'DOMContentLoaded', () => {
     initMedicalFileTab();
     initInvoiceTab();
-})
+    initPatientCalendar();
+});
