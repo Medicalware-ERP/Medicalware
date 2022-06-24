@@ -74,6 +74,17 @@ class EventController extends BaseController
         return $this->json("Succes");
     }
 
+    #[Route('/event/show/{id}}', name: 'event_show')]
+    public function showEvent(Request $request, int $id){
+        $event = $this->manager->getRepository(Event::class)->find($id);
+
+    if ($event == null) throw new NotFoundHttpException();
+
+        return $this->renderForm('event/_show.html.twig', [
+            'event' => $event
+        ]);
+    }
+
     // Retourne les évènements lié à un type de ressource (Ex: Les events des Rooms)
     #[Route('/event/resource/{class}', name: 'event_resource_class')]
     public function getEventsResourceClass(Request $request, string $class): Response
@@ -99,5 +110,20 @@ class EventController extends BaseController
         $data = $this->manager->find(Event::class, $id) ?? throw new NotFoundHttpException("Entité non trouvée");
 
         return $this->json($data, context: [AbstractNormalizer::GROUPS => [ "main" ] ]);
+    }
+
+    #[Route('/event/delete/{id}', name: 'event_delete')]
+    public function delete(Request $request, int $id)
+    {
+        /**@var \App\Repository\Planning\EventRepository $eventRepository*/
+        $eventRepository = $this->manager->getRepository(Event::class);
+        $event = $eventRepository->find($id);
+
+        if ($event == null) throw new NotFoundHttpException();
+
+        $eventRepository->remove($event);
+
+        $referer = $request->headers->get('referer');
+        return $this->redirect($referer);
     }
 }

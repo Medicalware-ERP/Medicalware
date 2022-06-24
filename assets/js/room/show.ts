@@ -1,7 +1,7 @@
 import {$, findInDataset} from "../utils";
 import {swaleWarning, swaleDangerAndRedirect} from "../util/swal";
 import Routing from "../Routing";
-import {DateSelectArg} from '@fullcalendar/common';
+import {DateSelectArg, EventClickArg} from '@fullcalendar/common';
 import {Calendar} from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -11,7 +11,7 @@ import interactionPlugin, {DateClickArg, Draggable} from '@fullcalendar/interact
 import generateDatable from "../datatable/datatableGeneric";
 import axios from "axios";
 import {loadCurrentTab} from "../layout/layout_show";
-import {openAjaxModal} from "../util/modal";
+import {ModalOption, openAjaxModal} from "../util/modal";
 import {importSelect2} from "../app";
 
 const initShow = () => {
@@ -77,7 +77,8 @@ const initRoomPlanning = () => {
         eventDrop: info => editEventDate(info),
         eventResize: info => editEventDate(info),
         dateClick: info => openPlanningFormModal(info, roomId),
-        select: info => openPlanningFormModal(info, roomId)
+        select: info => openPlanningFormModal(info, roomId),
+        eventClick: info => openShowModal(info)
     });
 
     showRoomCalendar.render();
@@ -152,8 +153,34 @@ const openPlanningFormModal = (info: DateClickArg | DateSelectArg | null, roomId
             endAt: endAt
         });
 
-        openAjaxModal(url, `Ajouter un évènement à la salle #${roomId}`);
+        const modalOption: ModalOption = {
+            title: `Ajouter un évènement à la salle #${roomId}`,
+            removeAction: false
+        }
+
+        openAjaxModal(url, modalOption);
     }
+}
+
+const openShowModal = (info: EventClickArg) => {
+
+    console.log("info", info);
+
+    const event = info.event;
+
+    const url = Routing.generate("event_show",{
+        id: event.id
+    });
+
+    const modalOption: ModalOption = {
+        title: `Visualisation de l'évènement "${event.title}"`,
+        removeAction: true
+    }
+
+    openAjaxModal(url, modalOption).then(res => {
+
+    });
+
 }
 
 document.addEventListener("modal.loaded", () => {
