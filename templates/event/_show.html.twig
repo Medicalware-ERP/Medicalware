@@ -1,0 +1,35 @@
+<div id="event-show-container" class="d-flex flex-column" style="gap: 1em">
+
+    <div class="d-flex">
+        <span>Libellé :</span>
+        {{ event.title }}
+    </div>
+
+    <div class="d-flex">
+        <span>Date début :</span>
+        {{ event.startAt | date('d/m/Y') }}
+    </div>
+
+    <div class="d-flex">
+        <span>Date fin :</span>
+        {{ event.endAt | date('d/m/Y') }}
+    </div>
+
+    <div class="d-flex">
+        <span>Participants :</span>
+        {% for attendee in event.attendees %}
+
+            {{ attendee.id }},
+
+        {% endfor %}
+    </div>
+
+    <div class="d-flex justify-content-end gap-10">
+        <a id="btn-event-show-edit" class="btn btn-warning" data-event-id="{{ event.id }}">
+            Éditer
+        </a>
+        <a id="btn-event-show-delete" class="btn btn-danger" data-event-id="{{ event.id }}">
+            Supprimer
+        </a>
+    </div>
+</div>

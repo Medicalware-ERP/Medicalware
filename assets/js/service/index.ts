@@ -1,6 +1,6 @@
 import generateDatable from "../datatable/datatableGeneric";
 import {$} from "../utils";
-import {openAjaxModal} from "../util/modal";
+import {ModalOption, openAjaxModal} from "../util/modal";
 import Routing from "../Routing";
 import {swaleDangerAndRedirect} from "../util/swal";
 
@@ -14,7 +14,13 @@ const callback = () => {
                 class : "App\\Entity\\Service",
                 id: button?.dataset.service
             });
-            openAjaxModal(url,"Editer un service");
+
+            const modalOption: ModalOption = {
+                title: "Editer un service",
+                removeAction: false
+            }
+
+            openAjaxModal(url,modalOption);
         })
     });
 }
@@ -41,7 +47,13 @@ addButton?.addEventListener("click", () => {
     const url = Routing.generate("add_enum",{
         class : "App\\Entity\\Service"
     });
-    openAjaxModal(url,"Ajouter un service");
+
+    const modalOption: ModalOption = {
+        title: "Ajouter un service",
+        removeAction: false
+    }
+
+    openAjaxModal(url, modalOption);
 })
 
 const table = $("#table-services")

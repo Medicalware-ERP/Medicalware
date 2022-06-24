@@ -2,7 +2,7 @@ import generateDatable from "../datatable/datatableGeneric";
 import {$} from "../utils";
 import {swaleDangerAndRedirect, swaleDanger} from "../util/swal";
 import Routing from "../Routing";
-import {openAjaxModal} from "../util/modal";
+import {openAjaxModal, ModalOption} from "../util/modal";
 
 const table = $("#table-rooms");
 
@@ -46,7 +46,13 @@ function initTypes(){
         const url = Routing.generate("add_enum",{
             class : "App\\Entity\\Room\\RoomType"
         });
-        openAjaxModal(url, "Ajouter un type");
+
+        const modalOption: ModalOption = {
+            title: "Ajouter un type",
+            removeAction: false
+        }
+
+        openAjaxModal(url, modalOption);
     })
 
     // Mise en place du binding pour l'édition d'un des types
@@ -57,7 +63,13 @@ function initTypes(){
             class : "App\\Entity\\Room\\RoomType",
             id : button.dataset.type
         });
-        openAjaxModal(url, "Modifier un type");
+
+        const modalOption: ModalOption = {
+            title: "Modifier un type",
+            removeAction: false
+        }
+
+        openAjaxModal(url, modalOption);
     }
 
     $(".btn-edit-room-type", (elem: Node) => {
@@ -93,7 +105,13 @@ function initOptions(){
         const url = Routing.generate("add_enum",{
             class : "App\\Entity\\Room\\RoomOption"
         });
-        openAjaxModal(url, "Ajouter une option");
+
+        const modalOption: ModalOption = {
+            title: "Ajouter une option",
+            removeAction: false
+        }
+
+        openAjaxModal(url, modalOption);
     })
 
     // Mise en place du binding pour l'édition d'une des options
@@ -104,7 +122,13 @@ function initOptions(){
             class : "App\\Entity\\Room\\RoomOption",
             id : button.dataset.option
         });
-        openAjaxModal(url, "Modifier une option");
+
+        const modalOption: ModalOption = {
+            title: "Modifier une option",
+            removeAction: false
+        }
+
+        openAjaxModal(url, modalOption);
     }
 
     $(".btn-edit-room-option", (elem: Node) => {
