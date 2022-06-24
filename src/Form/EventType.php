@@ -11,6 +11,9 @@ use App\Entity\User;
 use App\Form\Base\EditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
@@ -61,7 +64,6 @@ class EventType extends AbstractType
                 "label" => "Participants",
                 "required" => false,
                 "choices" => $choices,
-                "mapped" => false,
                 "choice_label" => function($a) { return $a; }
             ])
             ->add('allDay', CheckboxType::class, [
@@ -89,19 +91,41 @@ class EventType extends AbstractType
             }
         });
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $formEvents) {
-            /** @var Event $event */
-            $event = $formEvents->getData();
-            $formData = $formEvents->getForm();
 
-            foreach ($formData->get("attendees")->getData() as $participant) {
-                $attendee = new Participant();
-                $attendee->setResourceId($participant->getId());
-                $attendee->setResourceClass($participant::class);
+        $builder->get('attendees')
+            ->addModelTransformer(
+                new class implements DataTransformerInterface{
 
-                $event->addAttendee($attendee);
-            }
-        });
+                    public function transform(mixed $value): array
+                    {
+                        /** @var Participant[] $participants */
+                        $participants = $value->toArray();
+
+                        $data = [];
+                        foreach ($participants as $participant) {
+                            $data[] = $participant->getResource();
+                        }
+
+                        return $data;
+                    }
+
+                    public function reverseTransform(mixed $value): array
+                    {
+                        $data = [];
+
+                        foreach ($value as $item) {
+                            $id = $item->getId();
+
+                            $data[] = (new Participant())
+                                        ->setResourceId($id)
+                                        ->setResourceClass($item::class)
+                            ;
+                        }
+
+                        return $data;
+                    }
+                }
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
