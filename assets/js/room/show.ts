@@ -1,5 +1,5 @@
 import {$, findInDataset} from "../utils";
-import {swaleWarning, swaleDangerAndRedirect} from "../util/swal";
+import {swaleWarning, swaleDangerAndRedirect, swaleDanger} from "../util/swal";
 import Routing from "../Routing";
 import {DateSelectArg, EventClickArg} from '@fullcalendar/common';
 import {Calendar} from "@fullcalendar/core";
@@ -178,9 +178,25 @@ const openShowModal = (info: EventClickArg) => {
     }
 
     openAjaxModal(url, modalOption);
-
 }
 
-document.addEventListener("modal.loaded", () => {
+document.addEventListener("modal.loaded", (e) => {
     importSelect2(true);
+    bindModalEventActionButtons();
 })
+
+const bindModalEventActionButtons = () => {
+    $("#btn-event-show-edit")?.addEventListener("click", () => {
+        const id = findInDataset($("#btn-event-show-edit") as HTMLElement, "eventId");
+    });
+
+    $("#btn-event-show-delete")?.addEventListener("click", () => {
+        const id = findInDataset($("#btn-event-show-edit") as HTMLElement, "eventId");
+
+        const url = Routing.generate('event_delete', {
+            id: id
+        });
+
+        swaleDangerAndRedirect("Vous-êtes sur le point de supprimer un évènement", url, "#modal").then();
+    });
+};

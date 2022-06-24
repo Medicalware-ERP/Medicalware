@@ -25,10 +25,10 @@
     </div>
 
     <div class="d-flex justify-content-end gap-10">
-        <a class="btn btn-warning" href="#">
+        <a id="btn-event-show-edit" class="btn btn-warning" data-event-id="{{ event.id }}">
             Éditer
         </a>
-        <a class="btn btn-danger btn-delete-room" href="{{ path('event_delete', {'id': event.id}) }}">
+        <a id="btn-event-show-delete" class="btn btn-danger" data-event-id="{{ event.id }}">
             Supprimer
         </a>
     </div>
