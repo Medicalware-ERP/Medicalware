@@ -41,7 +41,7 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
         }
 
         for ($i = 0; $i <= 20; $i++) {
-            $invoice = new Order();
+            $order = new Order();
             $state = $states[rand(0, 4)];
             $tva = $tvas[rand(0, 3)];
             $paymentMethod = $paymentMethods[rand(0, 2)];
@@ -57,11 +57,11 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
                     ->setQuantity($faker->numberBetween(1, 10))
                     ->calculateHt()
                 ;
-                $invoice->addOrderLine($orderLine);
+                $order->addOrderLine($orderLine);
             }
 
             $date = $faker->dateTimeBetween('-1 years');
-            $invoice
+            $order
                 ->setDeliveryPlannedDate($date)
                 ->setState($state)
                 ->setTva($tva)
@@ -71,10 +71,10 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
             ;
 
             if ($state->getSlug() === OrderStateEnum::DELIVERY) {
-                $invoice->setDeliveryDate($date->modify('+20 days'));
+                $order->setDeliveryDate($date->modify('+20 days'));
             }
 
-            $manager->persist($invoice);
+            $manager->persist($order);
         }
 
         $manager->flush();
