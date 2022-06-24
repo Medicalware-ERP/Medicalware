@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 import {colors} from "../utils";
 
-export const swaleWarning = (text: string) => Swal.fire({
+export const swaleWarning = (text: string, target: string = "") => Swal.fire({
     title: 'Êtes vous sûr de continuer ?',
     text: text,
     icon: 'warning',
@@ -9,10 +9,11 @@ export const swaleWarning = (text: string) => Swal.fire({
     confirmButtonColor: colors.primary,
     showCancelButton: true,
     cancelButtonText: 'Annuler',
-    cancelButtonColor: colors.secondary
+    cancelButtonColor: colors.secondary,
+    target: target
 })
 
-export const swaleDanger = (text: string) => Swal.fire({
+export const swaleDanger = (text: string, target: string = "") => Swal.fire({
     title: 'Êtes vous sûr de continuer ?',
     text: text,
     icon: 'error',
@@ -20,10 +21,11 @@ export const swaleDanger = (text: string) => Swal.fire({
     confirmButtonColor: colors.danger,
     showCancelButton: true,
     cancelButtonText: 'Annuler',
-    cancelButtonColor: colors.secondary
+    cancelButtonColor: colors.secondary,
+    target: target
 })
 
-export const swaleWarningAndRedirect = (text: string, url: string) => Swal.fire({
+export const swaleWarningAndRedirect = (text: string, url: string, target: string = "") => Swal.fire({
     title: 'Êtes vous sûr de continuer ?',
     text: text,
     icon: 'warning',
@@ -31,14 +33,15 @@ export const swaleWarningAndRedirect = (text: string, url: string) => Swal.fire(
     confirmButtonColor: colors.primary,
     showCancelButton: true,
     cancelButtonText: 'Annuler',
-    cancelButtonColor: colors.secondary
+    cancelButtonColor: colors.secondary,
+    target: target
 }).then(r => {
     if (r.isConfirmed) {
         location.href = url
     }
 });
 
-export const swaleDangerAndRedirect = (text: string, url: string) => Swal.fire({
+export const swaleDangerAndRedirect = (text: string, url: string, target: string = "") => Swal.fire({
     title: 'Êtes vous sûr de continuer ?',
     text: text,
     icon: 'error',
@@ -46,7 +49,8 @@ export const swaleDangerAndRedirect = (text: string, url: string) => Swal.fire({
     confirmButtonColor: colors.danger,
     showCancelButton: true,
     cancelButtonText: 'Annuler',
-    cancelButtonColor: colors.secondary
+    cancelButtonColor: colors.secondary,
+    target: target
 }).then(r => {
     if (r.isConfirmed) {
         location.href = url
