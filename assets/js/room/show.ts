@@ -177,9 +177,7 @@ const openShowModal = (info: EventClickArg) => {
         removeAction: true
     }
 
-    openAjaxModal(url, modalOption).then(res => {
-
-    });
+    openAjaxModal(url, modalOption);
 
 }
 
