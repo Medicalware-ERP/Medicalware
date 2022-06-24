@@ -197,7 +197,7 @@ class PatientController extends BaseController
     {
         $html    = $this->renderView('patient/includes/_pdf.html.twig', ['medicalFile' => $medicalFile]);
         $content = $pdf->getOutputFromHtml($html);
-        $fileName = $slugger->slug("Dossier médical de ". $medicalFile->getPatient()->getLastName() . " " . $medicalFile->getPatient()->getFirstName());
+        $fileName = $slugger->slug("Dossier médical de ". $medicalFile->getPatient()->getLastName() . " " . $medicalFile->getPatient()->getFirstName()).'.pdf';
 
         return new PdfResponse($content, $fileName);
     }

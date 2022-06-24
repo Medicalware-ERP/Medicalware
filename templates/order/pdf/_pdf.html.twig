@@ -14,12 +14,16 @@
             border: none;
             margin: 1rem 0;
         }
+        td{
+            word-break: break-word;
+            white-space:nowrap;
+        }
     </style>
 </head>
 <body>
 <div class="d-flex align-items-center gap-10">
     <img src="{{ asset('build/images/logo.png') }}" alt="logo" width="100"/>
-    <div>
+    <div style="margin-left: 15px">
         <h4>MedicalWare</h4>
         <p>22 Rue John Maynard Keynes</p>
         <p>13013 Marseille</p>
@@ -40,7 +44,7 @@
 </div>
 <div style="clear: both"></div>
 <div>
-    <p class="margin-bottom-15">Facture : {{ order }}</p>
+    <p class="margin-bottom-15">Commande : {{ order }}</p>
     <p class="margin-bottom-15">Date prévue de livraison : {{ order.deliveryPlannedDate|date('d/m/Y') }}</p>
     {% if order.deliveryDate %}
         <p class="margin-bottom-15">Date : {{ order.deliveryDate|date('d/m/Y') }}</p>
@@ -49,15 +53,15 @@
 </div>
 
 <div class="margin-top-20">
-    <table class="datatable" style="border: 1px solid #edeff1;">
+    <table class="datatable" style="border: 1px solid #edeff1;table-layout: fixed">
         <thead>
         <tr>
-            <th>#</th>
-            <th>Désignation</th>
-            <th>Description</th>
-            <th  style="min-width: 50px">Quantité</th>
-            <th style="min-width: 100px">Prix</th>
-            <th style="min-width: 100px">Total ht</th>
+            <th style="width: 30px">#</th>
+            <th style="width: 200px">Désignation</th>
+            <th style="width: 300px">Description</th>
+            <th style="width: 100px">Quantité</th>
+            <th style="width: 100px">Prix</th>
+            <th style="width: 100px">Total ht</th>
         </tr>
         </thead>
         <tbody>
@@ -66,7 +70,11 @@
             <tr>
                 <td>{{ loop.index }}</td>
                 <td>{{ line.equipment }}</td>
-                <td>{{ line.description ?? '-' }}</td>
+                <td>
+                    <div style="white-space: pre-line;word-wrap: break-word;text-align: left">
+                        {{ line.description ?? '-' }}
+                    </div>
+                </td>
                 <td>{{ line.quantity }}</td>
                 <td>{{ line.price }} €</td>
                 <td>{{ line.ht }} €</td>
