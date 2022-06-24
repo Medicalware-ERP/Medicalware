@@ -40,8 +40,8 @@
                     <div class="sub-menu-profile">
                         <span class="sub-menu-profile-title">Bienvenue !</span>
                         <div class="sub-menu-container-link w-100">
-                            <a href="#" class="sub-menu-profile-link"><i class="fa fa-user"></i>Mon profil</a>
-                            <a href="#" class="sub-menu-profile-link"><i class="fas fa-sign-out-alt"></i>Déconnexion</a>
+                            <a href="{{ path('app_show_user', { id : app.user.id }) }}" class="sub-menu-profile-link"><i class="fa fa-user"></i>Mon profil</a>
+                            <a href="{{ path('app_logout') }}" class="sub-menu-profile-link"><i class="fas fa-sign-out-alt"></i>Déconnexion</a>
                         </div>
                     </div>
                 </div>
