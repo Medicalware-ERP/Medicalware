@@ -78,10 +78,9 @@ class EventController extends BaseController
         ]);
     }
 
-    #[Route('/event/edit/time', name: 'event_edit_time')]
-    public function editTime(Request $request): Response
+    #[Route('/event/edit/time/{id}', name: 'event_edit_time')]
+    public function editTime(Request $request, int $id): Response
     {
-        $id = $request->query->get("id");
         $startAt = new \DateTime($request->query->get("startAt"));
         $endAt = new \DateTime($request->query->get("endAt"));
 
