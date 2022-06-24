@@ -5,6 +5,15 @@
     </div>
     <ul class="nav-links">
         <li>
+            <a href="{{ path('dashboard') }}">
+                <i class="fa fa-house-user"></i>
+                <span class="link_name">Accueil</span>
+            </a>
+            <ul class="sub-menu blank">
+                <li><a class="link_name" href="{{ path('dashboard') }}">Accueil</a></li>
+            </ul>
+        </li>
+        <li>
             <a href="{{ path('app_human_resources') }}">
                 <i class="fa fa-user"></i>
                 <span class="link_name">Ressources humaines</span>
