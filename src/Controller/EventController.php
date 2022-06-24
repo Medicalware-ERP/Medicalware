@@ -56,6 +56,28 @@ class EventController extends BaseController
         ]);
     }
 
+    #[Route('/event/edit/{id}', name: 'event_edit')]
+    public function edit(Request $request, int $id): Response
+    {
+        $event = $this->manager->getRepository(Event::class)->find($id);
+
+        $form = $this->createForm(EventType::class, $event, [ "action" => $request->getUri() ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->manager->persist($event);
+            $this->manager->flush();
+
+            $referer = $request->headers->get('referer');
+            return $this->redirect($referer);
+        }
+
+        return $this->renderForm("event/_form.html.twig", [
+            "form" => $form,
+            "event" => $event
+        ]);
+    }
+
     #[Route('/event/edit/time', name: 'event_edit_time')]
     public function editTime(Request $request): Response
     {

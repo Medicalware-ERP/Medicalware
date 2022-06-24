@@ -1,11 +1,11 @@
-import {htmlToElement, simpleLoader, simpleLoaderModal} from "../utils";
+import {simpleLoaderModal} from "../utils";
 import axios from "axios";
 import $ from "jquery";
 
 export const openModal = (id : string = "modal") => {
     const modal:HTMLElement|null = document.querySelector(`#${id}`);
     if(modal == null){
-        return
+        return;
     }
     // @ts-ignore
     modal?.showModal();
@@ -38,12 +38,14 @@ export const openAjaxModal = (url: string, modalOption: ModalOption | null = nul
     const title: string = modalOption?.title ?? "Modal title";
 
     if(modalBody == null || modalTitle == null || modalFooter == null){
+        console.log("return");
         return;
     }
 
     modalTitle.innerHTML = title.toUpperCase();
     modalBody.innerHTML = simpleLoaderModal();
-    if (!!modalOption?.removeAction) modalFooter.remove();
+    if (!!modalOption?.removeAction) modalFooter.classList.add("d-none");
+    else modalFooter.classList.remove("d-none");
 
     axios.get(url)
         .then(res => {
@@ -53,4 +55,14 @@ export const openAjaxModal = (url: string, modalOption: ModalOption | null = nul
             const event = new CustomEvent('modal.loaded');
             document.dispatchEvent(event);
         });
+}
+
+export const closeAjaxModal = (id : string = "modal") => {
+    const modal:HTMLElement|null = document.querySelector(`#${id}`);
+    if(modal == null){
+        return;
+    }
+
+    // @ts-ignore
+    modal?.close();
 }

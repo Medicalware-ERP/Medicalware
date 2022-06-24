@@ -11,7 +11,7 @@ import interactionPlugin, {DateClickArg, Draggable} from '@fullcalendar/interact
 import generateDatable from "../datatable/datatableGeneric";
 import axios from "axios";
 import {loadCurrentTab} from "../layout/layout_show";
-import {ModalOption, openAjaxModal} from "../util/modal";
+import {closeAjaxModal, ModalOption, openAjaxModal} from "../util/modal";
 import {importSelect2} from "../app";
 
 const initShow = () => {
@@ -187,14 +187,23 @@ document.addEventListener("modal.loaded", (e) => {
 
 const bindModalEventActionButtons = () => {
     $("#btn-event-show-edit")?.addEventListener("click", () => {
-        const id = findInDataset($("#btn-event-show-edit") as HTMLElement, "eventId");
+        const url = Routing.generate('event_edit', {
+            id: findInDataset($("#btn-event-show-edit") as HTMLElement, "eventId")
+        });
+
+        closeAjaxModal();
+
+        const modalOption: ModalOption = {
+            title: `Édition d'un évènement`,
+            removeAction: false
+        }
+
+        openAjaxModal(url, modalOption);
     });
 
     $("#btn-event-show-delete")?.addEventListener("click", () => {
-        const id = findInDataset($("#btn-event-show-edit") as HTMLElement, "eventId");
-
         const url = Routing.generate('event_delete', {
-            id: id
+            id: findInDataset($("#btn-event-show-edit") as HTMLElement, "eventId")
         });
 
         swaleDangerAndRedirect("Vous-êtes sur le point de supprimer un évènement", url, "#modal").then();
