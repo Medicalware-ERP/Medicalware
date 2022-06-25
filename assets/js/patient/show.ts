@@ -46,7 +46,7 @@ document.addEventListener( 'layout.invoice.loaded', () => {
     initInvoiceTab();
 });
 
-document.addEventListener( 'layout.patient_show_calendrier.loaded', () => {
+document.addEventListener( 'layout.patient_show_planning.loaded', () => {
     console.log("dam patient show claendar")
     initPatientCalendar();
 });
