@@ -9,5 +9,24 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: EventTypeRepository::class)]
 class EventType extends EnumEntity
 {
+    #[Pure] public function __construct(string $slug = "", string $name = "")
+    {
+    parent::__construct($slug, $name);
+    }
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $archivedAt;
+
+
+    public function getArchivedAt(): ?\DateTimeInterface
+    {
+        return $this->archivedAt;
+    }
+
+    public function setArchivedAt(?\DateTimeInterface $archivedAt): self
+    {
+        $this->archivedAt = $archivedAt;
+
+        return $this;
+    }
 }

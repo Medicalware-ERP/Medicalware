@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Planning\Event;
 use App\Entity\Planning\Participant;
 use App\Form\EventType;
+use App\Repository\Planning\EventTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Util\Json;
 use Symfony\Component\HttpFoundation\Request;
@@ -146,5 +147,29 @@ class EventController extends BaseController
 
         $referer = $request->headers->get('referer');
         return $this->redirect($referer);
+    }
+
+    #[Route('/event/include/type', name: 'index_event_type')]
+    public function eventTypeIndex(EventTypeRepository $eventTypeRepository) : Response
+    {
+        $data = $eventTypeRepository->findAllActive();
+
+        return $this->renderForm('event/_types.html.twig', [
+            'eventTypes' => $data
+        ]);
+    }
+
+    #[Route('/event/type/archive/{id}', name: 'archive_event_type')]
+    public function archiveType(int $id, EventTypeRepository $eventTypeRepository)
+    {
+        $type = $eventTypeRepository->find($id);
+
+        if ($type == null)
+            throw new NotFoundHttpException();
+
+        $type->setArchivedAt(new \DateTimeImmutable());
+        $eventTypeRepository->add($type);
+
+        return $this->redirectToRoute("index_event_type");
     }
 }

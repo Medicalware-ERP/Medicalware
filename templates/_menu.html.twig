@@ -22,15 +22,22 @@
                 <li><a class="link_name" href="{{ path('app_human_resources') }}">Ressources humaines</a></li>
             </ul>
         </li>
-        <li>
-            <a href="#">
-                <i class="fa fa-calendar-alt"></i>
-                <span class="link_name">Planning</span>
-            </a>
-            <ul class="sub-menu blank">
-                <li><a class="link_name" href="#">Planning</a></li>
+
+        <li class="drawer-links">
+            <div class="icon-link">
+                <a>
+                    <i class="fa fa-calendar-alt"></i>
+                    <span class="link_name">Évènement</span>
+                </a>
+                <i class="fa fa-angle-right arrow"></i>
+            </div>
+            <ul class="sub-menu">
+                <li><a class="link_name" href="#">Comptabilité</a></li>
+                <li><a href="#">Planning</a></li>
+                <li><a href="{{ path('index_event_type') }}">Types d'évènements</a></li>
             </ul>
         </li>
+
         <li class="drawer-links">
             <div class="icon-link">
                 <a href="#">
