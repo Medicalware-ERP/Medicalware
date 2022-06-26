@@ -21,3 +21,8 @@ document.addEventListener('collection.element.added', (e: Event) => {
     const tr = (e as CustomEvent).detail.element as HTMLTableRowElement;
     initServiceSelect(tr);
 });
+
+document.addEventListener( 'layout.medical_file.loaded', (e: Event) => {
+    const tr = (e as CustomEvent).detail.element as HTMLTableRowElement;
+    initServiceSelect(tr);
+});
