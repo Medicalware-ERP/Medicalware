@@ -87,6 +87,7 @@ class HumanResourcesController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             $doctor->setPassword($userPasswordHasher->hashPassword($doctor, 'admin'));
             $doctor->setProfession((new UserTypeEnum())->getData()[3]);
+            $doctor->setService($doctor->getSpecialisation()->getService());
             $doctor->setRoles(["ROLE_DOCTOR"]);
 
             try {

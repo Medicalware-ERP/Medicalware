@@ -1,6 +1,12 @@
 <tr id="{{ form.vars.id }}">
         <td>{{ form_widget(form.doctor) }}</td>
-        <td>{{ form_widget(form.service) }}</td>
+        <td class="label">
+            {% if form.vars.value is not null %}
+                {{ form.vars.value.service }}
+            {% else %}
+                <span class="doctor_service label"></span>
+            {% endif %}
+        </td>
         <td>{{ form_widget(form.disease) }}</td>
         <td>{{ form_widget(form.startDate) }}</td>
         <td>{{ form_widget(form.endDate) }}</td>

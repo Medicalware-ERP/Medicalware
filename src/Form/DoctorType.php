@@ -4,8 +4,6 @@ namespace App\Form;
 
 use App\Entity\Doctor;
 use App\Entity\Specialisation;
-use App\Enum\RoleEnum;
-use App\Form\Base\SelectMultipleType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -58,6 +56,14 @@ class DoctorType extends AbstractType
                 'class' => Specialisation::class,
                 'label' => 'Spécialisation:',
                 "constraints" => [new NotBlank()],
+                'choice_attr' => function(Specialisation $choice, $key, $value) {
+                    return [
+                        'data-service-name' => $choice->getService()->getName()
+                    ];
+                },
+                'attr' => [
+                    'class' => "specialisation__service"
+                ]
             ])
         ;
     }

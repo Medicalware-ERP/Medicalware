@@ -6,12 +6,15 @@ use App\Entity\Disease;
 use App\Entity\Doctor;
 use App\Entity\MedicalFileLine;
 use App\Entity\Service;
+use PhpParser\Comment\Doc;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -37,11 +40,14 @@ class MedicalFileLineType extends AbstractType
                 'label' => false,
                 'class' => Doctor::class,
                 "constraints" => [new NotBlank()],
-            ])
-            ->add('service', EntityType::class, [
-                'label' => false,
-                'class' => Service::class,
-                "constraints" => [new NotBlank()],
+                'choice_attr' => function(Doctor $choice, $key, $value) {
+                    return [
+                        'data-service-name' => $choice->getService()?->getName()
+                    ];
+                },
+                'attr' => [
+                    'class' => "doctor__service"
+                ]
             ])
             ->add('disease', EntityType::class, [
                 'label' => false,
@@ -49,6 +55,12 @@ class MedicalFileLineType extends AbstractType
                 "constraints" => [new NotBlank()],
             ])
             ;
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event){
+            /** @var  MedicalFileLine $medicalFileLine */
+            $medicalFileLine = $event->getData();
+            $medicalFileLine->setService($medicalFileLine->getDoctor()->getService());
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

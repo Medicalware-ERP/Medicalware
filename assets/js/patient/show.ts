@@ -33,7 +33,11 @@ const initInvoiceTab = () => {
 };
 
 const initPatientCalendar = () => {
-    const patientId: number = parseInt(findInDataset($("#patient-show-planning") as HTMLElement, "patientId"));
+    const patientIdEl = $("#patient-show-planning");
+    if(patientIdEl == null){
+        return;
+    }
+    const patientId: number = parseInt(findInDataset(patientIdEl as HTMLElement, "patientId"));
 
     declareCalendar("patient-show-planning", patientId, "App\\Entity\\Patient");
 };

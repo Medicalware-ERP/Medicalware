@@ -4,7 +4,10 @@ namespace App\DataFixtures;
 
 use App\Entity\Address;
 use App\Entity\Doctor;
+use App\Entity\Service;
+use App\Entity\Specialisation;
 use App\Entity\UserType;
+use App\Enum\ServiceEnum;
 use App\Enum\SpecialisationEnum;
 use App\Enum\UserTypeEnum;
 use DateTimeImmutable;
@@ -26,21 +29,31 @@ class DoctorFixtures extends Fixture
         $faker = Factory::create("fr_FR");
 
         $specialisation = new SpecialisationEnum();
-        $states = $specialisation->getData();
-        foreach($states as $state){
+        $service = new ServiceEnum();
+        $services = $service->getData();
+
+        /** @var Service $state */
+        foreach($services as $service){
+            $manager->persist($service);
+        }
+
+        $specialisations = $specialisation->getData();
+        /** @var Specialisation $state */
+        foreach($specialisations as $key => $state){
+            $state->setService($services[$key]);
             $manager->persist($state);
         }
 
         $profession = (new UserTypeEnum())->getData()[3];
         $manager->persist($profession);
 
-        for($i = 0; $i <= 20 ; $i++){
+        for($i = 0; $i <= 16 ; $i++){
             $doctor = new Doctor();
-            $specialisation = $states[rand(0, 16)];
             $address    = new Address($faker->streetName , $faker->city, $faker->postcode);
             $numberTrunced = substr($faker->e164PhoneNumber,5, strlen($faker->e164PhoneNumber));
             $doctor
-                ->setSpecialisation($specialisation)
+                ->setService($services[$i])
+                ->setSpecialisation($specialisations[$i])
                 ->setLastName($faker->lastName)
                 ->setFirstName($faker->firstName)
                 ->setPhoneNumber("06". $numberTrunced)
@@ -52,6 +65,7 @@ class DoctorFixtures extends Fixture
                 ->setGender("H")
                 ->setRoles(["ROLE_DOCTOR"])
                 ->setPassword($this->userPasswordHasher->hashPassword($doctor, 'admin'));
+
             $manager->persist($doctor);
         }
         $manager->flush();
