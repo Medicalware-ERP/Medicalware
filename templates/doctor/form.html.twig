@@ -4,13 +4,17 @@
 
 {% block body %}
     <h4 class="title-list">
+        {% if doctor is defined %}
+            Modifier {{ doctor.lastName }}
+        {% else %}
             Ajouter
+        {% endif %}
     </h4>
     <div class="card">
         <div class="d-flex justify-content-center">
             {{ form_start(form) }}
             {{ form_rest(form) }}
-            <input type="submit" class="btn btn-success center-input-submit" value="Ajouter">
+            <input type="submit" class="btn btn-success center-input-submit" value="{{ doctor is defined ? "Modifier" : "Ajouter" }}">
             {{ form_end(form) }}
         </div>
     </div>

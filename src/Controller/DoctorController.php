@@ -121,7 +121,7 @@ class DoctorController extends BaseController
 
         return $this->renderForm('doctor/form.html.twig', [
             'form' => $form,
-            'user' => $doctor
+            'doctor' => $doctor
         ]);
     }
 
