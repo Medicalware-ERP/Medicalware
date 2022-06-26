@@ -137,20 +137,20 @@ class RoomController extends BaseController
     #[Route('/room/include/list', name: 'index_room')]
     public function roomIndex(RoomRepository $roomRepository) : Response
     {
-        $provider = $roomRepository->findAllActive();
+        $data = $roomRepository->findAllActive();
 
         return $this->renderForm('room/includes/_room.html.twig', [
-            'rooms' => $provider
+            'rooms' => $data
         ]);
     }
 
     #[Route('/room/include/type', name: 'index_room_type')]
     public function roomTypeIndex(RoomTypeRepository $roomTypeRepository) : Response
     {
-        $provider = $roomTypeRepository->findAllActive();
+        $data = $roomTypeRepository->findAllActive();
 
         return $this->renderForm('room/includes/_types.html.twig', [
-            'roomTypes' => $provider
+            'roomTypes' => $data
         ]);
     }
 
@@ -171,10 +171,10 @@ class RoomController extends BaseController
     #[Route('/room/include/option', name: 'index_room_option')]
     public function roomOptionIndex(RoomOptionRepository $roomOptionRepository) : Response
     {
-        $provider = $roomOptionRepository->findAllActive();
+        $data = $roomOptionRepository->findAllActive();
 
         return $this->renderForm('room/includes/_options.html.twig', [
-            'roomOptions' => $provider
+            'roomOptions' => $data
         ]);
     }
 

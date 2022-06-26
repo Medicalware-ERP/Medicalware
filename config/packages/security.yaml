@@ -37,6 +37,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     # TODO: change url
     access_control:
+        - { path: /reset-password, roles: PUBLIC_ACCESS }
         - { path: ^/login$, roles: PUBLIC_ACCESS }
         - { path: ^/*, roles: [ROLE_ADMIN, IS_AUTHENTICATED_FULLY] }
         - { path: ^/*, roles: [ROLE_DOCTOR, IS_AUTHENTICATED_FULLY] }

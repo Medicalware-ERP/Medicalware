@@ -1,20 +1,22 @@
-{% extends app.request.query.get('isAjax', false) ? 'layout_empty.html.twig' : 'room/index.html.twig' %}
-
-{% block content %}
-    <div id="room-types" class="list-cards">
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div id="event-types" class="list-cards">
         <div class="d-flex justify-content-between">
-            <h3>Liste des types de salle</h3>
+            <h3>Liste des types d'évènement</h3>
 
-            <a id="btn-add-room-type" class="btn btn-success">
+            <a id="btn-add-event-type" class="btn btn-success">
                 <i class="fa fa-plus"></i>
                 Ajouter un type
             </a>
         </div>
 
         <div class="card-container justify-content-center">
-            {% for type in roomTypes %}
+            {% for type in eventTypes %}
                 <div class="d-flex flex-column card">
-                    <b>{{ type.name }}</b>
+                    <b class="d-flex justify-content-between">
+                        {{ type.name }}
+                        <div class="color-circle" style="background-color: {{ type.color }}"></div>
+                    </b>
                     <div class="description">
                         {{ type.description | raw }}
                     </div>
@@ -23,9 +25,9 @@
                             #{{ type.id }}
                         </div>
                         <div class="d-flex buttons-container">
-                            <a class="btn btn-primary btn-edit-room-type" data-type="{{ type.id }}">Modifier</a>
+                            <a class="btn btn-primary btn-edit-event-type" data-type="{{ type.id }}">Modifier</a>
 
-                            <a class="btn btn-danger btn-delete-room-type" data-type="{{ type.id }}">Supprimer</a>
+                            <a class="btn btn-danger btn-delete-event-type" data-type="{{ type.id }}">Supprimer</a>
                         </div>
                     </div>
 
@@ -36,4 +38,9 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('planning.event.type') }}
 {% endblock %}

@@ -38,21 +38,25 @@ class EventType extends AbstractType
 
         $builder
             ->add('title', TextType::class,[
-                "label" => "Titre"
+                "label" => "Titre",
+                "required" => true
             ])
             ->add('type', EntityType::class, [
                 "label" => "Type",
-                "class" => \App\Entity\Planning\EventType::class
+                "class" => \App\Entity\Planning\EventType::class,
+                "required" => true
             ])
             ->add('startAt', DateTimeType::class, [
                 'label' => "Date début",
                 'widget' => 'single_text',
-                'input_format' => 'yyyy-MM-dd  HH:mm:ss'
+                'input_format' => 'yyyy-MM-dd  HH:mm:ss',
+                "required" => true
             ])
             ->add('endAt', DateTimeType::class, [
                 'label' => "Date fin",
                 'widget' => 'single_text',
-                'input_format' => 'yyyy-MM-dd  HH:mm:ss'
+                'input_format' => 'yyyy-MM-dd  HH:mm:ss',
+                "required" => true
             ])
             ->add('description', EditorType::class,[
                 "label" => "Description :",

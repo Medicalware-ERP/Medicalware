@@ -42,9 +42,9 @@ Encore
     .addEntry('order.form', './assets/js/order/form.ts')
     .addEntry('service.index', './assets/js/service/index.ts')
     .addEntry('form.medicalFileLine', './assets/js/patient/medicalFile/form.ts')
+    .addEntry('planning.event.type', './assets/js/planning/type.ts')
 
     .addStyleEntry('room.show.style', './assets/styles/room/show.scss')
-    .addStyleEntry('room.index.style', './assets/styles/room/index.scss')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
