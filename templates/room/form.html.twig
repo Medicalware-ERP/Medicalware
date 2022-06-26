@@ -1,26 +1,23 @@
-{% extends 'base.html.twig' %}
+<div class="wrapper">
+    {{ form_start(form) }}
+        <div class="d-flex flex-column align-items-center gap-10">
+            <div class="d-flex gap-10">
+                <div>
+                    {{ form_row(form.label) }}
+                </div>
+                <div>
+                    {{ form_row(form.capacity) }}
+                </div>
+            </div>
 
-{% block title %}Salle{% endblock %}
-
-{% block body %}
-    <h4 class="title-list">
-        {% if room is defined %}
-            Modifier {{ room.label }}
-        {% else %}
-            Ajouter
-        {% endif %}
-    </h4>
-    <div class="card">
-        <div class="wrapper">
-            {{ form_start(form) }}
-            {{ form_rest(form) }}
-            <input type="submit" class="btn btn-success" value="{{ room is defined ? "Modifier" : "Ajouter" }}">
-            {{ form_end(form) }}
+            <div class="d-flex gap-10">
+                <div>
+                    {{ form_row(form.options) }}
+                </div>
+                <div>
+                    {{ form_row(form.type) }}
+                </div>
+            </div>
         </div>
-    </div>
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-{% endblock %}
-
+    {{ form_end(form) }}
+</div>

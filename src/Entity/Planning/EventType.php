@@ -9,9 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: EventTypeRepository::class)]
 class EventType extends EnumEntity
 {
-    #[Pure] public function __construct(string $slug = "", string $name = "")
+    #[Pure] public function __construct(string $slug = "", string $name = "", $description = "", $color = "#FFFFF")
     {
-    parent::__construct($slug, $name);
+    parent::__construct($slug, $name, $description, $color);
     }
 
     #[ORM\Column(type: 'datetime', nullable: true)]
