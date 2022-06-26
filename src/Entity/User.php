@@ -54,6 +54,9 @@ class User extends Person implements UserInterface, PasswordAuthenticatedUserInt
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: StockHistory::class)]
     private Collection $stockHistories;
 
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?DateTimeImmutable $activatedAt = null;
+
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
@@ -224,6 +227,24 @@ class User extends Person implements UserInterface, PasswordAuthenticatedUserInt
             }
         }
 
+        return $this;
+    }
+
+    /**
+     * @return DateTimeImmutable|null
+     */
+    public function getActivatedAt(): ?DateTimeImmutable
+    {
+        return $this->activatedAt;
+    }
+
+    /**
+     * @param DateTimeImmutable|null $activatedAt
+     * @return User
+     */
+    public function setActivatedAt(?DateTimeImmutable $activatedAt): User
+    {
+        $this->activatedAt = $activatedAt;
         return $this;
     }
 }

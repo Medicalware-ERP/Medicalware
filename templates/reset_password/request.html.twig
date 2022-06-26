@@ -1,0 +1,32 @@
+{% extends 'base_login.html.twig' %}
+
+{% block title %}Reset your password{% endblock %}
+
+{% form_theme requestForm _self %}
+
+
+
+{% block body %}
+
+    {{ form_start(requestForm, {attr: {class: "form-login"}}) }}
+        {% for flash_error in app.flashes('reset_password_error') %}
+            <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+        {% endfor %}
+
+        <div class="logo-details-form-login">
+            <img class="logo-image" src="{{ asset('build/images/logo.png') }}" alt="logo"/>
+            <span class="logo-name-login">MedicalWare</span>
+        </div>
+        <div class="field">
+            {{ form_widget(requestForm.email, {attr: {class: "form-input-login"}}) }}
+            {{ form_label(requestForm.email) }}
+        </div>
+        <div>
+            <small>
+                Entrer votre email pour changer votre mot de passe.
+            </small>
+        </div>
+
+        <button class="btn btn-primary">Valider</button>
+    {{ form_end(requestForm) }}
+{% endblock %}

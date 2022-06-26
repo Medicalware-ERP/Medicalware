@@ -12,18 +12,33 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
+use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
+use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
 class HumanResourcesController extends BaseController
 {
-    public function __construct(private readonly EntityManagerInterface $manager)
+    use ResetPasswordControllerTrait;
+
+    public function __construct(
+        private readonly EntityManagerInterface $manager,
+        private readonly ResetPasswordHelperInterface $resetPasswordHelper,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly MailerInterface $mailer
+    )
     {
     }
 
@@ -57,6 +72,8 @@ class HumanResourcesController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword($userPasswordHasher->hashPassword($user, 'admin'));
 
+            $this->processSendingPasswordResetEmail($user);
+
             try {
                 $this->manager->persist($user);
                 $this->manager->flush();
@@ -84,10 +101,16 @@ class HumanResourcesController extends BaseController
         $form = $this->createForm(DoctorType::class, $doctor);
         $form->handleRequest($request);
 
+        $profession = $this->manager->getRepository(\App\Entity\UserType::class)->findOneBy([
+           'slug' => UserTypeEnum::DOCTOR
+        ]);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $doctor->setPassword($userPasswordHasher->hashPassword($doctor, 'admin'));
-            $doctor->setProfession((new UserTypeEnum())->getData()[3]);
+            $doctor->setProfession($profession);
             $doctor->setRoles(["ROLE_DOCTOR"]);
+
+            $this->processSendingPasswordResetEmail($doctor);
 
             try {
                 $this->manager->persist($doctor);
@@ -117,6 +140,8 @@ class HumanResourcesController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->processSendingPasswordResetEmail($user);
+
             try {
                 $this->manager->persist($user);
                 $this->manager->flush();
@@ -143,6 +168,8 @@ class HumanResourcesController extends BaseController
 
         $user->setIsActive(!$user->isActive());
 
+        $this->processSendingPasswordResetEmail($user);
+
         $this->manager->persist($user);
         $this->manager->flush();
 
@@ -160,4 +187,43 @@ class HumanResourcesController extends BaseController
             'user' => $user
         ]);
     }
+
+
+    private function processSendingPasswordResetEmail(User $user): void
+    {
+
+        if (!$user->isActive() || $user->getActivatedAt() instanceof \DateTimeInterface) {
+            return;
+        }
+
+        try {
+            $resetToken = $this->resetPasswordHelper->generateResetToken($user);
+        } catch (ResetPasswordExceptionInterface $exception) {
+            $this->addFlash('danger', 'Une erreur est survenue lors de la création du token');
+            return;
+        }
+
+        $email = (new TemplatedEmail())
+            ->from(new Address('admin@medicalware.com', 'Medicalware'))
+            ->to($user->getEmail())
+            ->subject('Veuillez créer votre mot de passe')
+            ->htmlTemplate('reset_password/email_create_password.html.twig')
+            ->context([
+                'resetToken' => $resetToken,
+            ])
+        ;
+
+        try {
+            $this->mailer->send($email);
+        }catch (TransportExceptionInterface) {
+            $this->addFlash('danger', 'Une erreur est survenue lors de l\'envoie du mail de la création du mot de passe');
+            return;
+        }
+
+        $user->setActivatedAt(new \DateTimeImmutable());
+
+        // Store the token object in session for retrieval in check-email route.
+        $this->setTokenObjectInSession($resetToken);
+    }
+
 }

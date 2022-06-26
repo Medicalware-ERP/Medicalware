@@ -9,7 +9,10 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 
 class BaseController extends AbstractController
 {
@@ -24,6 +27,7 @@ class BaseController extends AbstractController
             parent::getSubscribedServices(),
             [
                 EntityManagerInterface::class => EntityManagerInterface::class,
+                RequestStack::class => RequestStack::class,
             ],
         );
     }
@@ -56,4 +60,19 @@ class BaseController extends AbstractController
         ]);
     }
 
+
+    public function redirectToReferer(): RedirectResponse|Response
+    {
+        try{
+            $requestStack = $this->container->get(RequestStack::class);
+        } catch (NotFoundExceptionInterface|ContainerExceptionInterface) {
+            return new Response("Une erreur est survenue");
+        }
+
+        $request = $requestStack->getCurrentRequest();
+
+        $referer = $request->headers->get('referer');
+
+        return $this->redirect($referer);
+    }
 }
