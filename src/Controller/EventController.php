@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Planning\Event;
 use App\Entity\Planning\Participant;
 use App\Form\EventType;
+use App\Repository\Planning\EventTypeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Util\Json;
 use Symfony\Component\HttpFoundation\Request;
@@ -78,10 +79,9 @@ class EventController extends BaseController
         ]);
     }
 
-    #[Route('/event/edit/time', name: 'event_edit_time')]
-    public function editTime(Request $request): Response
+    #[Route('/event/edit/time/{id}', name: 'event_edit_time')]
+    public function editTime(Request $request, int $id): Response
     {
-        $id = $request->query->get("id");
         $startAt = new \DateTime($request->query->get("startAt"));
         $endAt = new \DateTime($request->query->get("endAt"));
 
@@ -147,5 +147,29 @@ class EventController extends BaseController
 
         $referer = $request->headers->get('referer');
         return $this->redirect($referer);
+    }
+
+    #[Route('/event/include/type', name: 'index_event_type')]
+    public function eventTypeIndex(EventTypeRepository $eventTypeRepository) : Response
+    {
+        $data = $eventTypeRepository->findAllActive();
+
+        return $this->renderForm('event/_types.html.twig', [
+            'eventTypes' => $data
+        ]);
+    }
+
+    #[Route('/event/type/archive/{id}', name: 'archive_event_type')]
+    public function archiveType(int $id, EventTypeRepository $eventTypeRepository)
+    {
+        $type = $eventTypeRepository->find($id);
+
+        if ($type == null)
+            throw new NotFoundHttpException();
+
+        $type->setArchivedAt(new \DateTimeImmutable());
+        $eventTypeRepository->add($type);
+
+        return $this->redirectToRoute("index_event_type");
     }
 }

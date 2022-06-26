@@ -7,6 +7,7 @@ export const openModal = (id : string = "modal") => {
     if(modal == null){
         return;
     }
+
     // @ts-ignore
     modal?.showModal();
     const addButton = modal.querySelector("#submit__form");
