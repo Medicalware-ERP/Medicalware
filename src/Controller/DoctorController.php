@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Doctor;
 use App\Entity\User;
-use App\Form\UserType;
-use App\Service\User\UserDataFormatter;
+use App\Enum\UserTypeEnum;
+use App\Form\DoctorType;
+use App\Service\Doctor\DoctorDataFormatter;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
+use JetBrains\PhpStorm\Pure;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -24,139 +27,123 @@ use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
-class HumanResourcesController extends BaseController
+class DoctorController extends BaseController
 {
     use ResetPasswordControllerTrait;
 
-    public function __construct(
+   public function __construct(
         private readonly EntityManagerInterface $manager,
         private readonly ResetPasswordHelperInterface $resetPasswordHelper,
-        private readonly EntityManagerInterface $entityManager,
         private readonly MailerInterface $mailer
     )
     {
     }
 
-    #[Route('/humanResources', name: 'app_human_resources')]
+    #[Route('/doctors', name: 'app_doctor')]
     public function index(): Response
     {
-        return $this->render('human_resources/index.html.twig');
+        return $this->render('doctor/index.html.twig');
     }
 
     /**
      * @param Request $request
-     * @param UserDataFormatter $userDataFormatter
+     * @param DoctorDataFormatter $doctorDataFormatter
      * @return JsonResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    #[Route('/usersJson', name: 'users_json')]
-    public function paginate(Request $request, UserDataFormatter $userDataFormatter): JsonResponse
+    #[Route('/doctorsJson', name: 'doctors_json')]
+    public function paginate(Request $request, DoctorDataFormatter $doctorDataFormatter): JsonResponse
     {
-        return $this->paginateRequest(User::class, $request, $userDataFormatter);
+        return $this->paginateRequest(Doctor::class, $request, $doctorDataFormatter);
     }
 
-    #[Route('/user/add', name: 'app_add_user')]
-    public function add(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
+    #[Route('/doctor/add', name: 'app_add_doctor')]
+    public function addDoctor(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
     {
-        $user = new User();
+        $doctor = new Doctor();
 
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(DoctorType::class, $doctor);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword($userPasswordHasher->hashPassword($user, 'admin'));
+        $profession = $this->manager->getRepository(\App\Entity\UserType::class)->findOneBy([
+            'slug' => UserTypeEnum::DOCTOR
+        ]);
 
-            $this->processSendingPasswordResetEmail($user);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $doctor->setPassword($userPasswordHasher->hashPassword($doctor, 'admin'));
+            $doctor->setService($doctor->getSpecialisation()->getService());
+            $doctor->setProfession($profession);
+            $doctor->setRoles(["ROLE_DOCTOR"]);
 
             try {
-                $this->manager->persist($user);
+                $this->manager->persist($doctor);
                 $this->manager->flush();
 
             } catch (UniqueConstraintViolationException) {
-                $form->get('email')->addError(new FormError("Cette email est déjà utilisé"));
-                return $this->renderForm('human_resources/form.html.twig', [
+                $form->get('email')->addError(new FormError("Cet email est déjà utilisé"));
+                return $this->renderForm('doctor/form.html.twig', [
                     'form' => $form
                 ]);
             }
 
-            return $this->redirectToRoute("app_human_resources");
+            return $this->redirectToRoute("app_doctor");
         }
 
-        return $this->renderForm('human_resources/form.html.twig', [
+        return $this->renderForm('doctor/form.html.twig', [
             'form' => $form
         ]);
     }
 
-
-
-    #[Route('/user/edit/{id}', name: 'app_edit_user')]
+    #[Route('/doctor/edit/{id}', name: 'app_edit_doctor')]
     public function edit(Request $request, int $id): Response
     {
-        $user = $this->manager->find(User::class, $id) ?? throw new NotFoundHttpException("Utilisateur non trouvé");
+        $doctor = $this->manager->find(Doctor::class, $id) ?? throw new NotFoundHttpException("Docteur non trouvé");
 
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(DoctorType::class, $doctor);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->processSendingPasswordResetEmail($user);
+            $this->processSendingPasswordResetEmail($doctor);
 
             try {
-                $this->manager->persist($user);
+                $this->manager->persist($doctor);
                 $this->manager->flush();
             } catch (UniqueConstraintViolationException) {
                 $form->get('email')->addError(new FormError("Cette email est déjà utilisé"));
-                return $this->renderForm('human_resources/form.html.twig', [
+                return $this->renderForm('doctor/form.html.twig', [
                     'form' => $form
                 ]);
             }
 
-            return $this->redirectToRoute("app_human_resources");
+            return $this->redirectToRoute("app_doctor");
         }
 
-        return $this->renderForm('human_resources/form.html.twig', [
+        return $this->renderForm('doctor/form.html.twig', [
             'form' => $form,
-            'user' => $user
+            'user' => $doctor
         ]);
     }
 
-    #[Route('/user/disable/{id}', name: 'app_toggle_active_user')]
-    public function toggleActiveUser(Request $request, int $id): Response
-    {
-        $user = $this->manager->find(User::class, $id) ?? throw new NotFoundHttpException("Utilisateur non trouvée");
-
-        $user->setIsActive(!$user->isActive());
-
-        $this->processSendingPasswordResetEmail($user);
-
-        $this->manager->persist($user);
-        $this->manager->flush();
-
-        $referer = $request->headers->get('referer');
-
-        return $request->isXmlHttpRequest() ? $this->json('ok') : $this->redirect($referer);
-    }
-
-    #[Route('/user/{id}', name: 'app_show_user')]
+    #[Route('/doctor/{id}', name: 'app_show_doctor')]
     public function show(int $id): Response
     {
-        $user = $this->manager->find(User::class, $id) ?? throw new NotFoundHttpException("Utilisateur non trouvée");
+        $doctor = $this->manager->find(Doctor::class, $id) ?? throw new NotFoundHttpException("Docteur non trouvé");
 
-        return $this->render('human_resources/show.html.twig', [
-            'user' => $user
+        return $this->render('doctor/show.html.twig', [
+            'doctor' => $doctor
         ]);
     }
 
-
-    public function processSendingPasswordResetEmail(User $user): void
+    private function processSendingPasswordResetEmail(Doctor $doctor): void
     {
 
-        if (!$user->isActive() || $user->getActivatedAt() instanceof \DateTimeInterface) {
+        if (!$doctor->isActive() || $doctor->getActivatedAt() instanceof \DateTimeInterface) {
             return;
         }
 
         try {
-            $resetToken = $this->resetPasswordHelper->generateResetToken($user);
+            $resetToken = $this->resetPasswordHelper->generateResetToken($doctor);
         } catch (ResetPasswordExceptionInterface $exception) {
             $this->addFlash('danger', 'Une erreur est survenue lors de la création du token');
             return;
@@ -164,7 +151,7 @@ class HumanResourcesController extends BaseController
 
         $email = (new TemplatedEmail())
             ->from(new Address('admin@medicalware.com', 'Medicalware'))
-            ->to($user->getEmail())
+            ->to($doctor->getEmail())
             ->subject('Veuillez créer votre mot de passe')
             ->htmlTemplate('reset_password/email_create_password.html.twig')
             ->context([
@@ -179,10 +166,9 @@ class HumanResourcesController extends BaseController
             return;
         }
 
-        $user->setActivatedAt(new \DateTimeImmutable());
+        $doctor->setActivatedAt(new \DateTimeImmutable());
 
         // Store the token object in session for retrieval in check-email route.
         $this->setTokenObjectInSession($resetToken);
     }
-
 }

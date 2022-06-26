@@ -1,0 +1,7 @@
+
+{% apply spaceless %}
+    <div class="d-flex justify-content-center">
+        <a class="btn-xs btn-primary margin-right-1" href="{{ path('app_show_doctor', {'id': doctor.id }) }}"><i class="fa fa-eye"></i></a>
+        <a class="btn-xs btn-primary" href="{{ path('app_edit_doctor', {'id': doctor.id }) }}"><i class="fa fa-pen"></i></a>
+    </div>
+{% endapply %}

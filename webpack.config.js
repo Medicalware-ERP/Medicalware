@@ -25,7 +25,7 @@ Encore
     .addEntry('layout.show', './assets/js/layout/layout_show.ts')
     .addEntry('sidebar', './assets/js/sidebar/sidebar.ts')
     .addEntry('form.collection', './assets/js/util/form_collection.ts')
-
+    .addEntry('doctor.datatable', './assets/js/doctor/datatable.ts')
     .addEntry('human_resources.show', './assets/js/human_resources/show.ts')
     .addEntry('human_resources.datatable', './assets/js/human_resources/datatable.ts')
     .addEntry('room.index', './assets/js/room/index.ts')
