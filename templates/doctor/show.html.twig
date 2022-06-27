@@ -66,10 +66,6 @@
                             <span class="label__show">A été créé le:</span>
                             <small class="margin-left-20">{{ doctor.createdAt|date('d/m/Y') }}</small>
                         </div>
-                        <div class="margin-bottom-20 d-flex align-items-center">
-                            <span class="label__show">A quitté l'hôpital le:</span>
-                            <small class="margin-left-20">{{ doctor.leftAt is null ? "-" : doctor.leftAt|date('d/m/Y') }}</small>
-                        </div>
                     </div>
                 </div>
                 <hr>
