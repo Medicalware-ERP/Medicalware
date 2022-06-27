@@ -5,7 +5,7 @@ import {swaleWarning} from "../util/swal";
 
 const table = $("#table-users")
 
-const toggleActive = () => {
+export const toggleActive = () => {
 
     const callback = (e: Event) => {
         const checkbox = <HTMLInputElement>e.target;

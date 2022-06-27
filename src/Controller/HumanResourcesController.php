@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Doctor;
 use App\Entity\User;
 use App\Enum\UserTypeEnum;
 use App\Form\AvatarType;
@@ -19,7 +18,6 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -97,43 +95,7 @@ class HumanResourcesController extends BaseController
         ]);
     }
 
-    #[Route('/doctor/add', name: 'app_add_doctor')]
-    public function addDoctor(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
-    {
-        $doctor = new Doctor();
 
-        $form = $this->createForm(DoctorType::class, $doctor);
-        $form->handleRequest($request);
-
-        $profession = $this->manager->getRepository(\App\Entity\UserType::class)->findOneBy([
-            'slug' => UserTypeEnum::DOCTOR
-        ]);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $doctor->setPassword($userPasswordHasher->hashPassword($doctor, 'admin'));
-            $doctor->setProfession($profession);
-            $doctor->setRoles(["ROLE_DOCTOR"]);
-
-
-            try {
-                $this->manager->persist($doctor);
-                $this->manager->flush();
-                $this->processSendingPasswordResetEmail($doctor);
-
-            } catch (UniqueConstraintViolationException) {
-                $form->get('email')->addError(new FormError("Cet email est déjà utilisé"));
-                return $this->renderForm('human_resources/doctor/form.html.twig', [
-                    'form' => $form
-                ]);
-            }
-
-            return $this->redirectToRoute("app_human_resources");
-        }
-
-        return $this->renderForm('human_resources/doctor/form.html.twig', [
-            'form' => $form
-        ]);
-    }
 
     #[Route('/user/edit/{id}', name: 'app_edit_user')]
     public function edit(Request $request, int $id): Response
@@ -249,7 +211,7 @@ class HumanResourcesController extends BaseController
         return $this->redirectToReferer();
     }
 
-    private function processSendingPasswordResetEmail(User $user): void
+    public function processSendingPasswordResetEmail(User $user): void
     {
 
         if (!$user->isActive() || $user->getActivatedAt() instanceof \DateTimeInterface) {
@@ -270,7 +232,8 @@ class HumanResourcesController extends BaseController
             ->htmlTemplate('reset_password/email_create_password.html.twig')
             ->context([
                 'resetToken' => $resetToken,
-            ]);
+            ])
+        ;
 
         try {
             $this->mailer->send($email);

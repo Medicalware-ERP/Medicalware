@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Planning\Event;
 use App\Entity\Planning\Participant;
+use App\Entity\Planning\Resource;
 use App\Form\EventType;
 use App\Repository\Planning\EventTypeRepository;
+use App\Service\Planning\ResourceService;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Util\Json;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use function App\Service\Planning\getOrCreateResource;
 
 class EventController extends BaseController
 {
@@ -21,23 +24,29 @@ class EventController extends BaseController
     }
 
     #[Route('/event/add', name: 'event_add')]
-    public function add(Request $request): Response
+    public function add(Request $request, ResourceService $resourceService): Response
     {
         $event = new Event();
-        $class = $request->query->get("class");
         $id = $request->query->get("id");
+        $class = $request->query->get("class");
         $allDay = $request->query->get("allDay") == "true";
         $startAt = $request->query->get("startAt");
         $endAt = $request->query->get("endAt");
-        $event->setResourceClass($class);
-        $event->setResourceId($id);
         $event->setAllDay($allDay);
         $event->setStartAt(new \DateTime($startAt));
 
-        if ($endAt != null )
-            $endAt = (new \DateTime($endAt))->modify("-1 day");
+        $resource = $resourceService->getOrCreateResource($id, $class);
+        $event->setResource($resource);
+
+        if ($endAt != null)
+        {
+            $endAt = (new \DateTime($endAt));
+            if ($allDay) $endAt = ($endAt)->modify("-1 day");
+        }
         else
+        {
             $endAt = (new \DateTime());
+        }
 
         $event->setEndAt($endAt);
 
@@ -111,7 +120,8 @@ class EventController extends BaseController
     #[Route('/event/resource/{class}', name: 'event_resource_class')]
     public function getEventsResourceClass(Request $request, string $class): Response
     {
-        $data = $this->manager->getRepository(Event::class)->findBy(["resourceClass" => $class]) ?? throw new NotFoundHttpException("Entité non trouvée");
+        $resource = $this->manager->getRepository(Resource::class)->findBy(["resourceClass" => $class]) ?? throw new NotFoundHttpException("Ressources non trouvées");
+        $data = $this->manager->getRepository(Event::class)->findBy(["resource" => $resource]) ?? throw new NotFoundHttpException("Entité non trouvée");
 
         return $this->json($data, context: [AbstractNormalizer::GROUPS => [ "main" ] ]);
     }
@@ -120,7 +130,8 @@ class EventController extends BaseController
     #[Route('/event/resource/{class}/{id}', name: 'event_resource_id')]
     public function getEventsResourceId(Request $request, string $class, int $id): Response
     {
-        $data = $this->manager->getRepository(Event::class)->findBy(["resourceClass" => $class, "resourceId" => $id]) ?? throw new NotFoundHttpException("Entité non trouvée");
+        $resource = $this->manager->getRepository(Resource::class)->findBy(["resourceClass" => $class, "resourceId" => $id]) ?? throw new NotFoundHttpException("Ressource non trouvée");
+        $data = $this->manager->getRepository(Event::class)->findBy(["resource" => $resource]) ?? throw new NotFoundHttpException("Entité non trouvée");
 
         return $this->json($data, context: [AbstractNormalizer::GROUPS => [ "main" ] ]);
     }

@@ -11,7 +11,7 @@ const initMedicalFileTab = () => {
     $("[data-element-remove]", (deleteBtn: HTMLElement) => {
         deleteBtn.addEventListener('click', () => {
             const id = parseInt(findInDataset(deleteBtn, "elementId"));
-            console.log(id);
+
             if(id === 0){
                 return;
             }
@@ -33,7 +33,11 @@ const initInvoiceTab = () => {
 };
 
 const initPatientCalendar = () => {
-    const patientId: number = parseInt(findInDataset($("#patient-show-planning") as HTMLElement, "patientId"));
+    const patientIdEl = $("#patient-show-planning");
+    if(patientIdEl == null){
+        return;
+    }
+    const patientId: number = parseInt(findInDataset(patientIdEl as HTMLElement, "patientId"));
 
     declareCalendar("patient-show-planning", patientId, "App\\Entity\\Patient");
 };
@@ -47,7 +51,6 @@ document.addEventListener( 'layout.invoice.loaded', () => {
 });
 
 document.addEventListener( 'layout.patient_show_planning.loaded', () => {
-    console.log("dam patient show claendar")
     initPatientCalendar();
 });
 

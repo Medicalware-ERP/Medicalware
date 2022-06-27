@@ -68,10 +68,8 @@
     <main id="container__folder_medical">
         <h3 class="label__show margin-bottom-10">Consultations</h3>
         {{ form_start(form) }}
-
             {{ form_errors(form) }}
-
-            <table class="table_medical_file_line">
+            <table class="table_medical_file_line datatable fixed">
                 <thead class="table_medical_file_line_header">
                     <th>Medecin</th>
                     <th>Service</th>
@@ -113,4 +111,5 @@
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('form.collection') }}
+    {{ encore_entry_script_tags('form.medicalFileLine') }}
 {% endblock %}

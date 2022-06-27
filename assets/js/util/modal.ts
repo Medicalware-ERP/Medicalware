@@ -39,7 +39,6 @@ export const openAjaxModal = (url: string, modalOption: ModalOption | null = nul
     const title: string = modalOption?.title ?? "Modal title";
 
     if(modalBody == null || modalTitle == null || modalFooter == null){
-        console.log("return");
         return;
     }
 

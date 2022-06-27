@@ -2,6 +2,8 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Service;
+use App\Entity\Specialisation;
 use App\Enum\ServiceEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;

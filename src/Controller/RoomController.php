@@ -54,14 +54,15 @@ class RoomController extends BaseController
     {
         $room = new Room();
 
-        $form = $this->createForm(RoomType::class, $room);
+        $form = $this->createForm(RoomType::class, $room, [ "action" => $request->getUri() ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->manager->persist($room);
             $this->manager->flush();
 
-            return $this->redirectToRoute("index_room");
+            $referer = $request->headers->get('referer');
+            return $this->redirect($referer);
         }
 
         return $this->renderForm('room/form.html.twig', [
@@ -74,14 +75,15 @@ class RoomController extends BaseController
     {
         $room = $this->manager->find(Room::class, $id) ?? throw new NotFoundHttpException("Salle non trouvé");
 
-        $form = $this->createForm(RoomType::class, $room);
+        $form = $this->createForm(RoomType::class, $room, [ "action" => $request->getUri() ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->manager->persist($room);
             $this->manager->flush();
 
-            return $this->redirectToRoute("index_room");
+            $referer = $request->headers->get('referer');
+            return $this->redirect($referer);
         }
 
         return $this->renderForm('room/form.html.twig', [

@@ -25,7 +25,7 @@ Encore
     .addEntry('layout.show', './assets/js/layout/layout_show.ts')
     .addEntry('sidebar', './assets/js/sidebar/sidebar.ts')
     .addEntry('form.collection', './assets/js/util/form_collection.ts')
-
+    .addEntry('doctor.datatable', './assets/js/doctor/datatable.ts')
     .addEntry('human_resources.show', './assets/js/human_resources/show.ts')
     .addEntry('human_resources.datatable', './assets/js/human_resources/datatable.ts')
     .addEntry('room.index', './assets/js/room/index.ts')
@@ -41,6 +41,7 @@ Encore
     .addEntry('order.datatable', './assets/js/order/datatable.ts')
     .addEntry('order.form', './assets/js/order/form.ts')
     .addEntry('service.index', './assets/js/service/index.ts')
+    .addEntry('form.medicalFileLine', './assets/js/patient/medicalFile/form.ts')
     .addEntry('planning.event.type', './assets/js/planning/type.ts')
 
     .addStyleEntry('room.show.style', './assets/styles/room/show.scss')

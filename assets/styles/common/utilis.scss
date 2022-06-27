@@ -375,6 +375,13 @@ input {
       row-gap: 1em;
       box-shadow: 0 2px 6px 0 rgba(23, 34, 23, 0.5);
 
+      b.card-title {
+        width: 90%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
       .color-circle {
         height: 25px;
         width: 25px;

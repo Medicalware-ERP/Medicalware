@@ -13,10 +13,13 @@
         <div class="card-container justify-content-center">
             {% for type in eventTypes %}
                 <div class="d-flex flex-column card">
-                    <b class="d-flex justify-content-between">
-                        {{ type.name }}
+
+                    <div class="d-flex justify-content-between">
+                        <b class="card-title">
+                            {{ type.name }}
+                        </b>
                         <div class="color-circle" style="background-color: {{ type.color }}"></div>
-                    </b>
+                    </div>
                     <div class="description">
                         {{ type.description | raw }}
                     </div>

@@ -32,14 +32,6 @@ class Event
     #[Range(minMessage: "La date de fin doit être supérieur à la date de début", minPropertyPath: "startAt")]
     private ?\DateTimeInterface $endAt = null;
 
-    #[ORM\Column(type: 'integer')]
-    #[Groups("main")]
-    private ?int $resourceId = null;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    #[Groups("main")]
-    private ?string $resourceClass = null;
-
     #[ORM\Column(type: 'string', length: 255)]
     #[Groups("main")]
     private ?string $color = null;
@@ -60,6 +52,10 @@ class Event
     #[ORM\Column(type: 'boolean')]
     #[Groups("main")]
     private bool $allDay = false;
+
+    #[ORM\ManyToOne(targetEntity: Resource::class, inversedBy: 'events', cascade: ["persist"])]
+    #[ORM\JoinColumn(nullable: false)]
+    private $resource;
 
     public function __construct()
     {
@@ -103,30 +99,6 @@ class Event
     public function setEndAt(\DateTimeInterface $endAt): self
     {
         $this->endAt = $endAt;
-
-        return $this;
-    }
-
-    public function getResourceId(): ?int
-    {
-        return $this->resourceId;
-    }
-
-    public function setResourceId(int $resourceId): self
-    {
-        $this->resourceId = $resourceId;
-
-        return $this;
-    }
-
-    public function getResourceClass(): ?string
-    {
-        return $this->resourceClass;
-    }
-
-    public function setResourceClass(string $resourceClass): self
-    {
-        $this->resourceClass = $resourceClass;
 
         return $this;
     }
@@ -205,6 +177,18 @@ class Event
     public function setAllDay(bool $allDay): self
     {
         $this->allDay = $allDay;
+
+        return $this;
+    }
+
+    public function getResource(): ?Resource
+    {
+        return $this->resource;
+    }
+
+    public function setResource(?Resource $resource): self
+    {
+        $this->resource = $resource;
 
         return $this;
     }
