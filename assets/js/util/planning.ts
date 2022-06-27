@@ -32,11 +32,19 @@ export const declarePlanning = (planningId: string) => {
 
         // Ajout de la propriété title sur les ressources
         resources.forEach((resource: any) => {
+            console.log("data", resource)
            resource.title = resource.resourceName;
+           resource.parentId = resource.resourceClass;
         });
 
+        resources.push(
+            { id: "App\\Entity\\Room\\Room", title: "Salles" },
+            { id: "App\\Entity\\User", title: "Employés" },
+            { id: "App\\Entity\\Patient", title: "Patients" },
+        );
+
         planning = new Calendar(planningElement, {
-            plugins: [ resourceTimelinePlugin ],
+            plugins: [ resourceTimelinePlugin, interactionPlugin ],
             initialView: 'resourceTimeline',
             headerToolbar: {
                 left: "prev,next",
@@ -46,6 +54,7 @@ export const declarePlanning = (planningId: string) => {
             editable: true,
             dayMaxEvents: true, // when too many events in a day, show the popover
             selectable: true,
+            timeZone: "UTC",
             locale: frLocale,
             resources: resources,
             events: events,
@@ -63,9 +72,20 @@ export const declarePlanning = (planningId: string) => {
                     backgroundColor: data.color
                 };
             },
+            eventDrop: info => editEventDateResource(info),
+            eventResize: info => editEventDate(info),
+            eventClick: info => openShowEventModal(info)
         });
 
         planning.render();
+
+        // L'event listener doit être déclaré uniquement si on à un calendar.
+        // C'est pour ça qu'il est dans cette méthode et pas perdu à la racine de ce fichier.
+        // Lorsqu'une modal s'ouvre, on import select2 afin de l'avoir dans la modal
+        document.addEventListener("modal.loaded", (e) => {
+            importSelect2(true);
+            bindShowEventModalActionButtons();
+        })
     });
 }
 
@@ -134,7 +154,7 @@ export const declareCalendar = (calendarId: string, resourceId: number, resource
     })
 }
 
-// Demande de confirmation de déplacement / resize d'un évènement
+// Demande de confirmation de déplacement / resize d'un évènement (changement de dateTime uniquement)
 const editEventDate = (info: any) => {
     const dateStart = info?.event?.start;
     const dateEnd = info?.event?.end;
@@ -153,6 +173,11 @@ const editEventDate = (info: any) => {
             info.revert();
         }
     });
+}
+
+// Demande de confirmation de déplacement d'un évènement (changement de dateTime et de ressource)
+const editEventDateResource = (info: any) => {
+    console.log("Event déplacé", info);
 }
 
 // Ouverture de la modal ajout d'un évènement
