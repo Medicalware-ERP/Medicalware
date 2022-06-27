@@ -148,7 +148,6 @@ class PatientController extends BaseController
         $medicalFile = $patient->getMedicalFile();
         $form = $this->createForm(MedicalFileType::class, $medicalFile);
         $form->handleRequest($request);
-        $medicalFileLines = $form['medicalFileLines']->getData();
         if ($form->isSubmitted() && $form->isValid()) {
 
             $this->manager->persist($medicalFile);

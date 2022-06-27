@@ -62,4 +62,15 @@ class InvoiceRepository extends DatatableRepository
 
         ];
     }
+
+    public function findByDelivery()
+    {
+        return $this->createQueryBuilder('e')
+            ->join('e.state', 'u')
+            ->andWhere('u.name = :state')
+            ->setParameter('state', "payé")
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }
