@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Doctor;
 use App\Entity\User;
 use App\Enum\UserTypeEnum;
+use App\Form\AvatarType;
 use App\Form\DoctorType;
 use App\Form\UserType;
 use App\Service\User\UserDataFormatter;
@@ -13,7 +14,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +28,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
@@ -34,10 +39,10 @@ class HumanResourcesController extends BaseController
     use ResetPasswordControllerTrait;
 
     public function __construct(
-        private readonly EntityManagerInterface $manager,
+        private readonly EntityManagerInterface       $manager,
         private readonly ResetPasswordHelperInterface $resetPasswordHelper,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly MailerInterface $mailer
+        private readonly EntityManagerInterface       $entityManager,
+        private readonly MailerInterface              $mailer
     )
     {
     }
@@ -72,12 +77,11 @@ class HumanResourcesController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword($userPasswordHasher->hashPassword($user, 'admin'));
 
-            $this->processSendingPasswordResetEmail($user);
-
             try {
                 $this->manager->persist($user);
                 $this->manager->flush();
 
+                $this->processSendingPasswordResetEmail($user);
             } catch (UniqueConstraintViolationException) {
                 $form->get('email')->addError(new FormError("Cette email est déjà utilisé"));
                 return $this->renderForm('human_resources/form.html.twig', [
@@ -102,7 +106,7 @@ class HumanResourcesController extends BaseController
         $form->handleRequest($request);
 
         $profession = $this->manager->getRepository(\App\Entity\UserType::class)->findOneBy([
-           'slug' => UserTypeEnum::DOCTOR
+            'slug' => UserTypeEnum::DOCTOR
         ]);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -110,11 +114,11 @@ class HumanResourcesController extends BaseController
             $doctor->setProfession($profession);
             $doctor->setRoles(["ROLE_DOCTOR"]);
 
-            $this->processSendingPasswordResetEmail($doctor);
 
             try {
                 $this->manager->persist($doctor);
                 $this->manager->flush();
+                $this->processSendingPasswordResetEmail($doctor);
 
             } catch (UniqueConstraintViolationException) {
                 $form->get('email')->addError(new FormError("Cet email est déjà utilisé"));
@@ -184,10 +188,66 @@ class HumanResourcesController extends BaseController
         $user = $this->manager->find(User::class, $id) ?? throw new NotFoundHttpException("Utilisateur non trouvée");
 
         return $this->render('human_resources/show.html.twig', [
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
+    #[Route('/user/{id}/upload/avatar', name: 'upload_avatar')]
+    public function uploadAvatar(Request $request, User $user, SluggerInterface $slugger, Filesystem $filesystem): Response
+    {
+        $form = $this->createForm(AvatarType::class, $user, [
+            'action' => $request->getUri()
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $brochureFile */
+            $brochureFile = $form->get('file')->getData();
+
+            if ($brochureFile) {
+                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $directory = $this->getParameter('user_avatar_directory').'/'.$user->getId();
+                    $filesystem->remove($directory);
+                    $brochureFile->move(
+                        $directory,
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    dd($e);
+                }
+
+                $user->setAvatar($newFilename);
+
+                $this->manager->persist($user);
+                $this->manager->flush();
+            }
+        }
+
+        return $this->renderForm('_form.html.twig', [
+            'form' => $form
+        ]);
+    }
+
+    #[Route('/user/{id}/remove/avatar', name: 'remove_avatar')]
+    public function removeAvatar(User $user, Filesystem $filesystem): Response
+    {
+        $directory = $this->getParameter('user_avatar_directory').'/'.$user->getId();
+        $filesystem->remove($directory);
+
+        $user->setAvatar(null);
+
+        $this->manager->persist($user);
+        $this->manager->flush();
+
+        return $this->redirectToReferer();
+    }
 
     private function processSendingPasswordResetEmail(User $user): void
     {
@@ -210,17 +270,19 @@ class HumanResourcesController extends BaseController
             ->htmlTemplate('reset_password/email_create_password.html.twig')
             ->context([
                 'resetToken' => $resetToken,
-            ])
-        ;
+            ]);
 
         try {
             $this->mailer->send($email);
-        }catch (TransportExceptionInterface) {
+        } catch (TransportExceptionInterface) {
             $this->addFlash('danger', 'Une erreur est survenue lors de l\'envoie du mail de la création du mot de passe');
             return;
         }
 
         $user->setActivatedAt(new \DateTimeImmutable());
+
+        $this->manager->persist($user);
+        $this->manager->flush();
 
         // Store the token object in session for retrieval in check-email route.
         $this->setTokenObjectInSession($resetToken);

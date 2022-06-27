@@ -1,7 +1,7 @@
 
 {% apply spaceless %}
     {% if user.avatar is not null %}
-        {{ user.avatar }}
+        <img id="img_avatar" class="avatar-default" src="{{ user.avatar ? asset('uploads/user/avatar/'~user.id~'/'~app.user.avatar ) }}"  alt=""/>
     {% else %}
         <div class="avatar-default {{ class|default('') }}">
             <span>{{ user.firstName|slice(0,1)|upper ~ user.lastName|slice(0,1)|upper }}</span>
