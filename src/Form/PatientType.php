@@ -72,6 +72,21 @@ class PatientType extends AbstractType
                     "F" => "F"
                 ]
             ])
+            ->add('bloodGroup', ChoiceType::class, [
+                'label' => 'Groupe sanguin:',
+                'placeholder' => 'Choisir un groupe sanguin: ',
+                "constraints" => [new NotBlank()],
+                "choices" => [
+                    "A+" => "A+",
+                    "A-" => "A-",
+                    "B+" => "B+",
+                    "B-" => "B-",
+                    "AB+" => "AB+",
+                    "AB-" => "AB-",
+                    "O+" => "O+",
+                    "O-" => "O-"
+                ]
+            ])
         ;
     }
 
