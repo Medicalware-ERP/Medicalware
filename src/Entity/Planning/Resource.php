@@ -6,6 +6,7 @@ use App\Repository\Planning\ResourceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ResourceRepository::class)]
 class Resource
@@ -13,13 +14,18 @@ class Resource
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    #[Groups("main")]
+    private ?int $id = null;
 
     #[ORM\Column(type: 'integer')]
-    private $resourceId;
+    #[Groups("main")]
+    private ?int $resourceId = null;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $resourceClass;
+    #[Groups("main")]
+    private ?string $resourceClass = null;
+
+    private ?object $resource = null;
 
     #[ORM\OneToMany(mappedBy: 'resource', targetEntity: Event::class, orphanRemoval: true)]
     private $events;
@@ -86,5 +92,30 @@ class Resource
         }
 
         return $this;
+    }
+
+    /**
+     * @return object|null
+     */
+    public function getResource(): ?object
+    {
+        return $this->resource;
+    }
+
+    /**
+     * @param object|null $resource
+     */
+    public function setResource(?object $resource): void
+    {
+        $this->resource = $resource;
+    }
+
+    /**
+     * @return string
+     */
+    #[Groups("main")]
+    public function getResourceName(): string
+    {
+        return (string)$this->getResource();
     }
 }

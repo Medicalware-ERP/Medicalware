@@ -40,7 +40,7 @@ class GenerateResourcesCommand extends Command
             $resourceRepository = $this->manager->getRepository(Resource::class);
             $resourcesToDelete = $resourceRepository->findAll();
 
-            $io->info("Suppression des resources présente en base ...");
+            $io->info("Suppression des resources présentes en base ...");
 
             foreach ($resourcesToDelete as $resource)
             {
@@ -48,6 +48,8 @@ class GenerateResourcesCommand extends Command
             }
 
             $this->manager->flush();
+
+            $this->resetAutoIncrement(Resource::class);
 
             // Get all rooms, user, patient and doctor and create resource lied to it
             $rooms = $this->manager->getRepository(Room::class)->findAll();
@@ -79,4 +81,15 @@ class GenerateResourcesCommand extends Command
             return Command::FAILURE;
         }
     }
+
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
+    private function resetAutoIncrement(string $class) {
+
+    /** Table always starting to id 1 */
+    $tableName= $this->manager->getClassMetadata($class)->getTableName();
+    $connection = $this->manager->getConnection();
+    $connection->executeStatement("ALTER TABLE " . $tableName . " AUTO_INCREMENT = 1;");
+}
 }

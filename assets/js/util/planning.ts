@@ -1,4 +1,5 @@
 import {Calendar} from "@fullcalendar/core";
+import resourceTimelinePlugin  from "@fullcalendar/resource-timeline";
 import Routing from "../Routing";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -11,6 +12,62 @@ import {DateSelectArg, EventClickArg} from "@fullcalendar/common";
 import {closeAjaxModal, ModalOption, openAjaxModal} from "./modal";
 import {importSelect2} from "../app";
 import {$, findInDataset} from "../utils";
+
+export const declarePlanning = (planningId: string) => {
+
+    // TODO : Récupération des ressources
+    // TODO : Puis récupération des events liés au ressources
+
+
+    let planning: Calendar;
+    const planningElement: HTMLElement | null = document.getElementById(planningId);
+
+    if (!(!!planningElement))
+        return console.error("L'élément HTML planning n'a pas été trouvé");
+
+    const url = Routing.generate("event_resources");
+    axios.get(url).then(result => {
+        const resources = result.data["resources"];
+        const events = result.data["events"];
+
+        // Ajout de la propriété title sur les ressources
+        resources.forEach((resource: any) => {
+           resource.title = resource.resourceName;
+        });
+
+        planning = new Calendar(planningElement, {
+            plugins: [ resourceTimelinePlugin ],
+            initialView: 'resourceTimeline',
+            headerToolbar: {
+                left: "prev,next",
+                center: "title",
+                right: "resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth"
+            },
+            editable: true,
+            dayMaxEvents: true, // when too many events in a day, show the popover
+            selectable: true,
+            locale: frLocale,
+            resources: resources,
+            events: events,
+            eventDataTransform: (data) => {
+                // On transforme nos datas event en objet que le calendrier pourra traiter
+                console.log("data", data);
+                return {
+                    id: data.id,
+                    resourceId: data.resource.id,
+                    allDay: !!data.allDay,
+                    start: data.startAt,
+                    end: data.endAt,
+                    title: data.title,
+                    color: data.color,
+                    backgroundColor: data.color
+                };
+            },
+        });
+
+        planning.render();
+    });
+}
 
 export const declareCalendar = (calendarId: string, resourceId: number, resourceClass: string) => {
     // TODO : Faire un type optionCalendar (Comme sur modal.ts) ou on peux préciser si l'on désire différent plugins du planning ?

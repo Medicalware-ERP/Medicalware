@@ -14,6 +14,7 @@ prepare-dev:
 	php bin/console doctrine:schema:update -f --env=dev
 	php bin/console doctrine:fixtures:load -n --env=dev
 	php bin/console app:data:init
+	php bin/console app:generate:resources
 
 prepare-test:
 	npm install

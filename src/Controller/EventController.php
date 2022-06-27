@@ -6,7 +6,6 @@ use App\Entity\Planning\Event;
 use App\Entity\Planning\Participant;
 use App\Entity\Planning\Resource;
 use App\Form\EventType;
-use App\Repository\Planning\EventTypeRepository;
 use App\Service\Planning\ResourceService;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Util\Json;
@@ -160,27 +159,12 @@ class EventController extends BaseController
         return $this->redirect($referer);
     }
 
-    #[Route('/event/include/type', name: 'index_event_type')]
-    public function eventTypeIndex(EventTypeRepository $eventTypeRepository) : Response
+    #[Route('/resource/all', name: 'event_resources')]
+    public function getAllResources(Request $request): Response
     {
-        $data = $eventTypeRepository->findAllActive();
+        $resources = $this->manager->getRepository(Resource::class)->findAll();
+        $events = $this->manager->getRepository(Event::class)->findAll();
 
-        return $this->renderForm('event/_types.html.twig', [
-            'eventTypes' => $data
-        ]);
-    }
-
-    #[Route('/event/type/archive/{id}', name: 'archive_event_type')]
-    public function archiveType(int $id, EventTypeRepository $eventTypeRepository)
-    {
-        $type = $eventTypeRepository->find($id);
-
-        if ($type == null)
-            throw new NotFoundHttpException();
-
-        $type->setArchivedAt(new \DateTimeImmutable());
-        $eventTypeRepository->add($type);
-
-        return $this->redirectToRoute("index_event_type");
+        return $this->json(["resources" => $resources, "events" => $events ], context: [AbstractNormalizer::GROUPS => [ "main" ] ]);
     }
 }

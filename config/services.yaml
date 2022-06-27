@@ -38,3 +38,8 @@ services:
         class: "App\\EventSubscriber\\ParticipantSubscriber"
         tags:
             - { name: "doctrine.orm.entity_listener", entity: "App\\Entity\\Planning\\Participant", event: "postLoad", lazy: true }
+
+    app.resource.subscriber:
+        class: "App\\EventSubscriber\\ResourceSubscriber"
+        tags:
+            - { name: "doctrine.orm.entity_listener", entity: "App\\Entity\\Planning\\Resource", event: "postLoad", lazy: true }
