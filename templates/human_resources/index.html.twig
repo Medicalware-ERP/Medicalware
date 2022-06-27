@@ -25,8 +25,11 @@
                     Ajouter un utilisateur
                 </a>
             </div>
+            <form id="filters">
+                <input type="hidden" name="left" data-field="e.leftAt" data-condition="IS NULL" value="">
+            </form>
 
-            <table id="table-users" class="datatable" data-url="{{ path('users_json') }}">
+            <table id="table-users" class="datatable" data-url="{{ path('users_json') }}" data-filters="#filters">
                 <thead>
                 <tr>
                     <th>Avatar</th>

@@ -211,6 +211,20 @@ class HumanResourcesController extends BaseController
         return $this->redirectToReferer();
     }
 
+    #[Route('/user/{id}/delete', name: 'user_delete')]
+    public function delete(User $user, Filesystem $filesystem): Response
+    {
+        $directory = $this->getParameter('user_avatar_directory').'/'.$user->getId();
+        $filesystem->remove($directory);
+
+        $user->setLeftAt(new \DateTimeImmutable());
+
+        $this->manager->persist($user);
+        $this->manager->flush();
+
+        return $this->json("ok");
+    }
+
     public function processSendingPasswordResetEmail(User $user): void
     {
 
@@ -250,5 +264,6 @@ class HumanResourcesController extends BaseController
         // Store the token object in session for retrieval in check-email route.
         $this->setTokenObjectInSession($resetToken);
     }
+
 
 }
