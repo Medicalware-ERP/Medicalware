@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {% block notifications %}
+    {% endblock %}
     <div class="d-flex">
         <aside class="card margin-right-5" style="flex: 1">
             {% block aside_header %} {% endblock %}

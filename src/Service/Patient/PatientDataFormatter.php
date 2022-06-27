@@ -31,8 +31,8 @@ class PatientDataFormatter implements DataFormatterInterface
             'numberSocialSecurity' => $this->environment->render('patient/datatable/columns/numberSocialSecurity.html.twig', [
                 'patient' => $data
             ]),
-            'avatar' => $this->environment->render('human_resources/datatable/columns/avatar.html.twig', [
-                'user' => $data
+            'avatar' => $this->environment->render('patient/datatable/columns/avatar.html.twig', [
+                'patient' => $data
             ]),
             'firstName' => $this->environment->render('human_resources/datatable/columns/firstName.html.twig', [
                 'user' => $data

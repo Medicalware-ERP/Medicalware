@@ -7,6 +7,7 @@ use App\Entity\MedicalFile;
 use App\Entity\MedicalFileLine;
 use App\Entity\Patient;
 use App\Entity\User;
+use App\Form\AvatarType;
 use App\Form\MedicalFileType;
 use App\Form\PatientType;
 use App\Form\UserType;
@@ -22,6 +23,9 @@ use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -200,6 +204,63 @@ class PatientController extends BaseController
         $fileName = $slugger->slug("Dossier médical de ". $medicalFile->getPatient()->getLastName() . " " . $medicalFile->getPatient()->getFirstName()).'.pdf';
 
         return new PdfResponse($content, $fileName);
+    }
+
+    #[Route('/patient/{id}/upload/avatar', name: 'patient_upload_avatar')]
+    public function uploadAvatar(Request $request, Patient $patient, SluggerInterface $slugger, Filesystem $filesystem): Response
+    {
+        $form = $this->createForm(AvatarType::class, $patient, [
+            'action' => $request->getUri()
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $brochureFile */
+            $brochureFile = $form->get('file')->getData();
+
+            if ($brochureFile) {
+                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $directory = $this->getParameter('patient_avatar_directory').'/'.$patient->getId();
+                    $filesystem->remove($directory);
+                    $brochureFile->move(
+                        $directory,
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    dd($e);
+                }
+
+                $patient->setAvatar($newFilename);
+
+                $this->manager->persist($patient);
+                $this->manager->flush();
+            }
+        }
+
+        return $this->renderForm('_form.html.twig', [
+            'form' => $form
+        ]);
+    }
+
+    #[Route('/patient/{id}/remove/avatar', name: 'remove_avatar')]
+    public function removeAvatar(Patient $patient, Filesystem $filesystem): Response
+    {
+        $directory = $this->getParameter('patient_avatar_directory').'/'.$patient->getId();
+        $filesystem->remove($directory);
+
+        $patient->setAvatar(null);
+
+        $this->manager->persist($patient);
+        $this->manager->flush();
+
+        return $this->redirectToReferer();
     }
 
 }
