@@ -25,6 +25,16 @@ export const swaleDanger = (text: string, target: string = "") => Swal.fire({
     target: target
 })
 
+export const swaleDangerAlert = (text: string, target: string = "") => Swal.fire({
+    title: 'Attention',
+    text: text,
+    icon: 'error',
+    confirmButtonText: 'Ok',
+    confirmButtonColor: colors.danger,
+    showCancelButton: false,
+    target: target
+})
+
 export const swaleWarningAndRedirect = (text: string, url: string, target: string = "") => Swal.fire({
     title: 'Êtes vous sûr de continuer ?',
     text: text,
