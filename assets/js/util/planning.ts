@@ -40,6 +40,7 @@ export const declarePlanning = (planningId: string) => {
             { id: "App\\Entity\\Room\\Room", title: "Salles" },
             { id: "App\\Entity\\User", title: "Employés" },
             { id: "App\\Entity\\Patient", title: "Patients" },
+            { id: "App\\Entity\\Doctor", title: "Docteurs" }
         );
 
         planning = new Calendar(planningElement, {
@@ -72,7 +73,8 @@ export const declarePlanning = (planningId: string) => {
             },
             eventDrop: info => editEventDateResource(info),
             eventResize: info => editEventDate(info),
-            eventClick: info => openShowEventModal(info)
+            eventClick: info => openShowEventModal(info),
+            select: info => openAddEventModal(info),
         });
 
         planning.render();
@@ -206,8 +208,20 @@ const editEventDateResource = (info: any) => {
 }
 
 // Ouverture de la modal ajout d'un évènement
-const openAddEventModal = (info: DateSelectArg | null, resourceId: number, resourceClass: string) => {
-    //Sinon, d'un ajout
+const openAddEventModal = (info: DateSelectArg | null = null, resId: number | null = null, resClass: string | null = null) => {
+    let resourceId;
+    let resourceClass;
+
+    if (!!resId && !!resourceClass) {
+        resourceId = resId;
+        resourceClass = resClass;
+    } else if (!!info && !!info.resource) {
+        const resource = info.resource.extendedProps;
+
+        resourceId = resource.resourceId;
+        resourceClass = resource.resourceClass;
+    }
+
     let allDay: boolean = false;
     let startAt: string = "";
     let endAt: string = "";
@@ -219,8 +233,8 @@ const openAddEventModal = (info: DateSelectArg | null, resourceId: number, resou
     }
 
     const url = Routing.generate("event_add",{
-        class : resourceClass,
         id: resourceId,
+        class : resourceClass,
         allDay: allDay,
         startAt: startAt,
         endAt: endAt
