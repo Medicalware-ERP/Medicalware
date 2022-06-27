@@ -61,7 +61,7 @@ class DoctorFixtures extends Fixture
                 ->setAddress($address)
                 ->setBirthdayDate(new DateTimeImmutable())
                 ->setEmail($faker->email)
-                ->setIsActive(true)
+                ->setIsActive(false)
                 ->setGender("H")
                 ->setRoles(["ROLE_DOCTOR"])
                 ->setPassword($this->userPasswordHasher->hashPassword($doctor, 'admin'));

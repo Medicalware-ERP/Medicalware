@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Doctor;
+use App\Entity\Planning\Resource;
 use App\Entity\User;
 use App\Enum\UserTypeEnum;
 use App\Form\DoctorType;
@@ -71,7 +72,7 @@ class DoctorController extends BaseController
         ]);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $doctor->setPassword($userPasswordHasher->hashPassword($doctor, 'admin'));
+            $doctor->setPassword($userPasswordHasher->hashPassword($doctor, uniqid()));
             $doctor->setService($doctor->getSpecialisation()->getService());
             $doctor->setProfession($profession);
             $doctor->setRoles(["ROLE_DOCTOR"]);
@@ -79,6 +80,14 @@ class DoctorController extends BaseController
             try {
                 $this->manager->persist($doctor);
                 $this->manager->flush();
+
+                $resource = new Resource();
+                $resource->setResourceId($doctor->getId());
+                $resource->setResourceClass($doctor::class);
+
+                $this->manager->persist($resource);
+                $this->manager->flush();
+                $this->processSendingPasswordResetEmail($doctor);
 
             } catch (UniqueConstraintViolationException) {
                 $form->get('email')->addError(new FormError("Cet email est déjà utilisé"));
@@ -135,15 +144,15 @@ class DoctorController extends BaseController
         ]);
     }
 
-    private function processSendingPasswordResetEmail(Doctor $doctor): void
+    public function processSendingPasswordResetEmail(User $user): void
     {
 
-        if (!$doctor->isActive() || $doctor->getActivatedAt() instanceof \DateTimeInterface) {
+        if (!$user->isActive() || $user->getActivatedAt() instanceof \DateTimeInterface) {
             return;
         }
 
         try {
-            $resetToken = $this->resetPasswordHelper->generateResetToken($doctor);
+            $resetToken = $this->resetPasswordHelper->generateResetToken($user);
         } catch (ResetPasswordExceptionInterface $exception) {
             $this->addFlash('danger', 'Une erreur est survenue lors de la création du token');
             return;
@@ -151,7 +160,7 @@ class DoctorController extends BaseController
 
         $email = (new TemplatedEmail())
             ->from(new Address('admin@medicalware.com', 'Medicalware'))
-            ->to($doctor->getEmail())
+            ->to($user->getEmail())
             ->subject('Veuillez créer votre mot de passe')
             ->htmlTemplate('reset_password/email_create_password.html.twig')
             ->context([
@@ -161,14 +170,18 @@ class DoctorController extends BaseController
 
         try {
             $this->mailer->send($email);
-        }catch (TransportExceptionInterface) {
+        } catch (TransportExceptionInterface) {
             $this->addFlash('danger', 'Une erreur est survenue lors de l\'envoie du mail de la création du mot de passe');
             return;
         }
 
-        $doctor->setActivatedAt(new \DateTimeImmutable());
+        $user->setActivatedAt(new \DateTimeImmutable());
+
+        $this->manager->persist($user);
+        $this->manager->flush();
 
         // Store the token object in session for retrieval in check-email route.
         $this->setTokenObjectInSession($resetToken);
     }
+
 }

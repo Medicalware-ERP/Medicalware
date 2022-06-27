@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Planning\Resource;
 use App\Entity\Room\Room;
 use App\Form\RoomType;
 use App\Repository\RoomOptionRepository;
@@ -59,6 +60,13 @@ class RoomController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->manager->persist($room);
+            $this->manager->flush();
+
+            $resource = new Resource();
+            $resource->setResourceId($room->getId());
+            $resource->setResourceClass($room::class);
+
+            $this->manager->persist($resource);
             $this->manager->flush();
 
             $referer = $request->headers->get('referer');

@@ -30,7 +30,12 @@
                 {% endif %}
 
                 <a href="{{ path('order_export_pdf', { id: order.id }) }}" class="btn btn-sm btn-primary">Exporter <i class="fa fa-file-download"></i></a>
-                <a href="{{ path('order_edit', {id:order.id}) }}" class="btn btn-sm btn-primary">Modifier <i class="fa fa-pen"></i></a>
+
+                {% set draft = constant('App\\Enum\\Accounting\\OrderStateEnum::DRAFT') %}
+
+                {% if order.state.slug ==  draft %}
+                    <a href="{{ path('order_edit', {id:order.id}) }}" class="btn btn-sm btn-primary">Modifier <i class="fa fa-pen"></i></a>
+                {% endif %}
             </div>
         </div>
     </div>

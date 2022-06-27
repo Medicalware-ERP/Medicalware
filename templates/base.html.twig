@@ -24,8 +24,7 @@
                     <div class="profile-left">
 
                         {% if app.user.avatar is not null %}
-                            <img class="avatar" src="https://cdn.pixabay.com/photo/2015/03/03/08/55/portrait-657116_960_720.jpg"  alt="avatar"/>
-                            {# Todo : Affichage de l'avatar de l'utilisateur #}
+                            <img  class="avatar" src="{{ app.user.avatar ? asset('uploads/user/avatar/'~app.user.id~'/'~app.user.avatar ) }}" />
                         {% else %}
                             <div class="avatar">
                                 {{ app.user.firstName|first|upper ~ app.user.lastName|first|upper }}

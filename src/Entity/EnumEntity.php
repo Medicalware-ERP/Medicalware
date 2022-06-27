@@ -21,7 +21,7 @@ abstract class EnumEntity
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $slug = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column(type: 'string', length: 255)]

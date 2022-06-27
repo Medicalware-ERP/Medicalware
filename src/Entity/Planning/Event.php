@@ -55,6 +55,7 @@ class Event
 
     #[ORM\ManyToOne(targetEntity: Resource::class, inversedBy: 'events', cascade: ["persist"])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups("main")]
     private $resource;
 
     public function __construct()

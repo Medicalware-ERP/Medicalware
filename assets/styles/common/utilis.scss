@@ -370,7 +370,7 @@ input {
 }
 
 .d-none {
-  display: none;
+  display: none!important;
 }
 
 .list-cards {

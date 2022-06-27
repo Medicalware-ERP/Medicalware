@@ -42,6 +42,7 @@ Encore
     .addEntry('order.form', './assets/js/order/form.ts')
     .addEntry('service.index', './assets/js/service/index.ts')
     .addEntry('form.medicalFileLine', './assets/js/patient/medicalFile/form.ts')
+    .addEntry('planning.index', './assets/js/planning/index.ts')
     .addEntry('planning.event.type', './assets/js/planning/type.ts')
     .addEntry('progressivebar', './assets/js/dashboard/progressive-bar/progressiveBar.ts')
     .addEntry('chart', './assets/js/dashboard/charts/chart.ts')

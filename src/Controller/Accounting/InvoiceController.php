@@ -103,15 +103,18 @@ class InvoiceController extends BaseController
     }
 
     #[Route('/invoice/{id}/workflow/{transition}', name: 'invoice_workflow_transition')]
-    public function workflowTransition(Request $request, Invoice $invoice, string $transition, Registry $registry): RedirectResponse
+    public function workflowTransition(Request $request, Invoice $invoice, string $transition, Registry $registry, EntityManagerInterface $entityManager): RedirectResponse
     {
         $workflow = $registry->get($invoice, InvoiceStateWorkflow::NAME);
 
         try {
             $workflow->apply($invoice, $transition);
-        }catch (Exception) {
+        }catch (Exception $exception) {
             $this->addFlash('error', 'Une erreur est survenue lors du changement de status');
         }
+
+        $entityManager->persist($invoice);
+        $entityManager->flush();
 
         return $this->redirectToRoute('invoice_show', ['id' => $invoice->getId()]);
     }

@@ -5,6 +5,13 @@
         {{ event.title }}
     </div>
 
+    {% if (event.description) %}
+    <div class="d-flex">
+        <span>Description :</span>
+        {{ event.description | raw }}
+    </div>
+    {% endif %}
+
     <div class="d-flex">
         <span>Date début :</span>
         {% if (event.allDay) %}

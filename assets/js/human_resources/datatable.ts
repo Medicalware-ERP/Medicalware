@@ -1,7 +1,8 @@
-import {$} from '../utils'
+import {$, findInDataset} from '../utils'
 import Routing from "../Routing";
 import generateDatable from "../datatable/datatableGeneric";
 import {swaleWarning} from "../util/swal";
+import axios from "axios";
 
 const table = $("#table-users")
 
@@ -36,7 +37,21 @@ export const toggleActive = () => {
     });
 }
 
-document.addEventListener('datatable.loaded', toggleActive);
+document.addEventListener('datatable.loaded', () => {
+    toggleActive();
+
+    $('[data-delete]', (btn: HTMLButtonElement) => {
+        const url = findInDataset(btn, 'delete');
+
+        btn.addEventListener('click', () => {
+            axios.get(url).then(r => {
+                if (table instanceof HTMLTableElement) {
+                    generateDatable(table);
+                }
+            })
+        })
+    })
+});
 
 if (table instanceof HTMLTableElement) {
     generateDatable(table);

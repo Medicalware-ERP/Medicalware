@@ -1,16 +1,94 @@
 import {Calendar} from "@fullcalendar/core";
+import resourceTimelinePlugin  from "@fullcalendar/resource-timeline";
 import Routing from "../Routing";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin, {DateClickArg} from "@fullcalendar/interaction";
 import frLocale from "@fullcalendar/core/locales/fr";
-import {swaleDangerAndRedirect, swaleWarning} from "./swal";
+import {swaleDangerAlert, swaleDangerAndRedirect, swaleWarning} from "./swal";
 import axios from "axios";
 import {DateSelectArg, EventClickArg} from "@fullcalendar/common";
 import {closeAjaxModal, ModalOption, openAjaxModal} from "./modal";
 import {importSelect2} from "../app";
 import {$, findInDataset} from "../utils";
+
+export const declarePlanning = (planningId: string) => {
+
+    // TODO : Récupération des ressources
+    // TODO : Puis récupération des events liés au ressources
+
+
+    let planning: Calendar;
+    const planningElement: HTMLElement | null = document.getElementById(planningId);
+
+    if (!(!!planningElement))
+        return console.error("L'élément HTML planning n'a pas été trouvé");
+
+    const url = Routing.generate("event_resources");
+    axios.get(url).then(result => {
+        const resources = result.data["resources"];
+        const events = result.data["events"];
+
+        // Parsing des ressources pour que le calendar comprennent les datas passées
+        resources.forEach((resource: any) => {
+           resource.title = resource.resourceName;
+           resource.parentId = resource.resourceClass;
+        });
+
+        // Ajout des groupes
+        resources.push(
+            { id: "App\\Entity\\Room\\Room", title: "Salles" },
+            { id: "App\\Entity\\User", title: "Employés" },
+            { id: "App\\Entity\\Patient", title: "Patients" },
+            { id: "App\\Entity\\Doctor", title: "Docteurs" }
+        );
+
+        planning = new Calendar(planningElement, {
+            plugins: [ resourceTimelinePlugin, interactionPlugin ],
+            initialView: 'resourceTimeline',
+            headerToolbar: {
+                left: "prev,next",
+                center: "title",
+                right: "resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth"
+            },
+            editable: true,
+            dayMaxEvents: true, // when too many events in a day, show the popover
+            selectable: true,
+            timeZone: "UTC",
+            locale: frLocale,
+            resources: resources,
+            events: events,
+            eventDataTransform: (data) => {
+                // On transforme nos datas event en objet que le calendrier pourra traiter
+                return {
+                    id: data.id,
+                    resourceId: data.resource.id,
+                    allDay: !!data.allDay,
+                    start: data.startAt,
+                    end: data.endAt,
+                    title: data.title,
+                    color: data.color,
+                    backgroundColor: data.color
+                };
+            },
+            eventDrop: info => editEventDateResource(info),
+            eventResize: info => editEventDate(info),
+            eventClick: info => openShowEventModal(info),
+            select: info => openAddEventModal(info),
+        });
+
+        planning.render();
+
+        // L'event listener doit être déclaré uniquement si on à un calendar.
+        // C'est pour ça qu'il est dans cette méthode et pas perdu à la racine de ce fichier.
+        // Lorsqu'une modal s'ouvre, on import select2 afin de l'avoir dans la modal
+        document.addEventListener("modal.loaded", (e) => {
+            importSelect2(true);
+            bindShowEventModalActionButtons();
+        })
+    });
+}
 
 export const declareCalendar = (calendarId: string, resourceId: number, resourceClass: string) => {
     // TODO : Faire un type optionCalendar (Comme sur modal.ts) ou on peux préciser si l'on désire différent plugins du planning ?
@@ -77,7 +155,7 @@ export const declareCalendar = (calendarId: string, resourceId: number, resource
     })
 }
 
-// Demande de confirmation de déplacement / resize d'un évènement
+// Demande de confirmation de déplacement / resize d'un évènement (changement de dateTime uniquement)
 const editEventDate = (info: any) => {
     const dateStart = info?.event?.start;
     const dateEnd = info?.event?.end;
@@ -98,9 +176,61 @@ const editEventDate = (info: any) => {
     });
 }
 
+// Demande de confirmation de déplacement d'un évènement (changement de dateTime et de ressource)
+const editEventDateResource = (info: any) => {
+    const dateStart = info?.event?.start;
+    const dateEnd = info?.event?.end;
+    const newResource = info?.newResource;
+
+    // Si on essaye de déplacer un évènement sur une fausse ressource (group)
+    if (!!newResource && !(!!parseInt(newResource.id))) {
+        const dangerText = `Vous ne pouvez pas déplacer un évènement sur un titre de groupe (${newResource.title})`;
+        info.revert();
+        return swaleDangerAlert(dangerText).then();
+    }
+
+    let text = `Vous allez déplacer l'évènement sur la période du ${dateStart?.toLocaleString('fr-FR', { timeZone: 'UTC' })} au ${dateEnd?.toLocaleString('fr-FR', { timeZone: 'UTC' })}`;
+    if (!!newResource) text += ` dans la ressource "${newResource.title}"`
+
+    swaleWarning(text).then(res => {
+        if (res.isConfirmed) {
+            const url = Routing.generate("event_edit_time_resource", {
+                id: info?.event?.id,
+                startAt: dateStart?.toISOString(),
+                endAt: dateEnd?.toISOString(),
+                newResourceId: !!newResource ? newResource.id : null
+            });
+
+            axios.get(url).then();
+        } else {
+            info.revert();
+        }
+    });
+}
+
 // Ouverture de la modal ajout d'un évènement
-const openAddEventModal = (info: DateSelectArg | null, resourceId: number, resourceClass: string) => {
-    //Sinon, d'un ajout
+const openAddEventModal = (info: DateSelectArg | null = null, resId: number | null = null, resClass: string | null = null) => {
+    let resourceId;
+    let resourceClass;
+    console.log(info);
+    const resource = info?.resource;
+
+    // Si on essaye de déplacer un évènement sur une fausse ressource (group)
+    if (!!resource && !(!!parseInt(resource.id))) {
+        const dangerText = `Vous ne pouvez pas créer un évènement sur un titre de groupe (${resource.title})`;
+        return swaleDangerAlert(dangerText).then();
+    }
+
+    if (!!resId && !!resourceClass) {
+        resourceId = resId;
+        resourceClass = resClass;
+    } else if (!!info && !!info.resource) {
+        const resource = info.resource.extendedProps;
+
+        resourceId = resource.resourceId;
+        resourceClass = resource.resourceClass;
+    }
+
     let allDay: boolean = false;
     let startAt: string = "";
     let endAt: string = "";
@@ -112,8 +242,8 @@ const openAddEventModal = (info: DateSelectArg | null, resourceId: number, resou
     }
 
     const url = Routing.generate("event_add",{
-        class : resourceClass,
         id: resourceId,
+        class : resourceClass,
         allDay: allDay,
         startAt: startAt,
         endAt: endAt
