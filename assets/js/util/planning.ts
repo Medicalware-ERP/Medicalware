@@ -30,12 +30,13 @@ export const declarePlanning = (planningId: string) => {
         const resources = result.data["resources"];
         const events = result.data["events"];
 
-        // Ajout de la propriété title sur les ressources
+        // Parsing des ressources pour que le calendar comprennent les datas passées
         resources.forEach((resource: any) => {
            resource.title = resource.resourceName;
            resource.parentId = resource.resourceClass;
         });
 
+        // Ajout des groupes
         resources.push(
             { id: "App\\Entity\\Room\\Room", title: "Salles" },
             { id: "App\\Entity\\User", title: "Employés" },
@@ -211,6 +212,14 @@ const editEventDateResource = (info: any) => {
 const openAddEventModal = (info: DateSelectArg | null = null, resId: number | null = null, resClass: string | null = null) => {
     let resourceId;
     let resourceClass;
+    console.log(info);
+    const resource = info?.resource;
+
+    // Si on essaye de déplacer un évènement sur une fausse ressource (group)
+    if (!!resource && !(!!parseInt(resource.id))) {
+        const dangerText = `Vous ne pouvez pas créer un évènement sur un titre de groupe (${resource.title})`;
+        return swaleDangerAlert(dangerText).then();
+    }
 
     if (!!resId && !!resourceClass) {
         resourceId = resId;
