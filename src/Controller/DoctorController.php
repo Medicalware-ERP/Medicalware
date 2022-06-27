@@ -71,7 +71,7 @@ class DoctorController extends BaseController
         ]);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $doctor->setPassword($userPasswordHasher->hashPassword($doctor, 'admin'));
+            $doctor->setPassword($userPasswordHasher->hashPassword($doctor, uniqid()));
             $doctor->setService($doctor->getSpecialisation()->getService());
             $doctor->setProfession($profession);
             $doctor->setRoles(["ROLE_DOCTOR"]);

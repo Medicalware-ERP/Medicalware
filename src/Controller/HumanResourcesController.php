@@ -73,7 +73,7 @@ class HumanResourcesController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword($userPasswordHasher->hashPassword($user, 'admin'));
+            $user->setPassword($userPasswordHasher->hashPassword($user, uniqid()));
 
             try {
                 $this->manager->persist($user);
