@@ -1,7 +1,7 @@
 import {$, findInDataset} from '../utils'
 import Routing from "../Routing";
 import generateDatable from "../datatable/datatableGeneric";
-import {swaleWarning} from "../util/swal";
+import {swaleDanger, swaleDangerAndRedirect, swaleWarning} from "../util/swal";
 import axios from "axios";
 
 const table = $("#table-users")
@@ -44,9 +44,13 @@ document.addEventListener('datatable.loaded', () => {
         const url = findInDataset(btn, 'delete');
 
         btn.addEventListener('click', () => {
-            axios.get(url).then(r => {
-                if (table instanceof HTMLTableElement) {
-                    generateDatable(table);
+            swaleDanger('Vous êtes sûr le point de supprimer cet utilisateur').then(r => {
+                if (r.isConfirmed) {
+                    axios.get(url).then(r => {
+                        if (table instanceof HTMLTableElement) {
+                            generateDatable(table);
+                        }
+                    })
                 }
             })
         })
