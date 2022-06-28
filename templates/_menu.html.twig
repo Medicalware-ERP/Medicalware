@@ -13,16 +13,17 @@
                 <li><a class="link_name" href="{{ path('dashboard') }}">Accueil</a></li>
             </ul>
         </li>
-        <li>
-            <a href="{{ path('app_human_resources') }}">
-                <i class="fa fa-user"></i>
-                <span class="link_name">Ressources humaines</span>
-            </a>
-            <ul class="sub-menu blank">
-                <li><a class="link_name" href="{{ path('app_human_resources') }}">Ressources humaines</a></li>
-            </ul>
-        </li>
-
+        {% if is_granted('ROLE_HUMAN_RESOURCE') %}
+            <li>
+                <a href="{{ path('app_human_resources') }}">
+                    <i class="fa fa-user"></i>
+                    <span class="link_name">Ressources humaines</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="{{ path('app_human_resources') }}">Ressources humaines</a></li>
+                </ul>
+            </li>
+        {% endif %}
         <li class="drawer-links">
             <div class="icon-link">
                 <a>
@@ -32,12 +33,12 @@
                 <i class="fa fa-angle-right arrow"></i>
             </div>
             <ul class="sub-menu">
-                <li><a class="link_name" href="#">Comptabilité</a></li>
+                <li><a class="link_name" href="#">Planning</a></li>
                 <li><a href="{{ path('index_planning') }}">Planning</a></li>
                 <li><a href="{{ path('index_event_type') }}">Types d'évènements</a></li>
             </ul>
         </li>
-
+        {% if is_granted("ROLE_ACCOUNTANT") or is_granted("ROLE_DOCTOR")  or is_granted("ROLE_ADMIN_STOCK") %}
         <li class="drawer-links">
             <div class="icon-link">
                 <a href="#">
@@ -48,63 +49,76 @@
             </div>
             <ul class="sub-menu">
                 <li><a class="link_name" href="#">Comptabilité</a></li>
-                <li><a href="{{ path('invoice_index') }}">Factures</a></li>
-                <li><a href="{{ path('order_index') }}">Commandes d'achats</a></li>
+                {% if is_granted("ROLE_ACCOUNTANT") or is_granted("ROLE_DOCTOR")  %}
+                    <li><a href="{{ path('invoice_index') }}">Factures</a></li>
+                {% endif %}
+                {% if is_granted("ROLE_ACCOUNTANT") or is_granted("ROLE_ADMIN_STOCK") %}
+                    <li><a href="{{ path('order_index') }}">Commandes d'achats</a></li>
+                {% endif %}
             </ul>
         </li>
-        <li>
-            <a href="{{ path('stock_index') }}">
-                <i class="fa fa-box"></i>
-                <span class="link_name">Stock</span>
-            </a>
-            <ul class="sub-menu blank">
-                <li><a class="link_name" href="{{ path('stock_index') }}">Stock</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="{{ path('provider_index') }}">
-                <i class="fa fa-truck"></i>
-                <span class="link_name">Fournisseurs</span>
-            </a>
-            <ul class="sub-menu blank">
-                <li><a class="link_name" href="{{ path('provider_index') }}">Fournisseurs</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="{{ path('service_index') }}">
-                <i class="fas fa-cubes"></i>
-                <span class="link_name">Services</span>
-            </a>
-            <ul class="sub-menu blank">
-                <li><a class="link_name" href="{{ path('service_index') }}">Services</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="{{ path('index_room') }}">
-                <i class="fa fa-door-open"></i>
-                <span class="link_name">Salles</span>
-            </a>
-            <ul class="sub-menu blank">
-                <li><a class="link_name" href="{{ path('index_room') }}">Salles</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="{{ path('app_doctor') }}">
-                <i class="fa fa-user-nurse"></i>
-                <span class="link_name">Docteurs</span>
-            </a>
-            <ul class="sub-menu blank">
-                <li><a class="link_name" href="{{ path('app_doctor') }}">Docteurs</a></li>
-            </ul>
-        </li>
-        <li>
-            <a href="{{ path('app_patients') }}">
-                <i class="fa fa-user-injured"></i>
-                <span class="link_name">Patients</span>
-            </a>
-            <ul class="sub-menu blank">
-                <li><a class="link_name" href="{{ path('app_patients') }}">Patients</a></li>
-            </ul>
-        </li>
+        {% endif %}
+        {% if is_granted("ROLE_ADMIN_STOCK") %}
+            <li>
+                <a href="{{ path('stock_index') }}">
+                    <i class="fa fa-box"></i>
+                    <span class="link_name">Stock</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="{{ path('stock_index') }}">Stock</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="{{ path('provider_index') }}">
+                    <i class="fa fa-truck"></i>
+                    <span class="link_name">Fournisseurs</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="{{ path('provider_index') }}">Fournisseurs</a></li>
+                </ul>
+            </li>
+        {% endif %}
+        {% if is_granted("ROLE_ADMIN_SERVICE") %}
+            <li>
+                <a href="{{ path('service_index') }}">
+                    <i class="fas fa-cubes"></i>
+                    <span class="link_name">Services</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="{{ path('service_index') }}">Services</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="{{ path('index_room') }}">
+                    <i class="fa fa-door-open"></i>
+                    <span class="link_name">Salles</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="{{ path('index_room') }}">Salles</a></li>
+                </ul>
+            </li>
+        {% endif %}
+        {% if is_granted("ROLE_HUMAN_RESOURCE") %}
+            <li>
+                <a href="{{ path('app_doctor') }}">
+                    <i class="fa fa-user-nurse"></i>
+                    <span class="link_name">Docteurs</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="{{ path('app_doctor') }}">Docteurs</a></li>
+                </ul>
+            </li>
+        {% endif %}
+        {% if is_granted("ROLE_DOCTOR") %}
+            <li>
+                <a href="{{ path('app_patients') }}">
+                    <i class="fa fa-user-injured"></i>
+                    <span class="link_name">Patients</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="{{ path('app_patients') }}">Patients</a></li>
+                </ul>
+            </li>
+        {% endif %}
     </ul>
 </div>

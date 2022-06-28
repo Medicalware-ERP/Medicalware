@@ -1,7 +1,7 @@
 
 {% apply spaceless %}
     <div class="d-flex justify-content-center gap-5">
-        <a class="btn-xs btn-primary" href="{{ path('app_show_user', {'id': user.id }) }}"><i class="fa fa-eye"></i></a>
+        <a  class="btn-xs btn-primary" href="{{ path('app_show_user', {'id': user.id }) }}"><i class="fa fa-eye"></i></a>
         <a class="btn-xs btn-primary" href="{{ path('app_edit_user', {'id': user.id }) }}"><i class="fa fa-pen"></i></a>
         <a class="btn-xs btn-danger" data-delete="{{ path('user_delete', {'id': user.id }) }}"><i class="fas fa-user-lock"></i></a>
     </div>

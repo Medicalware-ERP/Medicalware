@@ -12,8 +12,10 @@ use App\Form\UserType;
 use App\Service\User\UserDataFormatter;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
+use Prophecy\Argument\Token\TokenInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormError;
@@ -29,10 +31,10 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
+
 
 class HumanResourcesController extends BaseController
 {
@@ -47,6 +49,7 @@ class HumanResourcesController extends BaseController
     {
     }
 
+    #[IsGranted('ROLE_HUMAN_RESOURCE')]
     #[Route('/humanResources', name: 'app_human_resources')]
     public function index(): Response
     {
@@ -66,6 +69,7 @@ class HumanResourcesController extends BaseController
         return $this->paginateRequest(User::class, $request, $userDataFormatter);
     }
 
+    #[IsGranted('ROLE_HUMAN_RESOURCE')]
     #[Route('/user/add', name: 'app_add_user')]
     public function add(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
     {
@@ -110,7 +114,7 @@ class HumanResourcesController extends BaseController
     public function edit(Request $request, int $id): Response
     {
         $user = $this->manager->find(User::class, $id) ?? throw new NotFoundHttpException("Utilisateur non trouvé");
-
+        $this->denyAccessUnlessGranted('USER_VIEW_EDIT', $user);
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -127,7 +131,8 @@ class HumanResourcesController extends BaseController
                 ]);
             }
 
-            return $this->redirectToRoute("app_human_resources");
+            return $this->redirectToRoute("app_show_user",['id' => $id]);
+
         }
 
         return $this->renderForm('human_resources/form.html.twig', [
@@ -136,6 +141,7 @@ class HumanResourcesController extends BaseController
         ]);
     }
 
+    #[IsGranted('ROLE_HUMAN_RESOURCE')]
     #[Route('/user/disable/{id}', name: 'app_toggle_active_user')]
     public function toggleActiveUser(Request $request, int $id): Response
     {
@@ -153,11 +159,12 @@ class HumanResourcesController extends BaseController
         return $request->isXmlHttpRequest() ? $this->json('ok') : $this->redirect($referer);
     }
 
+
     #[Route('/user/{id}', name: 'app_show_user')]
     public function show(int $id): Response
     {
         $user = $this->manager->find(User::class, $id) ?? throw new NotFoundHttpException("Utilisateur non trouvée");
-
+        $this->denyAccessUnlessGranted('USER_VIEW_EDIT', $user);
         return $this->render('human_resources/show.html.twig', [
             'user' => $user,
         ]);
@@ -166,6 +173,7 @@ class HumanResourcesController extends BaseController
     #[Route('/user/{id}/upload/avatar', name: 'upload_avatar')]
     public function uploadAvatar(Request $request, User $user, SluggerInterface $slugger, Filesystem $filesystem): Response
     {
+        $this->denyAccessUnlessGranted('USER_VIEW_EDIT', $user);
         $form = $this->createForm(AvatarType::class, $user, [
             'action' => $request->getUri()
         ]);
@@ -209,6 +217,7 @@ class HumanResourcesController extends BaseController
     #[Route('/user/{id}/remove/avatar', name: 'remove_avatar')]
     public function removeAvatar(User $user, Filesystem $filesystem): Response
     {
+        $this->denyAccessUnlessGranted('USER_VIEW_EDIT', $user);
         $directory = $this->getParameter('user_avatar_directory').'/'.$user->getId();
         $filesystem->remove($directory);
 
@@ -220,6 +229,7 @@ class HumanResourcesController extends BaseController
         return $this->redirectToReferer();
     }
 
+    #[IsGranted('ROLE_HUMAN_RESOURCE')]
     #[Route('/user/{id}/delete', name: 'user_delete')]
     public function delete(User $user, Filesystem $filesystem): Response
     {
@@ -277,10 +287,10 @@ class HumanResourcesController extends BaseController
     #[Route('/user/{id}/change/password', name: 'user_change password')]
     public function changePassword(Request $request, User $user, UserPasswordHasherInterface $userPasswordHasher): Response
     {
+        $this->denyAccessUnlessGranted('USER_VIEW_EDIT', $user);
         $form = $this->createForm(ChangePasswordFormType::class, null, [
             'action' => $request->getUri()
         ]);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

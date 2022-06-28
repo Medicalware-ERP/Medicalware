@@ -7,11 +7,10 @@ use App\Entity\MedicalFile;
 use App\Entity\MedicalFileLine;
 use App\Entity\Patient;
 use App\Entity\Planning\Resource;
-use App\Entity\User;
+use App\Enum\RoleEnum;
 use App\Form\AvatarType;
 use App\Form\MedicalFileType;
 use App\Form\PatientType;
-use App\Form\UserType;
 use App\Repository\MedicalFileLineRepository;
 use App\Repository\PatientRepository;
 use App\Service\Invoice\InvoiceDataFormatter;
@@ -24,6 +23,7 @@ use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -34,6 +34,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
+#[IsGranted('ROLE_DOCTOR')]
 class PatientController extends BaseController
 {
 

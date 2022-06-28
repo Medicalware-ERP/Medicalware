@@ -8,10 +8,11 @@ use App\Repository\ProviderRepository;
 use App\Service\Provider\ProviderDataFormatter;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+#[IsGranted("ROLE_ADMIN_STOCK")]
 class ProviderController extends BaseController
 {
     #[Route('/provider', name: 'provider_index')]
