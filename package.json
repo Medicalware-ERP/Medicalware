@@ -40,6 +40,7 @@
         "@types/jquery": "^3.5.14",
         "alpinejs": "^3.10.2",
         "axios": "^0.27.2",
+        "chart.js": "^3.8.0",
         "jquery": "^3.6.0",
         "normalize.css": "^8.0.1",
         "select2": "^4.1.0-rc.0",

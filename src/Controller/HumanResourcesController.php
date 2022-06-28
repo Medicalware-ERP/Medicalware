@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Planning\Resource;
 use App\Entity\User;
 use App\Enum\UserTypeEnum;
 use App\Form\AvatarType;
@@ -78,6 +79,13 @@ class HumanResourcesController extends BaseController
 
             try {
                 $this->manager->persist($user);
+                $this->manager->flush();
+
+                $resource = new Resource();
+                $resource->setResourceId($user->getId());
+                $resource->setResourceClass($user::class);
+
+                $this->manager->persist($resource);
                 $this->manager->flush();
 
                 $this->processSendingPasswordResetEmail($user);

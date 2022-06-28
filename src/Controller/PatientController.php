@@ -6,6 +6,7 @@ use App\Entity\Accounting\Invoice;
 use App\Entity\MedicalFile;
 use App\Entity\MedicalFileLine;
 use App\Entity\Patient;
+use App\Entity\Planning\Resource;
 use App\Entity\User;
 use App\Form\AvatarType;
 use App\Form\MedicalFileType;
@@ -91,6 +92,13 @@ class PatientController extends BaseController
             $this->manager->persist($patient);
             $this->manager->flush();
 
+            $resource = new Resource();
+            $resource->setResourceId($patient->getId());
+            $resource->setResourceClass($patient::class);
+
+            $this->manager->persist($resource);
+            $this->manager->flush();
+
             return $this->redirectToRoute("app_patients");
         }
 
@@ -152,7 +160,6 @@ class PatientController extends BaseController
         $medicalFile = $patient->getMedicalFile();
         $form = $this->createForm(MedicalFileType::class, $medicalFile);
         $form->handleRequest($request);
-        $medicalFileLines = $form['medicalFileLines']->getData();
         if ($form->isSubmitted() && $form->isValid()) {
 
             $this->manager->persist($medicalFile);

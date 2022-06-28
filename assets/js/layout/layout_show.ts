@@ -57,7 +57,7 @@ const loadTab = (url: string) =>  {
         }
         const event = new CustomEvent('layout.loaded');
         document.dispatchEvent(event);
-    });;
+    });
 }
 
 links.forEach((link, key) => {

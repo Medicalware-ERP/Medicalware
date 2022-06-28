@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Doctor;
+use App\Entity\Planning\Resource;
 use App\Entity\User;
 use App\Enum\UserTypeEnum;
 use App\Form\DoctorType;
@@ -78,6 +79,13 @@ class DoctorController extends BaseController
 
             try {
                 $this->manager->persist($doctor);
+                $this->manager->flush();
+
+                $resource = new Resource();
+                $resource->setResourceId($doctor->getId());
+                $resource->setResourceClass($doctor::class);
+
+                $this->manager->persist($resource);
                 $this->manager->flush();
                 $this->processSendingPasswordResetEmail($doctor);
 

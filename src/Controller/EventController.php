@@ -104,6 +104,30 @@ class EventController extends BaseController
         return $this->json("Succes");
     }
 
+    #[Route('/event/edit/time/resource/{id}', name: 'event_edit_time_resource')]
+    public function editTimeAndResource(Request $request, int $id): Response
+    {
+        $startAt = new \DateTime($request->query->get("startAt"));
+        $endAt = new \DateTime($request->query->get("endAt"));
+        $resourceId = $request->query->get("newResourceId");
+
+        /** @var Event $event */
+        $event = $this->manager->getRepository(Event::class)->find($id);
+        $event->setStartAt($startAt);
+        $event->setEndAt($endAt);
+
+        if ($resourceId != null)
+        {
+            $resource = $this->manager->getRepository(Resource::class)->find($resourceId);
+            $event->setResource($resource);
+        }
+
+        $this->manager->persist($event);
+        $this->manager->flush();
+
+        return $this->json("Succes");
+    }
+
     #[Route('/event/show/{id}}', name: 'event_show')]
     public function showEvent(Request $request, int $id){
         $event = $this->manager->getRepository(Event::class)->find($id);
