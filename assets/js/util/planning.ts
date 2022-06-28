@@ -14,9 +14,6 @@ import {importSelect2} from "../app";
 import {$, findInDataset} from "../utils";
 
 export const declarePlanning = (planningId: string) => {
-
-    // TODO : Les events ayant des attendees seront display comme si un attendee = une ressource (Une duplication d'évent par attendee)
-
     let planning: Calendar;
     const planningElement: HTMLElement | null = document.getElementById(planningId);
 
@@ -51,7 +48,7 @@ export const declarePlanning = (planningId: string) => {
                 center: "title",
                 right: "resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth"
             },
-            editable: true,
+            editable: false,
             dayMaxEvents: true, // when too many events in a day, show the popover
             selectable: true,
             timeZone: "UTC",
@@ -71,8 +68,6 @@ export const declarePlanning = (planningId: string) => {
                     backgroundColor: data.color
                 };
             },
-            eventDrop: info => editEventDateResource(info),
-            eventResize: info => editEventDate(info),
             eventClick: info => openShowEventModal(info),
             select: info => openAddEventModal(info),
         });
@@ -155,7 +150,7 @@ export const declareCalendar = (calendarId: string, resourceId: number, resource
 }
 
 // Demande de confirmation de déplacement / resize d'un évènement (changement de dateTime uniquement)
-const editEventDate = (info: any) => {
+function editEventDate (info: any) {
     const dateStart = info?.event?.start;
     const dateEnd = info?.event?.end;
     const text = `Vous allez déplacer l'évènement sur la période du ${dateStart?.toLocaleString('fr-FR', { timeZone: 'UTC' })} au ${dateEnd?.toLocaleString('fr-FR', { timeZone: 'UTC' })}`;
