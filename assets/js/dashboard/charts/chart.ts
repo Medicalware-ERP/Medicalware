@@ -22,11 +22,12 @@ const initChartDoughnut = async () => {
     const data = {
         labels: datasKeys,
         datasets: [{
-            label: 'Nombre d\'utilisateurs',
+            label: 'Montant factures/commande en attente et payés',
             backgroundColor: [
-                'rgb(255, 99, 132)',
-                'rgb(54, 162, 235)',
-                'rgb(255, 205, 86)'
+                '#808080',
+                '#808080',
+                '#DC3545',
+                '#59B22F',
             ],
             hoverOffset: 4,
             data: dataValues,
