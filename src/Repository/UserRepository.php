@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Doctor;
 use App\Entity\User;
 use App\Repository\Datatable\DatatableConfigColumn;
 use App\Repository\Datatable\DatatableConfigJoin;
@@ -44,6 +45,18 @@ class UserRepository extends DatatableRepository implements PasswordUpgraderInte
         ;
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function countAllUsers()
+    {
+        $qb = $this->createQueryBuilder('user');
+        $expr = $qb->expr();
+
+        $qb->select('COUNT(user.id)')
+        ->andWhere($expr->not($expr->isInstanceOf('user', Doctor::class)))
+        ;
+
+        return $qb->getQuery()->getSingleScalarResult();
     }
 
     /**

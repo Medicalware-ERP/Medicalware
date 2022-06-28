@@ -28,7 +28,7 @@ class DashboardController extends AbstractController
     ): Response
     {
         $countDoctor = $doctorRepository->count([]);
-        $countUser = $userRepository->count([]);
+        $countUser = $userRepository->countAllUsers();
         $countPatient = $patientRepository->count([]);
 
         $invoicesPayed = $invoiceRepository->findByDelivery();
@@ -68,7 +68,7 @@ class DashboardController extends AbstractController
     ): JsonResponse
    {
        $countDoctor = $doctorRepository->count([]);
-       $countUser = $userRepository->count([]);
+       $countUser = $userRepository->countAllUsers();
        $countPatient = $patientRepository->count([]);
 
        return $this->json([
