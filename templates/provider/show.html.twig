@@ -22,6 +22,9 @@
         <button class="btn-show d-flex align-items-center" data-name="equipment" data-url="{{ path('provider_show_piece', {id: provider.id}) }}">
             <i class="margin-right-5 fa fa-cube"></i> Équipement
         </button>
+        <button class="btn-show d-flex align-items-center" data-name="provider.planning" data-url="{{ path('provider_show_planning', {id: provider.id}) }}">
+            <i class="margin-right-5 fa fa-calendar-alt"></i> Planning
+        </button>
     </nav>
 {% endblock %}
 

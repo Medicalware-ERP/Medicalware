@@ -105,4 +105,14 @@ class ProviderController extends BaseController
             'provider' => $provider
         ]);
     }
+
+    #[Route('/provider/show/{id}/planning', name: 'provider_show_planning')]
+    public function providerPlanning(int $id, ProviderRepository $providerRepository): Response
+    {
+        $provider = $providerRepository->find($id);
+
+        return $this->renderForm('provider/includes/_show_planning.html.twig', [
+            'provider' => $provider
+        ]);
+    }
 }
