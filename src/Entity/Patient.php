@@ -39,6 +39,12 @@ class Patient extends Person implements EntityInterface
         $this->invoices = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        $isArchived = $this->isIsArchived() ? "(Archivé(e))" : "";
+        return parent::__toString()." ".$isArchived;
+    }
+
     public function getNumberSocialSecurity(): ?string
     {
         return $this->numberSocialSecurity;

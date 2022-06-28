@@ -140,16 +140,6 @@ class EventController extends BaseController
         ]);
     }
 
-    // Retourne les évènements lié à un type de ressource (Ex: Les events des Rooms)
-    #[Route('/event/resource/{class}', name: 'event_resource_class')]
-    public function getEventsResourceClass(Request $request, string $class): Response
-    {
-        $resource = $this->manager->getRepository(Resource::class)->findBy(["resourceClass" => $class]) ?? throw new NotFoundHttpException("Ressources non trouvées");
-        $data = $this->manager->getRepository(Event::class)->findBy(["resource" => $resource]) ?? throw new NotFoundHttpException("Entité non trouvée");
-
-        return $this->json($data, context: [AbstractNormalizer::GROUPS => [ "main" ] ]);
-    }
-
     // Retourne les évènements lié à une ressource bien précise (Ex: Les events de la Room ayant pour id: 13)
     #[Route('/event/resource/{class}/{id}', name: 'event_resource_id')]
     public function getEventsResourceId(Request $request, string $class, int $id): Response

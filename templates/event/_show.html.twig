@@ -13,6 +13,11 @@
     {% endif %}
 
     <div class="d-flex">
+        <span>Ressource :</span>
+        {{ event.resource }}
+    </div>
+
+    <div class="d-flex">
         <span>Date début :</span>
         {% if (event.allDay) %}
             {{ event.startAt | date('d/m/Y') }}
