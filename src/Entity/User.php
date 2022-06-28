@@ -66,8 +66,8 @@ class User extends Person implements UserInterface, PasswordAuthenticatedUserInt
 
     public function __toString()
     {
-        $isArchived = $this->getLeftAt() ? "(Archivé(e))" : "";
-        return parent::__toString()." ".$isArchived;
+        $isArchived = $this->getLeftAt() ? " (Archivé(e))" : "";
+        return parent::__toString().$isArchived;
     }
 
     public function getEmail(): ?string

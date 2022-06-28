@@ -1,111 +1,21 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout_show.html.twig' %}
 
-{% block title %}Ressources humaine{% endblock %}
+{% block title %}Ressources humaines{% endblock %}
 
-{% block body %}
-    <input type="hidden" id="user-id" data-user="{{ user.id }}">
-    <div id="user-details-container">
-        <section class="card__informations">
-            <div class="d-flex card card-row align-items-center justify-content-between">
-                <div class="d-none" id="file_form">
-                    {{ render(path('upload_avatar', {id: user.id})) }}
-                </div>
-                <p class="p-absolute text-danger" id="error-avatar" style="margin-left: 100px"></p>
-                <div class="p-relative">
-                    <button class="p-absolute" id="uploadImage" style="right: 0;"><i class="fa fa-file-upload text-success"></i></button>
-                    <button class="p-absolute {{ not user.avatar ? 'd-none' }}" id="removeImage" data-url="{{ path('remove_avatar', {id: user.id}) }}" style="right: 0;bottom: 0"><i class="fa fa-trash text-danger"></i></button>
+{% block aside_header %}
+    <header class="d-flex" style="align-items: center">
+        Utilisateur "{{ user }}"
+    </header>
+{% endblock %}
 
-                    <img id="img_avatar" class="avatar {{ not user.avatar ? 'd-none' }}" src="{{ user.avatar ? asset('uploads/user/avatar/'~user.id~'/'~user.avatar ) }}" />
-                    <div id="name_avatar" class="avatar avatar-text {{ user.avatar ? 'd-none' }}">
-                        <span>
-                            {{ user.firstName|first|upper ~ user.lastName|first|upper }}
-                        </span>
-                    </div>
-                </div>
-
-
-                <div class="d-flex align-items-center gap-10">
-                    {% for role in user.roles %}
-                        <span class="badge secondary">{{ role }} </span>
-                    {% endfor %}
-                </div>
-            </div>
-            <hr>
-            <h2 class="margin-bottom-20 d-flex align-items-center">Utilisateur #<span class="pastille {{ user.isActive ? "green" : "red" }}"></span>{{ user.id }}</h2>
-            <div class="card d-flex">
-                <div class="d-flex align-items-center card card-row justify-content-center bg-grey" style="margin-bottom: -1em">
-                    <div class="w-50">
-                        <div class="margin-bottom-20 d-flex align-items-center">
-                            <span class="label__show">Nom:</span>
-                            <small class="margin-left-20">{{ user.lastName }}</small>
-                        </div>
-                        <div class="margin-bottom-20 d-flex align-items-center">
-                            <span class="label__show">Prénom:</span>
-                            <small class="margin-left-20">{{ user.firstName }}</small>
-                        </div>
-                        <div class="margin-bottom-20 d-flex align-items-center">
-                            <span class="label__show">Genre:</span>
-                            <small class="margin-left-20">{{ user.gender }}</small>
-                        </div>
-                        <div class="margin-bottom-20 d-flex align-items-center">
-                            <span class="label__show">Téléphone:</span>
-                            <small class="margin-left-20">{{ user.phoneNumber | split('', 2) |join('.') }}</small>
-                        </div>
-                    </div>
-                    <div class="margin-left-10">
-                        <div class="margin-bottom-20 d-flex align-items-center">
-                            <span class="label__show">Adresse:</span>
-                            <small class="margin-left-20">{{ user.address }}</small>
-                        </div>
-                        <div class="margin-bottom-20 d-flex align-items-center">
-                            <span class="label__show">Âge:</span>
-                            <small class="margin-left-20">{{ date().diff(date(user.birthdayDate)).y }} ans ({{ user.birthdayDate|date('d/m/Y') }})
-                            </small>
-                        </div>
-                        <div class="margin-bottom-20 d-flex align-items-center">
-                            <span class="label__show">A été créé le:</span>
-                            <small class="margin-left-20">{{ user.createdAt|date('d/m/Y') }}</small>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <div class="d-flex align-items-center justify-content-center gap-20">
-                    <span class="badge {{ user.isActive ? "success" : "danger" }}">{{ user.isActive ? 'Actif' : 'Non actif' }}</span>
-                    <span class="badge secondary">{{ user.profession }}</span>
-                </div>
-                <div class="row row-actions">
-                    <div class="left-item">
-                        #{{ user.id }}
-                    </div>
-                    <div class="right-item">
-                        {% if app.user.id == user.id  or is_granted("ROLE_ADMIN") %}
-                            <a id="change_password" data-url="{{ path('user_change password', {id: user.id}) }}" class="btn btn-primary" title="Changer de mot de passe">
-                                <i class="fa fa-key"></i>
-                            </a>
-                        {% endif %}
-                            <a class="btn btn-warning" href="{{ path('app_edit_user', {'id': user.id}) }}" title="Modifier utilisateur">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                        {% if is_granted("ROLE_HUMAN_RESOURCE")  or is_granted("ROLE_ADMIN") %}
-                            {% if (user.isActive)%}
-                                <a title="Désactiver utilisateur" id="user-disable" class="btn btn-danger" href="#">
-                                    <i class="fa fa-ban"></i>
-                                </a>
-                            {% else %}
-                                <a title="Activer utilisateur" id="user-enable" class="btn btn-success" href="#">
-                                    <i class="fa fa-sun"></i>
-                                </a>
-                            {% endif %}
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
+{% block aside_nav %}
+    <nav class="d-flex" style="flex-direction: column; gap: 20px">
+        <button id="btn-show-user-information" class="btn-show" data-url="{{ path('app_show_user', {'id': user.id }) }}" data-name="user-show"><i class="margin-right-5 fa fa-search"></i> Informations</button>
+        <button id="btn-show-user-planning" class="btn-show" data-url="{{ path('app_show_user_planning', {'id': user.id }) }}" data-name="user-planning"><i class="margin-right-5 fa fa-calendar-alt"></i> Planning</button>
+    </nav>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('human_resources.show') }}
 {% endblock %}
-
