@@ -21,6 +21,12 @@ class Service extends EnumEntity
     #[ORM\OneToMany(mappedBy: 'service', targetEntity: Doctor::class)]
     private Collection $doctors;
 
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $isArchivedAt;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isArchived = false;
+
     #[Pure] public function __construct(string $slug = "", string $name = "")
     {
         parent::__construct($slug, $name);
@@ -112,6 +118,30 @@ class Service extends EnumEntity
                 $doctor->setService(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsArchivedAt(): ?\DateTimeImmutable
+    {
+        return $this->isArchivedAt;
+    }
+
+    public function setIsArchivedAt(?\DateTimeImmutable $isArchivedAt): self
+    {
+        $this->isArchivedAt = $isArchivedAt;
+
+        return $this;
+    }
+
+    public function isIsArchived(): ?bool
+    {
+        return $this->isArchived;
+    }
+
+    public function setIsArchived(bool $isArchived): self
+    {
+        $this->isArchived = $isArchived;
 
         return $this;
     }

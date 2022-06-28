@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\Pure;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,6 +29,7 @@ use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
+#[IsGranted('ROLE_HUMAN_RESOURCE')]
 class DoctorController extends BaseController
 {
     use ResetPasswordControllerTrait;
@@ -58,6 +60,7 @@ class DoctorController extends BaseController
     {
         return $this->paginateRequest(Doctor::class, $request, $doctorDataFormatter);
     }
+
 
     #[Route('/doctor/add', name: 'app_add_doctor')]
     public function addDoctor(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
@@ -138,11 +141,13 @@ class DoctorController extends BaseController
     #[Route('/doctor/{id}', name: 'app_show_doctor')]
     public function show(int $id): Response
     {
+
         $doctor = $this->manager->find(Doctor::class, $id) ?? throw new NotFoundHttpException("Docteur non trouvé");
 
         return $this->render('doctor/show.html.twig', [
             'doctor' => $doctor
         ]);
+
     }
 
     public function processSendingPasswordResetEmail(User $user): void

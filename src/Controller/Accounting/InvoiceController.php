@@ -19,6 +19,7 @@ use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -30,6 +31,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Workflow\Registry;
 use Symfony\Component\Workflow\WorkflowInterface;
 
+#[Security("is_granted('ROLE_ACCOUNTANT') or is_granted('ROLE_DOCTOR')")]
 class InvoiceController extends BaseController
 {
     #[Route('/invoice', name: 'invoice_index')]
