@@ -41,16 +41,18 @@ class EventRepository extends ServiceEntityRepository
             foreach ($attendees as $attendee)
             {
                 // Si la ressource de l'évènement à le même id et la même class que l'un des attendees, on ne l'ajoute pas
-                if ($attendee->getResourceId() != $event->getResource()->getResourceId() &&
-                $attendee->getResourceClass() != $event->getResource()->getResourceClass()) {
-
-                    $newEvent = $event->copyEvent();
-
-                    $resource = $resourceRepository->findOneBy(["resourceId" => $attendee->getResourceId(), "resourceClass" => $attendee->getResourceClass()]);
-                    $newEvent->setResource($resource);
-
-                    $eventsActive[] = $newEvent;
+                if ($attendee->getResourceId() == $event->getResource()->getResourceId() &&
+                $attendee->getResourceClass() == $event->getResource()->getResourceClass())
+                {
+                    continue;
                 }
+
+                $newEvent = $event->copyEvent();
+
+                $resource = $resourceRepository->findOneBy(["resourceId" => $attendee->getResourceId(), "resourceClass" => $attendee->getResourceClass()]);
+                $newEvent->setResource($resource);
+
+                $eventsActive[] = $newEvent;
             }
         }
 
