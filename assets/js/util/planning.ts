@@ -212,7 +212,6 @@ const editEventDateResource = (info: any) => {
 const openAddEventModal = (info: DateSelectArg | null = null, resId: number | null = null, resClass: string | null = null) => {
     let resourceId;
     let resourceClass;
-    console.log(info);
     const resource = info?.resource;
 
     // Si on essaye de déplacer un évènement sur une fausse ressource (group)
@@ -221,7 +220,7 @@ const openAddEventModal = (info: DateSelectArg | null = null, resId: number | nu
         return swaleDangerAlert(dangerText).then();
     }
 
-    if (!!resId && !!resourceClass) {
+    if (!!resId && !!resClass) {
         resourceId = resId;
         resourceClass = resClass;
     } else if (!!info && !!info.resource) {

@@ -78,17 +78,19 @@
                         #{{ user.id }}
                     </div>
                     <div class="right-item">
-                        <a id="change_password" data-url="{{ path('user_change password', {id: user.id}) }}" class="btn btn-primary"><i class="fa fa-key"></i></a>
+                        <a id="change_password" data-url="{{ path('user_change password', {id: user.id}) }}" class="btn btn-primary" title="Changer de mot de passe">
+                            <i class="fa fa-key"></i>
+                        </a>
 
-                        <a class="btn btn-warning" href="{{ path('app_edit_user', {'id': user.id}) }}">
+                        <a class="btn btn-warning" href="{{ path('app_edit_user', {'id': user.id}) }}" title="Modifier utilisateur">
                             <i class="fa fa-edit"></i>
                         </a>
                         {% if (user.isActive)%}
-                            <a id="user-disable" class="btn btn-danger" href="#">
+                            <a id="user-disable" class="btn btn-danger" href="#" title="Désactiver utilisateur">
                                 <i class="fa fa-ban"></i>
                             </a>
                         {% else %}
-                            <a id="user-enable" class="btn btn-success" href="#">
+                            <a id="user-enable" class="btn btn-success" href="#" title="Activer utilisateur">
                                 <i class="fa fa-sun"></i>
                             </a>
                         {% endif %}
