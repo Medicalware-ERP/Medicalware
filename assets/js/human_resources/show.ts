@@ -2,6 +2,7 @@ import {$, findInDataset} from '../utils'
 import Routing from "../Routing";
 import {swaleWarningAndRedirect} from "../util/swal";
 import axios from "axios";
+import {ModalOption, openAjaxModal} from "../util/modal";
 
 let userIdElement = $('#user-id') as HTMLInputElement;
 
@@ -84,4 +85,16 @@ fileInput.addEventListener('change', () => {
 removeImageBtn.addEventListener('click', () => {
     const url = findInDataset(removeImageBtn, 'url');
     location.href = url;
+});
+
+const changePasswordBtn = $("#change_password") as HTMLAnchorElement;
+
+changePasswordBtn.addEventListener('click', () => {
+   const url = findInDataset(changePasswordBtn, 'url');
+    const option: ModalOption = {
+        title: 'Changer votre mot de passe',
+        removeAction: false,
+        ajaxSubmit: true,
+    };
+    openAjaxModal(url, option);
 });

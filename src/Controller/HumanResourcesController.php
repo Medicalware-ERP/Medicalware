@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Enum\UserTypeEnum;
 use App\Form\AvatarType;
+use App\Form\ChangePasswordFormType;
 use App\Form\DoctorType;
 use App\Form\UserType;
 use App\Service\User\UserDataFormatter;
@@ -265,5 +266,24 @@ class HumanResourcesController extends BaseController
         $this->setTokenObjectInSession($resetToken);
     }
 
+    #[Route('/user/{id}/change/password', name: 'user_change password')]
+    public function changePassword(Request $request, User $user, UserPasswordHasherInterface $userPasswordHasher): Response
+    {
+        $form = $this->createForm(ChangePasswordFormType::class, null, [
+            'action' => $request->getUri()
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword($userPasswordHasher->hashPassword($user, $form->get('plainPassword')->getData()));
+            $this->manager->persist($user);
+            $this->manager->flush();
+        }
+
+        return $this->renderForm('_form.html.twig', [
+            'form' => $form
+        ]);
+    }
 
 }
