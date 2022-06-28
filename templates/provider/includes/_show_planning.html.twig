@@ -1,0 +1,5 @@
+{% extends app.request.query.get('isAjax', false) ? 'layout_empty.html.twig' : 'provider/show.html.twig' %}
+
+{% block content %}
+    <div id="provider-show-planning" data-provider-id="{{ provider.id }}"></div>
+{% endblock %}
