@@ -39,7 +39,7 @@ class EventType extends AbstractType
         $choices = array_merge($choices, $this->manager->getRepository(Patient::class)->findAllActive());
 
         $builder
-            ->add('title', TextType::class,[
+            ->add('title', TextType::class, [
                 "label" => "Titre",
                 "required" => true,
                 'constraints' => [
@@ -63,7 +63,7 @@ class EventType extends AbstractType
                 'input_format' => 'yyyy-MM-dd  HH:mm:ss',
                 "required" => true
             ])
-            ->add('description', EditorType::class,[
+            ->add('description', EditorType::class, [
                 "label" => "Description :",
                 "label_attr" => [
                     "class" => "d-block margin-bottom-5"
@@ -73,13 +73,20 @@ class EventType extends AbstractType
                 "label" => "Participants",
                 "required" => false,
                 "choices" => $choices,
-                "choice_label" => function($a) { return $a; }
+                "choice_label" => function ($a) {
+                    return $a;
+                }
             ])
             ->add('allDay', CheckboxType::class, [
                 "label" => "Toute la journée",
                 "required" => false
-            ])
-        ;
+            ]);
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) {
+            /** @var Event $event */
+            $event = $formEvent->getData();
+            $event->setEndAt($event->getEndAt()->modify('-1 day'));
+        });
 
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $formEvents) {
             /** @var Event $event */
@@ -93,17 +100,16 @@ class EventType extends AbstractType
             $endAt = $event->getEndAt();
 
             // Si le allDay est vrai, on set le temps à minuit et +1j pour le dernier jour
-            if ($event->getAllDay())
-            {
-                $event->setStartAt($startAt->setTime(0, 0 ,0));
-                $event->setEndAt($endAt->setTime(0, 0 ,0)->modify("+1 day"));
+            if ($event->getAllDay()) {
+                $event->setStartAt($startAt->setTime(0, 0, 0));
+                $event->setEndAt($endAt->setTime(0, 0, 0)->modify("+1 day"));
             }
         });
 
 
         $builder->get('attendees')
             ->addModelTransformer(
-                new class implements DataTransformerInterface{
+                new class implements DataTransformerInterface {
 
                     public function transform(mixed $value): array
                     {
@@ -126,9 +132,8 @@ class EventType extends AbstractType
                             $id = $item->getId();
 
                             $data[] = (new Participant())
-                                        ->setResourceId($id)
-                                        ->setResourceClass($item::class)
-                            ;
+                                ->setResourceId($id)
+                                ->setResourceClass($item::class);
                         }
 
                         return $data;

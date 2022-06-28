@@ -34,7 +34,7 @@
     <div class="d-flex">
         <span>Date fin :</span>
         {% if (event.allDay) %}
-            {{ event.endAt | date('d/m/Y')}}
+            {{ event.endAt | date_modify("-1 second") | date('d/m/Y') }}
         {% else %}
             {{ event.endAt | date('d/m/Y H:i:s') }}
         {% endif %}
