@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Doctor;
 use App\Entity\User;
 use App\Enum\RoleEnum;
 use App\Form\Base\SelectMultipleType;
@@ -20,15 +21,15 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserType extends AbstractType
 {
-    public const FORM_NAME  = 'user';
-    public const FORM_ID    = 'test';
+    public const FORM_NAME = 'user';
+    public const FORM_ID = 'test';
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
         $builder
             ->add('lastName', TextType::class, [
-                'label' =>  'Nom'
+                'label' => 'Nom'
             ])
             ->add('gender', ChoiceType::class, [
                 'label' => 'Genre:',
@@ -40,10 +41,10 @@ class UserType extends AbstractType
                 ]
             ])
             ->add('firstName', TextType::class, [
-                'label' =>  'Prénom'
+                'label' => 'Prénom'
             ])
             ->add('phoneNumber', TextType::class, [
-                'label' =>  'Téléphone'
+                'label' => 'Téléphone'
             ])
             ->add('birthdayDate', DateType::class, [
                 'label' => 'Date de naissance',
@@ -60,14 +61,15 @@ class UserType extends AbstractType
                 'label' => false
             ]);
 
-            if($builder->getData()->getId() == null || $builder->getData()->getProfession()->getId() != "1"){
-                $builder->add('profession')
-                    ->add('roles', SelectMultipleType::class, [
-                        'label'     => 'Rôles',
-                        'choices'   => RoleEnum::getChoiceList(),
-                        'required'  => false
-                    ]);
-            }
+        if ($builder->getData()::class !== Doctor::class) {
+            $builder
+                ->add('profession')
+                ->add('roles', SelectMultipleType::class, [
+                    'label' => 'Rôles',
+                    'choices' => RoleEnum::getChoiceList(),
+                    'required' => false
+                ]);
+        }
 
     }
 
@@ -75,8 +77,8 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'form_name'  => self::FORM_NAME,
-            'form_id'    => self::FORM_ID,
+            'form_name' => self::FORM_NAME,
+            'form_id' => self::FORM_ID,
         ]);
     }
 }
