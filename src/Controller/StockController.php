@@ -59,6 +59,8 @@ class StockController extends BaseController
             } catch (UniqueConstraintViolationException $exception) {
                 $form->get('equipment')->get('reference')->addError(new FormError("Cette référence est déjà utilisé"));
             }
+
+            return $this->redirectToReferer();
         }
 
         return $this->renderForm('stock/form.html.twig', [
@@ -78,6 +80,8 @@ class StockController extends BaseController
             } catch (UniqueConstraintViolationException $exception) {
                 $form->get('equipment')->get('reference')->addError(new FormError("Cette référence est déjà utilisé"));
             }
+
+            return $this->redirectToReferer();
         }
 
         return $this->renderForm('stock/form.html.twig', [

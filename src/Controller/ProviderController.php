@@ -40,7 +40,7 @@ class ProviderController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $providerRepository->add($provider);
-            return $this->redirectToRoute('provider_show_information', ['id' => $provider->getId()]);
+            return $this->redirectToReferer();
         }
 
         return $this->renderForm('provider/form.html.twig', [
@@ -58,7 +58,7 @@ class ProviderController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $providerRepository->edit($provider);
-            return $this->redirectToRoute('provider_show_information', ['id' => $provider->getId()]);
+            return $this->redirectToReferer();
         }
 
         return $this->renderForm('provider/form.html.twig', [

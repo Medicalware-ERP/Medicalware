@@ -127,7 +127,7 @@ class HumanResourcesController extends BaseController
                 ]);
             }
 
-            return $this->redirectToRoute("app_human_resources");
+            return $this->redirectToReferer();
         }
 
         return $this->renderForm('human_resources/form.html.twig', [
