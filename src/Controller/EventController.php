@@ -186,7 +186,7 @@ class EventController extends BaseController
     #[Route('/resource/all', name: 'event_resources')]
     public function getAllResources(Request $request): Response
     {
-        $resources = $this->manager->getRepository(Resource::class)->findAll();
+        $resources = $this->manager->getRepository(Resource::class)->findAllActive();
         $events = $this->manager->getRepository(Event::class)->findAll();
 
         return $this->json(["resources" => $resources, "events" => $events ], context: [AbstractNormalizer::GROUPS => [ "main" ] ]);

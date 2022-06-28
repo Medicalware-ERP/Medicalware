@@ -21,6 +21,26 @@ class ResourceRepository extends ServiceEntityRepository
         parent::__construct($registry, Resource::class);
     }
 
+    public function findAllActive()
+    {
+        $resources = $this->findAll();
+        $resourcesActive = [];
+
+        /** @var Resource $resource */
+        foreach ($resources as $resource) {
+            $entity = $resource->getResource();
+
+            if ((method_exists($entity, "getArchivedAt") && $entity->getArchivedAt() == null) ||
+            (method_exists($entity, "getLeftAt") && $entity->getLeftAt() == null) ||
+            (method_exists($entity, "isIsArchived") && $entity->isIsArchived() == false))
+            {
+                $resourcesActive[] = $resource;
+            }
+        }
+
+        return $resourcesActive;
+    }
+
     public function add(Resource $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);

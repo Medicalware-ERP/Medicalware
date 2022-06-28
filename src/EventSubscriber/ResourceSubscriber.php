@@ -13,11 +13,6 @@ class ResourceSubscriber
 
     }
 
-    public function getSubscribedEvents(): array
-    {
-    }
-
-
     public function postLoad(Resource $resource)
     {
         $entity = $this->manager->getRepository($resource->getResourceClass())->find($resource->getResourceId());
