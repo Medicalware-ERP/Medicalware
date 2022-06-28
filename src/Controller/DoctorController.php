@@ -138,16 +138,24 @@ class DoctorController extends BaseController
         ]);
     }
 
-    #[Route('/doctor/{id}', name: 'app_show_doctor')]
+    #[Route('/doctor/show/{id}', name: 'show_doctor_information')]
     public function show(int $id): Response
     {
-
         $doctor = $this->manager->find(Doctor::class, $id) ?? throw new NotFoundHttpException("Docteur non trouvé");
 
-        return $this->render('doctor/show.html.twig', [
+        return $this->render('doctor/includes/_show_doctor.html.twig', [
             'doctor' => $doctor
         ]);
+    }
 
+    #[Route('/doctor/show/planning/{id}', name: 'show_doctor_planning')]
+    public function showPlanning(int $id): Response
+    {
+        $doctor = $this->manager->find(Doctor::class, $id) ?? throw new NotFoundHttpException("Docteur non trouvé");
+
+        return $this->render('doctor/includes/_show_planning.html.twig', [
+            'doctor' => $doctor
+        ]);
     }
 
     public function processSendingPasswordResetEmail(User $user): void

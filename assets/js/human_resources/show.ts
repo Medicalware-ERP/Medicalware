@@ -93,7 +93,7 @@ function initShowUser() {
 
     const changePasswordBtn = $("#change_password") as HTMLAnchorElement;
 
-    changePasswordBtn.addEventListener('click', () => {
+    changePasswordBtn?.addEventListener('click', () => {
         const url = findInDataset(changePasswordBtn, 'url');
         const option: ModalOption = {
             title: 'Changer votre mot de passe',
@@ -121,7 +121,21 @@ document.addEventListener('layout.user-planning.loaded', () => {
     initUserCalendar();
 });
 
+const initDoctorCalendar = () => {
+    const doctorPlanning = $("#doctor-show-planning") as HTMLElement;
+
+    if (!!doctorPlanning) {
+        const doctorId: number = parseInt(findInDataset(doctorPlanning, "doctorId"));
+        declareCalendar("doctor-show-planning", doctorId, "App\\Entity\\Doctor");
+    }
+};
+
+document.addEventListener('layout.doctor-planning.loaded', () => {
+    initDoctorCalendar();
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     initShowUser();
     initUserCalendar();
+    initDoctorCalendar();
 });
