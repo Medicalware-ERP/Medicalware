@@ -4,12 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Planning\Resource;
 use App\Entity\User;
+use App\Enum\UserTypeEnum;
 use App\Form\AvatarType;
 use App\Form\ChangePasswordFormType;
 use App\Form\UserType;
 use App\Service\User\UserDataFormatter;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -62,7 +64,13 @@ class HumanResourcesController extends BaseController
     #[Route('/usersJson', name: 'users_json')]
     public function paginate(Request $request, UserDataFormatter $userDataFormatter): JsonResponse
     {
-        return $this->paginateRequest(User::class, $request, $userDataFormatter);
+        $modifier = function(QueryBuilder $queryBuilder){
+            $queryBuilder->join('e.profession', 'u')
+                        ->where('u.slug != :slug')
+                        ->setParameter('slug', UserTypeEnum::DOCTOR);
+        };
+
+        return $this->paginateRequest(User::class, $request, $userDataFormatter,$modifier);
     }
 
     #[IsGranted('ROLE_HUMAN_RESOURCE')]
@@ -154,12 +162,24 @@ class HumanResourcesController extends BaseController
         return $request->isXmlHttpRequest() ? $this->json('ok') : $this->redirect($referer);
     }
 
-    #[Route('/user/{id}', name: 'app_show_user')]
-    public function show(int $id): Response
+    #[Route('/user/include/show/{id}', name: 'app_show_user')]
+    public function showUser(int $id) : Response
     {
         $user = $this->manager->find(User::class, $id) ?? throw new NotFoundHttpException("Utilisateur non trouvée");
         $this->denyAccessUnlessGranted('USER_VIEW_EDIT', $user);
-        return $this->render('human_resources/show.html.twig', [
+
+        return $this->render('human_resources/includes/_show_user.html.twig', [
+            'user' => $user,
+        ]);
+    }
+
+    #[Route('/user/include/show/{id}/planning', name: 'app_show_user_planning')]
+    public function showUserPlanning(int $id) : Response
+    {
+        $user = $this->manager->find(User::class, $id) ?? throw new NotFoundHttpException("Utilisateur non trouvée");
+        $this->denyAccessUnlessGranted('USER_VIEW_EDIT', $user);
+
+        return $this->render('human_resources/includes/_show_planning.html.twig', [
             'user' => $user,
         ]);
     }

@@ -46,7 +46,6 @@ class DashboardController extends AbstractController
         $totalOrderPrices = array_sum($orderPrices);
         $user = $this->getUser()->getId();
         $eventsOfUserOfToday = $eventRepository->findEventOfTodayByUser($user);
-
         return $this->render('dashboard/index.html.twig', [
             'countDoctor' => $countDoctor,
             'countUser' => $countUser,
@@ -62,19 +61,41 @@ class DashboardController extends AbstractController
 
     #[Route('/stats', name: 'stats')]
    public function statsUsers(
-       DoctorRepository $doctorRepository,
-       UserRepository $userRepository,
-       PatientRepository $patientRepository
+        InvoiceRepository $invoiceRepository,
+        OrderRepository $orderRepository,
     ): JsonResponse
    {
-       $countDoctor = $doctorRepository->count([]);
-       $countUser = $userRepository->countAllUsers();
-       $countPatient = $patientRepository->count([]);
+       $invoicesValided = $invoiceRepository->findByValid();
+       $invoicesPrices = [];
+       foreach ($invoicesValided as $invoice) {
+           $invoicesPrices[] = $invoice->getTtc();
+       }
+       $totalInvoicesPricesValided = array_sum($invoicesPrices);
+       $ordersValided = $orderRepository->findByValid();
+       $orderPrices = [];
+       foreach ($ordersValided as $order) {
+           $orderPrices[] = $order->getTtc();
+       }
+       $totalOrderPricesValided = array_sum($orderPrices);
+
+       $invoicesPayed = $invoiceRepository->findByDelivery();
+       $invoicesPrices = [];
+       foreach ($invoicesPayed as $invoice) {
+           $invoicesPrices[] = $invoice->getTtc();
+       }
+       $totalInvoicesPricesPayed = array_sum($invoicesPrices);
+       $ordersPayed = $orderRepository->findByDelivery();
+       $orderPrices = [];
+       foreach ($ordersPayed as $order) {
+           $orderPrices[] = $order->getTtc();
+       }
+       $totalOrderPricesPayed = array_sum($orderPrices);
 
        return $this->json([
-           'Docteurs' => $countDoctor,
-           'Utilisateurs' => $countUser,
-           'Patients' => $countPatient
+           'Total crédit en attente' => $totalInvoicesPricesValided,
+           'Total débit en attente' => $totalOrderPricesValided,
+           'Total débité' => $totalOrderPricesPayed,
+           'Total crédité' => $totalInvoicesPricesPayed,
        ]);
    }
 }

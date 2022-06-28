@@ -18,6 +18,11 @@
     </div>
 
     <div class="d-flex">
+        <span>Type :</span>
+        {{ event.type }}
+    </div>
+
+    <div class="d-flex">
         <span>Date début :</span>
         {% if (event.allDay) %}
             {{ event.startAt | date('d/m/Y') }}

@@ -145,7 +145,7 @@ class EventController extends BaseController
     public function getEventsResourceId(Request $request, string $class, int $id): Response
     {
         $resource = $this->manager->getRepository(Resource::class)->findBy(["resourceClass" => $class, "resourceId" => $id]) ?? throw new NotFoundHttpException("Ressource non trouvée");
-        $data = $this->manager->getRepository(Event::class)->findBy(["resource" => $resource]) ?? throw new NotFoundHttpException("Entité non trouvée");
+        $data = $this->manager->getRepository(Event::class)->findEventsBy($resource[0]) ?? throw new NotFoundHttpException("Entité non trouvée");
 
         return $this->json($data, context: [AbstractNormalizer::GROUPS => [ "main" ] ]);
     }
