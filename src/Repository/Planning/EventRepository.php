@@ -40,7 +40,7 @@ class EventRepository extends ServiceEntityRepository
             /** @var Participant $attendee */
             foreach ($attendees as $attendee)
             {
-                // Si la ressource de l'évènement à le même id et la même class que l'un des attendees, on ne l'ajoute pas
+                // Si la ressource de l'évènement a le même id et la même class que l'un des attendees, on ne l'ajoute pas
                 if ($attendee->getResourceId() == $event->getResource()->getResourceId() &&
                 $attendee->getResourceClass() == $event->getResource()->getResourceClass())
                 {
@@ -53,6 +53,40 @@ class EventRepository extends ServiceEntityRepository
                 $newEvent->setResource($resource);
 
                 $eventsActive[] = $newEvent;
+            }
+        }
+
+        return $eventsActive;
+    }
+
+    public function findEventsBy(Resource $resource)
+    {
+        $events = $this->findAll();
+        $eventsActive = [];
+
+        /** @var Event $event */
+        foreach ($events as $event) {
+            if ($event->getResource() == $resource)
+            {
+                $eventsActive[] = $event;
+                continue;
+            }
+
+            $attendees = $event->getAttendees();
+
+            /** @var Participant $attendee */
+            foreach ($attendees as $attendee)
+            {
+                // Si la ressource de l'évènement a le même id et la même class que les params, on l'ajoute
+                if ($attendee->getResourceId() == $resource->getResourceId() &&
+                    $attendee->getResourceClass() == $resource->getResourceClass())
+                {
+                    $newEvent = $event->copyEvent();
+                    $newEvent->setResource($resource);
+
+                    $eventsActive[] = $newEvent;
+                    break;
+                }
             }
         }
 
