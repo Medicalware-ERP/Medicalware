@@ -84,4 +84,15 @@ class OrderRepository extends DatatableRepository
         ;
     }
 
+    public function findByValid()
+    {
+        return $this->createQueryBuilder('e')
+            ->join('e.state', 'u')
+            ->andWhere('u.name = :state')
+            ->setParameter('state', 'valider')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }
