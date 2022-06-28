@@ -85,7 +85,9 @@ class EventType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) {
             /** @var Event $event */
             $event = $formEvent->getData();
-            $event->setEndAt($event->getEndAt()->modify('-1 day'));
+            if ($event->getAllDay()) {
+                $event->setEndAt($event->getEndAt()->modify('-1 day'));
+            }
         });
 
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $formEvents) {
