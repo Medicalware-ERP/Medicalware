@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Entity\Patient;
 use App\Entity\Planning\Resource;
+use App\Entity\Provider;
 use App\Entity\Room\Room;
 use App\Entity\User;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -51,12 +52,13 @@ class GenerateResourcesCommand extends Command
 
             $this->resetAutoIncrement(Resource::class);
 
-            // Get all rooms, user, patient and doctor and create resource lied to it
+            // Get all providers, rooms, users, patients and doctors and create resource related to them
+            $providers = $this->manager->getRepository(Provider::class)->findAll();
             $rooms = $this->manager->getRepository(Room::class)->findAll();
             $users = $this->manager->getRepository(User::class)->findAll();
             $patients = $this->manager->getRepository(Patient::class)->findAll();
 
-            $entities = array_merge($rooms, $users, $patients);
+            $entities = array_merge($providers, $rooms, $users, $patients);
 
             foreach ($entities as $entity)
             {

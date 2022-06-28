@@ -15,9 +15,7 @@ import {$, findInDataset} from "../utils";
 
 export const declarePlanning = (planningId: string) => {
 
-    // TODO : Récupération des ressources
-    // TODO : Puis récupération des events liés au ressources
-
+    // TODO : Les events ayant des attendees seront display comme si un attendee = une ressource (Une duplication d'évent par attendee)
 
     let planning: Calendar;
     const planningElement: HTMLElement | null = document.getElementById(planningId);
@@ -41,7 +39,8 @@ export const declarePlanning = (planningId: string) => {
             { id: "App\\Entity\\Room\\Room", title: "Salles" },
             { id: "App\\Entity\\User", title: "Employés" },
             { id: "App\\Entity\\Patient", title: "Patients" },
-            { id: "App\\Entity\\Doctor", title: "Docteurs" }
+            { id: "App\\Entity\\Doctor", title: "Docteurs" },
+            { id: "App\\Entity\\Provider", title: "Fournisseurs" }
         );
 
         planning = new Calendar(planningElement, {
