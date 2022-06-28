@@ -117,27 +117,24 @@ class EventRepository extends ServiceEntityRepository
         }
     }
 
-    public function findEventOfTodayByUser($user)
+    public function findEventOfTodayByUser($userId)
     {
-        $dateToday = new DateTime();
+        $startAt = (new DateTime())->setTime(00, 00 , 00, 00);
+        $endAt = (new DateTime())->setTime(23, 59 , 59, 59);
+
         return $this->createQueryBuilder('e')
             ->leftJoin('e.attendees', 'p')
             ->join('e.resource', 'r')
-            ->orWhere('p.resourceId = :user')
-            ->orWhere('r.resourceId = :user2')
-            ->andWhere('e.startAt <= :dateToday AND e.endAt >= :dateToday')
-            ->andWhere('r.resourceClass != :resourceClass1 AND r.resourceClass != :resourceClass2')
-            ->setParameter('user2', $user)
-            ->setParameter('dateToday', $dateToday)
-            ->setParameter('user', $user)
-            ->setParameter('resourceClass1',"App\Entity\Room\Room")
-            ->setParameter('resourceClass2',"App\Entity\Provider")
+            ->orWhere('p.resourceId = :userId')
+            ->orWhere('r.resourceId = :userId')
+            ->andWhere('e.endAt >= :startAt AND e.startAt <= :endAt')
+            ->setParameter('startAt', $startAt)
+            ->setParameter('endAt', $endAt)
+            ->setParameter('userId', $userId)
             ->getQuery()
             ->getResult()
             ;
     }
-
-
 
     // /**
     //  * @return Event[] Returns an array of Event objects
