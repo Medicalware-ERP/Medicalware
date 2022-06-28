@@ -5,7 +5,9 @@ namespace App\Form;
 use App\Entity\Doctor;
 use App\Entity\User;
 use App\Enum\RoleEnum;
+use App\Enum\UserTypeEnum;
 use App\Form\Base\SelectMultipleType;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -63,7 +65,14 @@ class UserType extends AbstractType
 
         if ($builder->getData()::class !== Doctor::class) {
             $builder
-                ->add('profession')
+                ->add('profession', EntityType::class, [
+                    'class' => \App\Entity\UserType::class,
+                    'query_builder' => function(EntityRepository $repository) {
+                        return $repository->createQueryBuilder('e')
+                            ->where('e.slug != :slug')
+                            ->setParameter('slug', UserTypeEnum::DOCTOR);
+                    }
+                ])
                 ->add('roles', SelectMultipleType::class, [
                     'label' => 'Rôles',
                     'choices' => RoleEnum::getChoiceList(),
