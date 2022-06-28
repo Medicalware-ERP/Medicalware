@@ -1,7 +1,6 @@
 import {$, findInDataset} from '../utils'
 import Routing from "../Routing";
 import axios from "axios";
-import {loadCurrentTab} from "../layout/layout_show";
 import {initFormCollection} from "../util/form_collection";
 import generateDatable from "../datatable/datatableGeneric";
 import {declareCalendar} from "../util/planning";
@@ -45,6 +44,7 @@ const initPatientCalendar = () => {
 document.addEventListener( 'layout.medical_file.loaded', () => {
     initMedicalFileTab();
 });
+
 
 document.addEventListener( 'layout.invoice.loaded', () => {
     initInvoiceTab();

@@ -89,6 +89,7 @@
                         <span class="label">{{ eventOfUserFromToday.type }}</span>
                         <span class="title">{{ eventOfUserFromToday.title }}</span>
                         <span class="title">{{ eventOfUserFromToday.description | raw }}</span>
+                        <span class="title">{{ eventOfUserFromToday.resource.resource.lastName }} {{ eventOfUserFromToday.resource.resource.firstName }}</span>
                     </div>
                     {% else %}
                         <div class="event d-flex align-items-center justify-content-center gap-15">
