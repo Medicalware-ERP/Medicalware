@@ -77,6 +77,11 @@
                         #{{ doctor.id }}
                     </div>
                     <div class="right-item">
+                        {% if app.user.id == doctor.id  or is_granted("ROLE_ADMIN") %}
+                            <a id="change_password" data-url="{{ path('user_change_password', {id: doctor.id}) }}" class="btn btn-primary" title="Changer de mot de passe">
+                                <i class="fa fa-key"></i>
+                            </a>
+                        {% endif %}
                         <a class="btn btn-warning" href="{{ path('app_edit_doctor', {'id': doctor.id}) }}">
                             <i class="fa fa-edit"></i>
                         </a>

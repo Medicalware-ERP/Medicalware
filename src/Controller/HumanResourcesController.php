@@ -298,7 +298,7 @@ class HumanResourcesController extends BaseController
         $this->setTokenObjectInSession($resetToken);
     }
 
-    #[Route('/user/{id}/change/password', name: 'user_change password')]
+    #[Route('/user/{id}/change/password', name: 'user_change_password')]
     public function changePassword(Request $request, User $user, UserPasswordHasherInterface $userPasswordHasher): Response
     {
         $this->denyAccessUnlessGranted('USER_VIEW_EDIT', $user);
