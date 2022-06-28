@@ -64,6 +64,12 @@ class User extends Person implements UserInterface, PasswordAuthenticatedUserInt
         $this->stockHistories = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        $isArchived = $this->getLeftAt() ? "(Archivé(e))" : "";
+        return parent::__toString()." ".$isArchived;
+    }
+
     public function getEmail(): ?string
     {
         return $this->email;

@@ -35,6 +35,11 @@ class Resource
         $this->events = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->getResourceName();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

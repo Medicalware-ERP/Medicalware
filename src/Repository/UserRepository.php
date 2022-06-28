@@ -47,6 +47,13 @@ class UserRepository extends DatatableRepository implements PasswordUpgraderInte
         return $qb->getQuery()->getResult();
     }
 
+    public function findAllActive()
+    {
+        return $this->findBy([
+            "leftAt" => null
+        ]);
+    }
+
     public function countAllUsers()
     {
         $qb = $this->createQueryBuilder('user');

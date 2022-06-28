@@ -34,6 +34,7 @@ class EventRepository extends ServiceEntityRepository
 
         /** @var Event $event */
         foreach ($events as $event) {
+            $eventsActive[] = $event;
             $attendees = $event->getAttendees();
 
             /** @var Participant $attendee */

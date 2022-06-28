@@ -33,8 +33,8 @@ class EventType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $choices = $this->manager->getRepository(User::class)->findAll();
-        $choices = array_merge($choices, $this->manager->getRepository(Patient::class)->findAll());
+        $choices = $this->manager->getRepository(User::class)->findAllActive();
+        $choices = array_merge($choices, $this->manager->getRepository(Patient::class)->findAllActive());
 
         $builder
             ->add('title', TextType::class,[
