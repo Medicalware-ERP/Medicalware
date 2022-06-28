@@ -3,11 +3,15 @@
 namespace App\Repository\Planning;
 
 use App\Entity\Planning\Event;
+use App\Entity\Planning\Participant;
+use App\Entity\Planning\Resource;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
+use function App\Entity\getId;
 
 /**
  * @method Event|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,9 +21,46 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class EventRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private readonly EntityManagerInterface $manager)
     {
         parent::__construct($registry, Event::class);
+    }
+
+    public function findAllFromResourcesAndAttendees()
+    {
+        $resourceRepository = $this->manager->getRepository(Resource::class);
+        $events = $this->findAll();
+        $eventsActive = [];
+
+        /** @var Event $event */
+        foreach ($events as $event) {
+            $attendees = $event->getAttendees();
+
+            /** @var Participant $attendee */
+            foreach ($attendees as $attendee)
+            {
+                // Si la ressource de l'évènement à le même id et la même class que l'un des attendees, on ne l'ajoute pas
+                if ($attendee->getResourceId() != $event->getResource()->getResourceId() &&
+                $attendee->getResourceClass() != $event->getResource()->getResourceClass()) {
+                    $newEvent = new Event();
+                    $newEvent->setId($event->getId());
+                    $newEvent->setTitle($event->getTitle());
+                    $newEvent->setType($event->getType());
+                    $newEvent->setDescription($event->getDescription());
+                    $newEvent->setAllDay($event->getAllDay());
+                    $newEvent->setStartAt($event->getStartAt());
+                    $newEvent->setEndAt($event->getEndAt());
+                    $newEvent->setColor($event->getColor());
+
+                    $resource = $resourceRepository->findOneBy(["resourceId" => $attendee->getResourceId(), "resourceClass" => $attendee->getResourceClass()]);
+                    $newEvent->setResource($resource);
+
+                    $eventsActive[] = $newEvent;
+                }
+            }
+        }
+
+        return $eventsActive;
     }
 
     /**

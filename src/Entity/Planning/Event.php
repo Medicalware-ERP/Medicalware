@@ -63,6 +63,14 @@ class Event
         $this->attendees = new ArrayCollection();
     }
 
+    // Utiliser dans le cas de la duplication d'un évènement pour l'affichage sur la ressource et les attendees dans le planning
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
