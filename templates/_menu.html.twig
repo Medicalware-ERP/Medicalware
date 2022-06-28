@@ -14,13 +14,18 @@
             </ul>
         </li>
         {% if is_granted('ROLE_HUMAN_RESOURCE') %}
-            <li>
-                <a href="{{ path('app_human_resources') }}">
-                    <i class="fa fa-user"></i>
-                    <span class="link_name">Ressources humaines</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="{{ path('app_human_resources') }}">Ressources humaines</a></li>
+            <li class="drawer-links">
+                <div class="icon-link">
+                    <a>
+                        <i class="fa fa-money-check-alt"></i>
+                        <span class="link_name">Res. humaines</span>
+                    </a>
+                    <i class="fa fa-angle-right arrow"></i>
+                </div>
+                <ul class="sub-menu">
+                    <li><a class="link_name" href="#">Ressources humaines</a></li>
+                    <li><a href="{{ path('app_human_resources') }}">Utilisateurs</a></li>
+                    <li><a href="{{ path('app_doctor') }}">Docteurs</a></li>
                 </ul>
             </li>
         {% endif %}
@@ -53,7 +58,7 @@
                     <li><a href="{{ path('invoice_index') }}">Factures</a></li>
                 {% endif %}
                 {% if is_granted("ROLE_ACCOUNTANT") or is_granted("ROLE_ADMIN_STOCK") %}
-                    <li><a href="{{ path('order_index') }}">Commandes d'achats</a></li>
+                    <li><a href="{{ path('app_doctor') }}">Commandes d'achats</a></li>
                 {% endif %}
             </ul>
         </li>
@@ -95,17 +100,6 @@
                 </a>
                 <ul class="sub-menu blank">
                     <li><a class="link_name" href="{{ path('index_room') }}">Salles</a></li>
-                </ul>
-            </li>
-        {% endif %}
-        {% if is_granted("ROLE_HUMAN_RESOURCE") %}
-            <li>
-                <a href="{{ path('app_doctor') }}">
-                    <i class="fa fa-user-nurse"></i>
-                    <span class="link_name">Docteurs</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="{{ path('app_doctor') }}">Docteurs</a></li>
                 </ul>
             </li>
         {% endif %}

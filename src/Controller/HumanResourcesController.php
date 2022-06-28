@@ -4,12 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Planning\Resource;
 use App\Entity\User;
+use App\Enum\UserTypeEnum;
 use App\Form\AvatarType;
 use App\Form\ChangePasswordFormType;
 use App\Form\UserType;
 use App\Service\User\UserDataFormatter;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -62,7 +64,13 @@ class HumanResourcesController extends BaseController
     #[Route('/usersJson', name: 'users_json')]
     public function paginate(Request $request, UserDataFormatter $userDataFormatter): JsonResponse
     {
-        return $this->paginateRequest(User::class, $request, $userDataFormatter);
+        $modifier = function(QueryBuilder $queryBuilder){
+            $queryBuilder->join('e.profession', 'u')
+                        ->where('u.slug != :slug')
+                        ->setParameter('slug', UserTypeEnum::DOCTOR);
+        };
+
+        return $this->paginateRequest(User::class, $request, $userDataFormatter,$modifier);
     }
 
     #[IsGranted('ROLE_HUMAN_RESOURCE')]
