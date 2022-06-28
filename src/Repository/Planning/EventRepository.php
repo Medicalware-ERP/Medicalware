@@ -42,15 +42,8 @@ class EventRepository extends ServiceEntityRepository
                 // Si la ressource de l'évènement à le même id et la même class que l'un des attendees, on ne l'ajoute pas
                 if ($attendee->getResourceId() != $event->getResource()->getResourceId() &&
                 $attendee->getResourceClass() != $event->getResource()->getResourceClass()) {
-                    $newEvent = new Event();
-                    $newEvent->setId($event->getId());
-                    $newEvent->setTitle($event->getTitle());
-                    $newEvent->setType($event->getType());
-                    $newEvent->setDescription($event->getDescription());
-                    $newEvent->setAllDay($event->getAllDay());
-                    $newEvent->setStartAt($event->getStartAt());
-                    $newEvent->setEndAt($event->getEndAt());
-                    $newEvent->setColor($event->getColor());
+
+                    $newEvent = $event->copyEvent();
 
                     $resource = $resourceRepository->findOneBy(["resourceId" => $attendee->getResourceId(), "resourceClass" => $attendee->getResourceClass()]);
                     $newEvent->setResource($resource);

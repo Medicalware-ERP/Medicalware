@@ -201,4 +201,20 @@ class Event
 
         return $this;
     }
+
+    public function copyEvent(): Event
+    {
+        $newEvent = new Event();
+        $newEvent->setId($this->getId());
+        $newEvent->setTitle($this->getTitle());
+        $newEvent->setType($this->getType());
+        $newEvent->setDescription($this->getDescription());
+        $newEvent->setAllDay($this->getAllDay());
+        $newEvent->setStartAt($this->getStartAt());
+        $newEvent->setEndAt($this->getEndAt());
+        $newEvent->setColor($this->getColor());
+        $newEvent->setResource($this->getResource());
+
+        return $newEvent;
+    }
 }
