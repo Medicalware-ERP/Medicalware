@@ -3,24 +3,34 @@ import axios from "axios";
 import $ from "jquery";
 
 export const openModal = (id : string = "modal", ajaxSubmit = false) => {
-    const modal:HTMLElement|null = document.querySelector(`#${id}`);
+    let modal:HTMLElement|null = document.querySelector(`#${id}`);
     if(modal == null){
         return;
     }
-
+    // permet d'enlever toute les listener rattacher a la modal
+    modal.outerHTML = modal.outerHTML;
+    modal = document.querySelector(`#${id}`)
+    if(modal == null){
+        return;
+    }
     // @ts-ignore
     modal?.showModal();
     const addButton = modal.querySelector("#submit__form");
     addButton?.addEventListener("click", () => {
-        const form = modal.querySelector(".modal-content form") as HTMLFormElement;
+        const form = modal?.querySelector(".modal-content form") as HTMLFormElement;
 
         if (ajaxSubmit) {
-            const modalBody = modal.querySelector(".modal-body") as HTMLFormElement;
+            const modalBody = modal?.querySelector(".modal-body") as HTMLFormElement;
             const formData = new FormData(form);
             axios.post(form.action, formData).then(res => {
                 closeAjaxModal(id)
+                const event = new CustomEvent('modal.ajax.submit.success');
+                document.dispatchEvent(event);
             }).catch(res => {
-                modalBody.innerHTML = res.response.data
+                $(modalBody).html(res.response.data)
+
+                const event = new CustomEvent('modal.ajax.submit.fail');
+                document.dispatchEvent(event);
             })
             ;
         } else {

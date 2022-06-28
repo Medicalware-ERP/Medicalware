@@ -244,7 +244,8 @@ const openAddEventModal = (info: DateSelectArg | null = null, resId: number | nu
 
     const modalOption: ModalOption = {
         title: "Ajouter un évènement",
-        removeAction: false
+        removeAction: false,
+        ajaxSubmit: true
     }
 
     openAjaxModal(url, modalOption);
@@ -279,7 +280,8 @@ const bindShowEventModalActionButtons = () => {
 
         const modalOption: ModalOption = {
             title: `Édition d'un évènement`,
-            removeAction: false
+            removeAction: false,
+            ajaxSubmit: true
         }
 
         // Et on fait place à la modal d'édition
@@ -296,3 +298,11 @@ const bindShowEventModalActionButtons = () => {
         swaleDangerAndRedirect("Vous-êtes sur le point de supprimer un évènement", url, "#modal").then();
     });
 };
+
+document.addEventListener('modal.ajax.submit.success', function ()  {
+    location.reload();
+});
+
+document.addEventListener('modal.ajax.submit.fail', function ()  {
+    importSelect2(true);
+});

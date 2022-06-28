@@ -23,6 +23,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class EventType extends AbstractType
 {
@@ -39,7 +41,10 @@ class EventType extends AbstractType
         $builder
             ->add('title', TextType::class,[
                 "label" => "Titre",
-                "required" => true
+                "required" => true,
+                'constraints' => [
+                    new NotBlank(),
+                ]
             ])
             ->add('type', EntityType::class, [
                 "label" => "Type",
