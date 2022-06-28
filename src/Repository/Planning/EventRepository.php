@@ -121,11 +121,17 @@ class EventRepository extends ServiceEntityRepository
     {
         $dateToday = new DateTime();
         return $this->createQueryBuilder('e')
-            ->join('e.attendees', 'p')
-            ->andWhere('p.resourceId = :user')
+            ->leftJoin('e.attendees', 'p')
+            ->join('e.resource', 'r')
+            ->orWhere('p.resourceId = :user')
+            ->orWhere('r.resourceId = :user2')
             ->andWhere('e.startAt <= :dateToday AND e.endAt >= :dateToday')
+            ->andWhere('r.resourceClass != :resourceClass1 AND r.resourceClass != :resourceClass2')
+            ->setParameter('user2', $user)
             ->setParameter('dateToday', $dateToday)
             ->setParameter('user', $user)
+            ->setParameter('resourceClass1',"App\Entity\Room\Room")
+            ->setParameter('resourceClass2',"App\Entity\Provider")
             ->getQuery()
             ->getResult()
             ;

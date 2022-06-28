@@ -85,11 +85,13 @@
             <div class="d-flex flex-column">
                 {% for eventOfUserFromToday in eventsOfUserOfToday %}
                     <div class="event d-flex align-items-center gap-15">
-                        <i class="fa fa-dot-circle margin-right-10" style="color:{{ eventOfUserFromToday.color }};"></i>
-                        <span class="label">{{ eventOfUserFromToday.type }}</span>
-                        <span class="title">{{ eventOfUserFromToday.title }}</span>
-                        <span class="title">{{ eventOfUserFromToday.description | raw }}</span>
-                        <span class="title">{{ eventOfUserFromToday.resource.resource.lastName }} {{ eventOfUserFromToday.resource.resource.firstName }}</span>
+                        <i class="fa fa-dot-circle margin-right-10" style="color:{{ eventOfUserFromToday.type.color }};"></i>
+                        <span class="label">Type: {{ eventOfUserFromToday.type }}</span>
+                        <span class="title">Titre: {{ eventOfUserFromToday.title }}</span>
+                        {% if eventOfUserFromToday.description %}
+                            <span class="title">Description: {{ eventOfUserFromToday.description | raw }}</span>
+                        {% endif %}
+                        <span class="title">Crée sur le planning de : {{ eventOfUserFromToday.resource.resource.lastName }} {{ eventOfUserFromToday.resource.resource.firstName }}</span>
                     </div>
                     {% else %}
                         <div class="event d-flex align-items-center justify-content-center gap-15">
