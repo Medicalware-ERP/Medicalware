@@ -15,9 +15,7 @@ import {$, findInDataset} from "../utils";
 
 export const declarePlanning = (planningId: string) => {
 
-    // TODO : Récupération des ressources
-    // TODO : Puis récupération des events liés au ressources
-
+    // TODO : Les events ayant des attendees seront display comme si un attendee = une ressource (Une duplication d'évent par attendee)
 
     let planning: Calendar;
     const planningElement: HTMLElement | null = document.getElementById(planningId);
@@ -41,7 +39,8 @@ export const declarePlanning = (planningId: string) => {
             { id: "App\\Entity\\Room\\Room", title: "Salles" },
             { id: "App\\Entity\\User", title: "Employés" },
             { id: "App\\Entity\\Patient", title: "Patients" },
-            { id: "App\\Entity\\Doctor", title: "Docteurs" }
+            { id: "App\\Entity\\Doctor", title: "Docteurs" },
+            { id: "App\\Entity\\Provider", title: "Fournisseurs" }
         );
 
         planning = new Calendar(planningElement, {
@@ -212,7 +211,6 @@ const editEventDateResource = (info: any) => {
 const openAddEventModal = (info: DateSelectArg | null = null, resId: number | null = null, resClass: string | null = null) => {
     let resourceId;
     let resourceClass;
-    console.log(info);
     const resource = info?.resource;
 
     // Si on essaye de déplacer un évènement sur une fausse ressource (group)
@@ -221,7 +219,7 @@ const openAddEventModal = (info: DateSelectArg | null = null, resId: number | nu
         return swaleDangerAlert(dangerText).then();
     }
 
-    if (!!resId && !!resourceClass) {
+    if (!!resId && !!resClass) {
         resourceId = resId;
         resourceClass = resClass;
     } else if (!!info && !!info.resource) {

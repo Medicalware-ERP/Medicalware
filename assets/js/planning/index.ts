@@ -4,4 +4,4 @@ const initPlanning = () => {
     declarePlanning("planning");
 }
 
-initPlanning();
+document.addEventListener('DOMContentLoaded', () => initPlanning());

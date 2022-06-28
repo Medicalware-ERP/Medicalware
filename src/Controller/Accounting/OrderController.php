@@ -72,6 +72,8 @@ class OrderController extends BaseController
             } catch (UniqueConstraintViolationException $exception) {
                 $form->get('reference')->addError(new FormError("Cette référence est déjà utilisé"));
             }
+
+            return $this->redirectToReferer();
         }
 
         return $this->renderForm('order/form.html.twig', [
@@ -92,6 +94,8 @@ class OrderController extends BaseController
             } catch (UniqueConstraintViolationException $exception) {
                 $form->get('reference')->addError(new FormError("Cette référence est déjà utilisé"));
             }
+
+            return $this->redirectToReferer();
         }
 
         return $this->renderForm('order/form.html.twig', [

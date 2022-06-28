@@ -4,15 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Planning\Resource;
 use App\Entity\User;
-use App\Enum\UserTypeEnum;
 use App\Form\AvatarType;
 use App\Form\ChangePasswordFormType;
-use App\Form\DoctorType;
 use App\Form\UserType;
 use App\Service\User\UserDataFormatter;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
-use Prophecy\Argument\Token\TokenInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -34,7 +31,6 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
-
 
 class HumanResourcesController extends BaseController
 {
@@ -131,8 +127,7 @@ class HumanResourcesController extends BaseController
                 ]);
             }
 
-            return $this->redirectToRoute("app_show_user",['id' => $id]);
-
+            return $this->redirectToReferer();
         }
 
         return $this->renderForm('human_resources/form.html.twig', [
@@ -158,7 +153,6 @@ class HumanResourcesController extends BaseController
 
         return $request->isXmlHttpRequest() ? $this->json('ok') : $this->redirect($referer);
     }
-
 
     #[Route('/user/{id}', name: 'app_show_user')]
     public function show(int $id): Response

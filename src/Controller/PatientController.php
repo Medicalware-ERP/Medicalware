@@ -100,7 +100,7 @@ class PatientController extends BaseController
             $this->manager->persist($resource);
             $this->manager->flush();
 
-            return $this->redirectToRoute("app_patients");
+            return $this->redirectToReferer();
         }
 
         return $this->renderForm('patient/form.html.twig', [
@@ -119,7 +119,7 @@ class PatientController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->manager->persist($patient);
             $this->manager->flush();
-            return $this->redirectToRoute("app_patients");
+            return $this->redirectToReferer();
         }
 
         return $this->renderForm('patient/form.html.twig', [

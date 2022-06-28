@@ -35,7 +35,7 @@ class UserType extends AbstractType
                 'placeholder' => 'Choisir un genre: ',
                 "constraints" => [new NotBlank()],
                 "choices" => [
-                    "M" => "M",
+                    "H" => "H",
                     "F" => "F"
                 ]
             ])

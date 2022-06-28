@@ -99,7 +99,8 @@ class DoctorController extends BaseController
                 ]);
             }
 
-            return $this->redirectToRoute("app_doctor");
+            return $this->redirectToReferer();
+
         }
 
         return $this->renderForm('doctor/form.html.twig', [
@@ -128,7 +129,7 @@ class DoctorController extends BaseController
                 ]);
             }
 
-            return $this->redirectToRoute("app_doctor");
+            return $this->redirectToReferer();
         }
 
         return $this->renderForm('doctor/form.html.twig', [

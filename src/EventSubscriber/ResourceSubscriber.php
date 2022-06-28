@@ -4,6 +4,7 @@ namespace App\EventSubscriber;
 
 use App\Entity\Planning\Resource;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Events;
 
 class ResourceSubscriber
 {

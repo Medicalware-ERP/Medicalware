@@ -59,6 +59,8 @@ class InvoiceController extends BaseController
             }catch (UniqueConstraintViolationException $exception) {
                 $form->get('reference')->addError(new FormError("Cette référence est déjà utilisé"));
             }
+
+            return $this->redirectToReferer();
         }
 
         return $this->render('invoice/form.html.twig', [
@@ -78,6 +80,8 @@ class InvoiceController extends BaseController
             }catch (UniqueConstraintViolationException $exception) {
                 $form->get('reference')->addError(new FormError("Cette référence est déjà utilisé"));
             }
+
+            return $this->redirectToReferer();
         }
 
         return $this->render('invoice/form.html.twig', [

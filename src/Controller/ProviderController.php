@@ -41,7 +41,7 @@ class ProviderController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $providerRepository->add($provider);
-            return $this->redirectToRoute('provider_show_information', ['id' => $provider->getId()]);
+            return $this->redirectToReferer();
         }
 
         return $this->renderForm('provider/form.html.twig', [
@@ -59,7 +59,7 @@ class ProviderController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $providerRepository->edit($provider);
-            return $this->redirectToRoute('provider_show_information', ['id' => $provider->getId()]);
+            return $this->redirectToReferer();
         }
 
         return $this->renderForm('provider/form.html.twig', [
@@ -103,6 +103,16 @@ class ProviderController extends BaseController
         $provider = $providerRepository->find($id);
 
         return $this->renderForm('provider/includes/_piece.html.twig', [
+            'provider' => $provider
+        ]);
+    }
+
+    #[Route('/provider/show/{id}/planning', name: 'provider_show_planning')]
+    public function providerPlanning(int $id, ProviderRepository $providerRepository): Response
+    {
+        $provider = $providerRepository->find($id);
+
+        return $this->renderForm('provider/includes/_show_planning.html.twig', [
             'provider' => $provider
         ]);
     }
