@@ -2,14 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Patient;
-use App\Entity\Provider;
 use App\Entity\Service;
-use App\Form\ProviderType;
-use App\Repository\EnumEntityRepository;
-use App\Repository\ProviderRepository;
 use App\Repository\ServiceRepository;
-use App\Service\Provider\ProviderDataFormatter;
 use App\Service\Service\ServiceDataFormatter;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
@@ -18,7 +12,6 @@ use Doctrine\ORM\QueryBuilder;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
