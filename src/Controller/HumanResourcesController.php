@@ -154,12 +154,24 @@ class HumanResourcesController extends BaseController
         return $request->isXmlHttpRequest() ? $this->json('ok') : $this->redirect($referer);
     }
 
-    #[Route('/user/{id}', name: 'app_show_user')]
-    public function show(int $id): Response
+    #[Route('/user/include/show/{id}', name: 'app_show_user')]
+    public function showUser(int $id) : Response
     {
         $user = $this->manager->find(User::class, $id) ?? throw new NotFoundHttpException("Utilisateur non trouvée");
         $this->denyAccessUnlessGranted('USER_VIEW_EDIT', $user);
-        return $this->render('human_resources/show.html.twig', [
+
+        return $this->render('human_resources/includes/_show_user.html.twig', [
+            'user' => $user,
+        ]);
+    }
+
+    #[Route('/user/include/show/{id}/planning', name: 'app_show_user_planning')]
+    public function showUserPlanning(int $id) : Response
+    {
+        $user = $this->manager->find(User::class, $id) ?? throw new NotFoundHttpException("Utilisateur non trouvée");
+        $this->denyAccessUnlessGranted('USER_VIEW_EDIT', $user);
+
+        return $this->render('human_resources/includes/_show_planning.html.twig', [
             'user' => $user,
         ]);
     }

@@ -116,16 +116,6 @@ class RoomController extends BaseController
         return $this->redirectToRoute("index_room");
     }
 
-    #[Route('/room/{id}', name: 'app_show_room')]
-    public function show(int $id): Response
-    {
-        $room = $this->manager->find(Room::class, $id) ?? throw new NotFoundHttpException("Salle non trouvée");
-
-        return $this->render('room/show.html.twig', [
-            'room' => $room
-        ]);
-    }
-
     #[Route('/room/{id}/show', name: 'show_room_information')]
     public function showInformation(int $id) : Response
     {
