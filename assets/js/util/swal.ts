@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 import {colors} from "../utils";
 
-export const swaleWarning = (text: string, target: string = "") => Swal.fire({
+export const swaleWarning = (text: string, target: string = "body") => Swal.fire({
     title: 'Êtes vous sûr de continuer ?',
     text: text,
     icon: 'warning',
@@ -13,7 +13,7 @@ export const swaleWarning = (text: string, target: string = "") => Swal.fire({
     target: target
 })
 
-export const swaleDanger = (text: string, target: string = "") => Swal.fire({
+export const swaleDanger = (text: string, target: string = "body") => Swal.fire({
     title: 'Êtes vous sûr de continuer ?',
     text: text,
     icon: 'error',
@@ -25,7 +25,7 @@ export const swaleDanger = (text: string, target: string = "") => Swal.fire({
     target: target
 })
 
-export const swaleDangerAlert = (text: string, target: string = "") => Swal.fire({
+export const swaleDangerAlert = (text: string, target: string = "body") => Swal.fire({
     title: 'Attention',
     text: text,
     icon: 'error',
@@ -35,7 +35,7 @@ export const swaleDangerAlert = (text: string, target: string = "") => Swal.fire
     target: target
 })
 
-export const swaleWarningAndRedirect = (text: string, url: string, target: string = "") => Swal.fire({
+export const swaleWarningAndRedirect = (text: string, url: string, target: string = "body") => Swal.fire({
     title: 'Êtes vous sûr de continuer ?',
     text: text,
     icon: 'warning',
@@ -51,7 +51,7 @@ export const swaleWarningAndRedirect = (text: string, url: string, target: strin
     }
 });
 
-export const swaleDangerAndRedirect = (text: string, url: string, target: string = "") => Swal.fire({
+export const swaleDangerAndRedirect = (text: string, url: string, target: string = "body") => Swal.fire({
     title: 'Êtes vous sûr de continuer ?',
     text: text,
     icon: 'error',
