@@ -82,7 +82,7 @@ class BaseController extends AbstractController
 
         $request = $requestStack->getCurrentRequest();
 
-        $referer = array_values($request->request->all())[0]['referer'];
+        $referer = array_values($request->request->all())[0]['referer'] ?? $request->headers->get('referer');
 
         return $this->redirect($referer);
     }

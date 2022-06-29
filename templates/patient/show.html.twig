@@ -19,7 +19,7 @@
             <button class="p-absolute" id="uploadImage" style="right: 0;"><i class="fa fa-file-upload text-success"></i>
             </button>
             <button class="p-absolute {{ not patient.avatar ? 'd-none' }}" id="removeImage"
-                    data-url="{{ path('remove_avatar', {id: patient.id}) }}" style="right: 0;bottom: 0"><i
+                    data-url="{{ path('remove_avatar_patient', {id: patient.id}) }}" style="right: 0;bottom: 0"><i
                         class="fa fa-trash text-danger"></i></button>
 
             <img id="img_avatar" class="avatar  {{ not patient.avatar ? 'd-none' }}"

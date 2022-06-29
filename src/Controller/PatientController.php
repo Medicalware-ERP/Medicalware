@@ -257,7 +257,7 @@ class PatientController extends BaseController
         ]);
     }
 
-    #[Route('/patient/{id}/remove/avatar', name: 'remove_avatar')]
+    #[Route('/patient/{id}/remove/avatar', name: 'remove_avatar_patient')]
     public function removeAvatar(Patient $patient, Filesystem $filesystem): Response
     {
         $directory = $this->getParameter('patient_avatar_directory').'/'.$patient->getId();
