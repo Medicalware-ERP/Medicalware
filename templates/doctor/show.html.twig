@@ -1,0 +1,21 @@
+{% extends 'layout_show.html.twig' %}
+
+{% block title %}Docteurs{% endblock %}
+
+{% block aside_header %}
+    <header class="d-flex" style="align-items: center">
+        Docteur "{{ doctor }}"
+    </header>
+{% endblock %}
+
+{% block aside_nav %}
+    <nav class="d-flex" style="flex-direction: column; gap: 20px">
+        <button id="btn-show-doctor-information" class="btn-show" data-url="{{ path('show_doctor_information', {id: doctor.id}) }}" data-name="doctor-information"><i class="margin-right-5 fa fa-search"></i> Informations</button>
+        <button id="btn-show-doctor-planning" class="btn-show" data-url="{{ path('show_doctor_planning', {id: doctor.id}) }}" data-name="doctor-planning"><i class="margin-right-5 fa fa-calendar-alt"></i> Planning</button>
+    </nav>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('human_resources.show') }}
+{% endblock %}

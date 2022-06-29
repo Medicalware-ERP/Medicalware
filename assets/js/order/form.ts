@@ -27,6 +27,11 @@ const initTr = (tr : HTMLTableRowElement) => {
 
         const orderTotalSpan = document.querySelector('[data-total-lines]') as HTMLElement;
         const spanTotalLines = document.querySelectorAll('span[data-total]');
+        const tvaElement     = document.querySelector('#order_tva') as HTMLSelectElement;
+        const tva            =  parseFloat(tvaElement.options[tvaElement.selectedIndex].dataset.tva as string);
+        const tvaDisplay     =  tvaElement.options[tvaElement.selectedIndex].dataset.tvaDisplay as string;
+        const tvaResult      = document.querySelector('[data-total-tva]') as HTMLElement;
+        const ttcResult      = document.querySelector('[data-total-ttc]')  as HTMLElement;
 
         let orderTotal = 0;
 
@@ -35,6 +40,8 @@ const initTr = (tr : HTMLTableRowElement) => {
         });
 
         orderTotalSpan.innerHTML = orderTotal.toString();
+        tvaResult.innerHTML = tvaDisplay;
+        ttcResult.innerHTML = (orderTotal * tva).toFixed(2).toString();
     };
 
     select.addEventListener('change', callback);
@@ -88,9 +95,9 @@ document.addEventListener('collection.element.removed', (e: Event) => {
 document.addEventListener('DOMContentLoaded', (e: Event) => {
     initEquipmentSelect(false);
 
-
-
     initListener();
+
+    $('#order_tva')?.addEventListener('change', initListener);
 
     $('[data-element-remove-id]', (btn: HTMLElement) => {
         btn.addEventListener('click', e => {
@@ -122,6 +129,4 @@ document.addEventListener('DOMContentLoaded', (e: Event) => {
     });
 
     provider?.addEventListener('change', () => initEquipmentSelect());
-
-
 });

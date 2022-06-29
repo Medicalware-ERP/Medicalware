@@ -2,37 +2,72 @@
 
 {% block title %}{{ patient.firstName }} {{ patient.lastName }}{% endblock %}
 
+{% block notifications %}
+    <div id="error-container" class="card margin-bottom-15 d-none">
+        <div class="d-flex">
+            <i class="fa fa-times text-danger"></i>
+            <p class="text-danger margin-left-20" id="error-avatar">Le fichier est trop volumineux (max: 1Mb)</p>
+        </div>
+    </div>
+{% endblock %}
 {% block aside_header %}
-    <header class="d-flex" style="align-items: center">
+    <div id="user-details-container">
+        <div class="d-none" id="file_form">
+            {{ render(path('patient_upload_avatar', {id: patient.id})) }}
+        </div>
+        <div  class="p-relative d-flex" style="justify-self: flex-start; display: inline-flex">
+            <button class="p-absolute btn btn-xs btn-success" id="uploadImage" style="top:-10px;right: 0;"><i class="fa fa-file-upload text-white"></i>
+            </button>
+            <button class="btn btn-xs btn-danger p-absolute {{ not patient.avatar ? 'd-none' }}" id="removeImage"
+                    data-url="{{ path('remove_avatar_patient', {id: patient.id}) }}" style="right: 0;bottom: 0"><i
+                        class="fa fa-trash text-white"></i></button>
+
+            <img id="img_avatar" class="avatar  {{ not patient.avatar ? 'd-none' }}"
+                 src="{{ patient.avatar ? asset('uploads/patient/avatar/'~patient.id~'/'~patient.avatar ) }}" alt="avatar"/>
+            <div id="name_avatar" class="avatar avatar-text {{ patient.avatar ? 'd-none' }}">
+            <span>
+                {{ patient.firstName|first|upper ~ patient.lastName|first|upper }}
+            </span>
+            </div>
+        </div>
+    </div>
+
+    {# <header class="d-flex" style="align-items: center">
         <div class="avatar-default margin-right-10" style="">
             <span>{{ patient.lastName|slice(0,2)|upper }}</span>
         </div>
         <span class="title">{{  patient }}</span>
-    </header>
+    </header> #}
 {% endblock %}
 
 {% block aside_nav %}
     <nav class="d-flex" style="flex-direction: column; gap: 10px; align-items:flex-start; width:100%;">
-        <button class="btn-show d-flex align-items-center" data-url="{{ path('patient_show_information', {id: patient.id}) }}">
-                <i class="fa fa-address-card"></i>
-                <span>Informations</span>
+        <button class="btn-show d-flex align-items-center"
+                data-url="{{ path('patient_show_information', {id: patient.id}) }}">
+            <i class="fa fa-address-card"></i>
+            <span>Informations</span>
         </button>
-        <button class="btn-show d-flex align-items-center" data-name="medical_file" data-url="{{ path('patient_show_medical_file', {id: patient.id}) }}">
-                <i class="fa fa-folder-open"></i>
-                <span>Dossier médical</span>
+        <button class="btn-show d-flex align-items-center" data-name="medical_file"
+                data-url="{{ path('patient_show_medical_file', {id: patient.id}) }}">
+            <i class="fa fa-folder-open"></i>
+            <span>Dossier médical</span>
         </button>
-        <button class="btn-show d-flex align-items-center" data-name="invoice" data-url="{{ path('patient_show_factures', {id: patient.id}) }}">
+        <button class="btn-show d-flex align-items-center" data-name="invoice"
+                data-url="{{ path('patient_show_factures', {id: patient.id}) }}">
             <i class="fa fa-file-invoice"></i>
             <span>Factures</span>
         </button>
-        <button class="btn-show d-flex align-items-center" data-url="{{ path('patient_show_calendrier', {id: patient.id}) }}">
-                <i class="fa fa-calendar-alt"></i>
-                <span>Calendrier</span>
+        <button class="btn-show d-flex align-items-center" data-name="patient_show_planning"
+                data-url="{{ path('patient_show_calendrier', {id: patient.id}) }}">
+            <i class="fa fa-calendar-alt"></i>
+            <span>Calendrier</span>
         </button>
     </nav>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+    {{ encore_entry_script_tags('form.collection') }}
     {{ encore_entry_script_tags('patient.show') }}
+    {{ encore_entry_script_tags('form.medicalFileLine') }}
 {% endblock %}

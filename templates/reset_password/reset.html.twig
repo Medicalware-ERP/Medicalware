@@ -1,0 +1,19 @@
+{% extends 'base_login.html.twig' %}
+
+{% block title %}Reset your password{% endblock %}
+
+{% block body %}
+   <div style="z-index: 2; color: white">
+       {{ form_start(resetForm, { attr: {class: 'd-flex flex-column align-items-center gap-10'} }) }}
+
+       <div class="logo-details-form-login">
+           <img class="logo-image" src="{{ asset('build/images/logo.png') }}" alt="logo"/>
+           <span class="logo-name-login">MedicalWare</span>
+       </div>
+
+           {{ form_widget(resetForm.plainPassword) }}
+
+       <button class="btn btn-primary">Reset password</button>
+       {{ form_end(resetForm) }}
+   </div>
+{% endblock %}

@@ -13,8 +13,34 @@
     <div class="card">
         <div class="d-flex justify-content-center">
             {{ form_start(form) }}
-            {{ form_rest(form) }}
-            <input type="submit" class="btn btn-success" value="{{ user is defined ? "Modifier" : "Ajouter" }}">
+            <div class="container__row">
+                {{ form_row(form.firstName) }}
+                {{ form_row(form.lastName) }}
+            </div>
+            <div class="container__row">
+                {{ form_row(form.gender) }}
+                {{ form_row(form.phoneNumber) }}
+            </div>
+            <div class="container__row">
+                {{ form_row(form.birthdayDate) }}
+                {{ form_row(form.email) }}
+            </div>
+            <div class="container__row">
+                {{ form_row(form.address.street) }}
+                {{ form_row(form.address.complementaryInfo) }}
+            </div>
+            <div class="container__row">
+                {{ form_row(form.address.city) }}
+                {{ form_row(form.address.postalCode) }}
+            </div>
+            <div class="container__row">
+                {{ form_row(form.isActive) }}
+                {{ form_row(form.roles) }}
+            </div>
+            <div class="container__row">
+                {{ form_row(form.profession) }}
+            </div>
+            <input type="submit" class="btn btn-success center-input-submit" value="{{ user is defined ? "Modifier" : "Ajouter" }}">
             {{ form_end(form) }}
         </div>
     </div>

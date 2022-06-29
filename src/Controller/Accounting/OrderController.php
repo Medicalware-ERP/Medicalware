@@ -22,6 +22,7 @@ use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -30,6 +31,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Workflow\Registry;
 
+#[Security("is_granted('ROLE_ACCOUNTANT') or is_granted('ROLE_ADMIN_STOCK')")]
 class OrderController extends BaseController
 {
     #[Route('/order', name: 'order_index')]
@@ -70,6 +72,8 @@ class OrderController extends BaseController
             } catch (UniqueConstraintViolationException $exception) {
                 $form->get('reference')->addError(new FormError("Cette référence est déjà utilisé"));
             }
+
+            return $this->redirectToReferer();
         }
 
         return $this->renderForm('order/form.html.twig', [
@@ -90,6 +94,8 @@ class OrderController extends BaseController
             } catch (UniqueConstraintViolationException $exception) {
                 $form->get('reference')->addError(new FormError("Cette référence est déjà utilisé"));
             }
+
+            return $this->redirectToReferer();
         }
 
         return $this->renderForm('order/form.html.twig', [

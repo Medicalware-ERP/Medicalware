@@ -14,6 +14,10 @@ class Specialisation extends EnumEntity
     #[ORM\OneToMany(mappedBy: 'specialisation', targetEntity: Doctor::class)]
     private Collection $doctors;
 
+    #[ORM\OneToOne(targetEntity: Service::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Service $service = null;
+
     #[Pure] public function __construct(string $slug, string $name)
     {
         parent::__construct( $slug,  $name);
@@ -43,6 +47,18 @@ class Specialisation extends EnumEntity
         if ($this->doctors->removeElement($doctor)) {
             $doctor->setSpecialisation(null);
         }
+
+        return $this;
+    }
+
+    public function getService(): ?Service
+    {
+        return $this->service;
+    }
+
+    public function setService(?Service $service): self
+    {
+        $this->service = $service;
 
         return $this;
     }

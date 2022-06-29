@@ -62,7 +62,7 @@ class UserFixtures extends Fixture
             ->setGender("M")
             ->setBirthdayDate(new DateTimeImmutable())
             ->setEmail('admin@medicfdfalware.fr')
-            ->setIsActive(false)
+            ->setIsActive(true)
             ->setRoles(["ROLE_ADMIN"])
             ->setPassword($this->userPasswordHasher->hashPassword($user1, 'admin1'))
         ;
@@ -86,7 +86,7 @@ class UserFixtures extends Fixture
             ->setEmail('admin@medicalwafsdfsdre.fr')
             ->setIsActive(true)
             ->setRoles(["ROLE_ADMIN"])
-            ->setPassword($this->userPasswordHasher->hashPassword($user2, 'admin22'))
+            ->setPassword($this->userPasswordHasher->hashPassword($user2, 'admin'))
         ;
 
         $manager->persist($profession2);

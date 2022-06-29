@@ -44,6 +44,8 @@
 
     .modal-body{
       padding:1rem;
+      overflow: auto;
+      max-height: 400px;
     }
 
     .modal-footer{

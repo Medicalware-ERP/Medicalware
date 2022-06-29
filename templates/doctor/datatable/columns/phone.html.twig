@@ -1,0 +1,4 @@
+
+{% apply spaceless %}
+    {{ doctor.phoneNumber | split('', 2) |join('.') }}
+{% endapply %}

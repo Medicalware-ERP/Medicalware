@@ -18,10 +18,20 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
-if (Array.from(document.querySelectorAll('select[multiple]')).length > 0) {
-    import('jquery').then(jq => {
-        import('select2').then(() => {
-            jq.default('select[multiple]').select2()
+export const importSelect2 = (isModal: boolean = false) => {
+    if (Array.from(document.querySelectorAll('select[multiple]')).length > 0) {
+        import('jquery').then(jq => {
+            import('select2').then(() => {
+                const option = {};
+                if (isModal) { // @ts-ignore
+                    option.dropdownParent = jq.default("#modal");
+                }
+
+                // @ts-ignore
+                jq.default('select[multiple]').select2(option);
+            });
         });
-    });
+    }
 }
+
+importSelect2();

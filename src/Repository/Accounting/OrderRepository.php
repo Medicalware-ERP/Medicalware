@@ -12,6 +12,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @method Order|null find($id, $lockMode = null, $lockVersion = null)
@@ -71,4 +72,27 @@ class OrderRepository extends DatatableRepository
 
         ];
     }
+
+    public function findByDelivery()
+    {
+        return $this->createQueryBuilder('e')
+            ->join('e.state', 'u')
+            ->andWhere('u.name = :state')
+            ->setParameter('state', "livré")
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByValid()
+    {
+        return $this->createQueryBuilder('e')
+            ->join('e.state', 'u')
+            ->andWhere('u.name = :state')
+            ->setParameter('state', 'valider')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }

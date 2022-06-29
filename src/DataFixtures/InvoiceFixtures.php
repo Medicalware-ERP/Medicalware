@@ -35,7 +35,7 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
             $manager->persist($pm);
         }
 
-        for ($i = 0; $i <= 20; $i++) {
+        for ($i = 0; $i <= 16; $i++) {
             $invoice = new Invoice();
             $state = $states[rand(0, 4)];
             $tva = $tvas[rand(0, 3)];
@@ -59,7 +59,7 @@ class InvoiceFixtures extends Fixture implements DependentFixtureInterface
                 ->setDate($faker->dateTimeBetween('-1 years'))
                 ->setState($state)
                 ->setTva($tva)
-                ->setPatient($manager->getRepository(Patient::class)->findAll()[rand(0, 20)])
+                ->setPatient($manager->getRepository(Patient::class)->findAll()[rand(0, 16)])
                 ->setPaymentMethod($paymentMethod)
                 ->calculate()
             ;

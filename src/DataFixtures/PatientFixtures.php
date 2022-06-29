@@ -36,7 +36,7 @@ class PatientFixtures extends Fixture
     {
         $faker = Factory::create("fr_FR");
         $doctors = $manager->getRepository(Doctor::class)->findAll();
-        for($i = 0; $i <= 20 ; $i++){
+        for($i = 0; $i <= 16 ; $i++){
             $patient = new Patient();
             $medicalFile = new MedicalFile();
             $numberTrunced = substr($faker->e164PhoneNumber,5, strlen($faker->e164PhoneNumber));

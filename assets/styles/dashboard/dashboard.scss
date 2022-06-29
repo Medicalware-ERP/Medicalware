@@ -1,3 +1,5 @@
+@import '../animations.scss';
+
 .dashboard-section {
   position: relative;
   background: var(--bg-color-body);
@@ -11,11 +13,91 @@
   .dashboard-content {
     display: flex;
     flex-direction: column;
+    height: 100%;
     padding: 20px;
+  }
+}
+
+.progress__bar__circle{
+  width:160px;
+  height:160px;
+  position:relative;
+
+  span{
+    font-size:1.8rem;
+    letter-spacing: 2px;
+  }
+
+  .outer{
+    width:160px;
+    height:160px;
+    border-radius:50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:6px 6px 10px -1px rgba(0,0,0,0.15),
+              -6px -6px 10px -1px rgba(255,255,255,0.7);
+
+    .inner{
+      height:120px;
+      width:120px;
+      border-radius:50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  svg  {
+    position: absolute;
+    top:0;
+    left: 0;
+
+    circle{
+      fill:none;
+      stroke:var(--color-primary-light);
+      stroke-width: 15px;
+      stroke-dasharray: 472;
+      stroke-opacity: 0;
+      stroke-dashoffset: 472;
+      animation: animCircle 1s linear forwards;
+    }
+  }
+
+  @include keyframes(animCircle) {
+    100% {
+      #{$browser}stroke-dashoffset: 0;
+      #{$browser}stroke-opacity: 1;
+    }
+  }
+}
+
+.event{
+  &:first-child{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  &:last-child{
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom: 1px solid rgba(168, 168, 168, 0.4);
+  }
+  border-top: 1px solid rgba(168, 168, 168, 0.4);
+  border-left: 1px solid rgba(168, 168, 168, 0.4);
+  border-right: 1px solid rgba(168, 168, 168, 0.4);
+  padding: 10px;
+
+  &:hover{
+      background-color: rgba(170,170,170,0.1);
   }
 }
 
 .sidebar.close ~ .dashboard-section {
   left: var(--width-side-bar-close);
   width: calc(100% - var(--width-side-bar-close));
+}
+
+canvas#users{
+  width:400px!important;
+  height:400px!important;
 }

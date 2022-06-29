@@ -3,13 +3,121 @@
 {% block title %}Medicalware - ERP Médical{% endblock %}
 
 {% block body %}
+    <div class="d-flex gap-20">
+        <div class="card hover" style="flex:7;">
+            <div class="d-flex justify-content-around gap-80">
+                <div class="d-flex align-items-center flex-column">
+                    <div class="progress__bar__circle margin-bottom-10">
+                        <div class="outer">
+                            <div class="inner">
+                                <span data-count-users="{{ countUser }}" class="label"></span>
+                            </div>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="160px" height="160px">
+                            <defs>
+                                <linearGradient id="GradientColor">
+                                    <stop offset="0%" stop-color="#e91e63" />
+                                    <stop offset="100%" stop-color="#673ab7" />
+                                </linearGradient>
+                            </defs>
+                            <circle cx="80" cy="80" r="70" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <span class="label">Utilisateurs</span>
+                </div>
+                <div class="d-flex align-items-center flex-column">
+                    <div class="progress__bar__circle margin-bottom-10">
+                        <div class="outer">
+                            <div class="inner">
+                                <span data-count-doctors="{{ countDoctor }}"  class="label"></span>
+                            </div>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="160px" height="160px">
+                            <defs>
+                                <linearGradient id="GradientColor">
+                                    <stop offset="0%" stop-color="#e91e63" />
+                                    <stop offset="100%" stop-color="#673ab7" />
+                                </linearGradient>
+                            </defs>
+                            <circle cx="80" cy="80" r="70" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <span class="label">Docteurs</span>
+                </div>
+                <div class="d-flex align-items-center flex-column">
+                    <div class="progress__bar__circle margin-bottom-10">
+                        <div class="outer">
+                            <div class="inner">
+                                <span data-count-patients="{{ countPatient }}" class="label"></span>
+                            </div>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="160px" height="160px">
+                            <defs>
+                                <linearGradient id="GradientColor">
+                                    <stop offset="0%" stop-color="#e91e63" />
+                                    <stop offset="100%" stop-color="#673ab7" />
+                                </linearGradient>
+                            </defs>
+                            <circle cx="80" cy="80" r="70" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <span class="label">Patients</span>
+                </div>
+            </div>
+        </div>
+        <div class="card hover" style="flex:3;">
+            <h2 class="title">Total crédité, débité</h2>
+            <div class="d-flex justify-content-around align-items-center gap-20 h-100">
+                <div class="d-flex flex-column align-items-center gap-10">
+                    <span class="label fz-32 margin-bottom-10 text-success">Crédité</span>
+                    <span class="label text-success">+ {{ totalInvoicesPrices }} €</span>
+                </div>
+                <div class="d-flex flex-column align-items-center gap-10">
+                    <span class="label fz-32 margin-bottom-10 text-danger">Débité</span>
+                    <span class="label text-danger">- {{ totalOrderPrices }} €</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex align-items-stretch gap-20">
+        <div class="card margin-top-20" style="flex:7;">
+            <div class="d-flex justify-content-between margin-bottom-10">
+                <h2 class="title margin-bottom-10">Mes évènements du jour : {{ eventsOfUserOfToday|length }} </h2>
+                <a class="btn btn-primary" href="{{ path('app_show_user_planning', {'id': app.user.id }) }}"><i class="fa fa-calendar-alt"></i>Accéder à mon planning</a>
+            </div>
+            <div class="d-flex flex-column">
+                {% for eventOfUserFromToday in eventsOfUserOfToday %}
+                    <div class="event d-flex align-items-center gap-15">
+                        <i class="fa fa-dot-circle margin-right-10" style="color:{{ eventOfUserFromToday.type.color }};"></i>
+                        <span class="label">Type: {{ eventOfUserFromToday.type }}</span>
+                        <span class="title">Titre: {{ eventOfUserFromToday.title }}</span>
+                        {% if eventOfUserFromToday.description %}
+                            <span class="title">Description: {{ eventOfUserFromToday.description | raw }}</span>
+                        {% endif %}
+                        <span class="title">
+                            {% if eventOfUserFromToday.resource.resource.id != app.user.id %}
+                                Crée sur le planning de : {{ eventOfUserFromToday.resource.resource }}
 
-
-
+                            {% endif %}
+                        </span>
+                    </div>
+                    {% else %}
+                        <div class="event d-flex align-items-center justify-content-center gap-15">
+                            <span class="label">Aucun évènement</span>
+                        </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="card d-flex justify-content-center margin-top-20" style="flex:3;max-height:450px;">
+            <canvas id="users"></canvas>
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('sidebar') }}
+    {{ encore_entry_script_tags('progressivebar') }}
+    {{ encore_entry_script_tags('chart') }}
 {% endblock %}
 

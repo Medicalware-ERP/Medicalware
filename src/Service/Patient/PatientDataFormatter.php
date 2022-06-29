@@ -28,11 +28,11 @@ class PatientDataFormatter implements DataFormatterInterface
     public function format(EntityInterface $data): array
     {
         return [
-            'numberSocialSecurity' => $this->environment->render('patient/datatable/columns/numberSocialSecurity.html.twig', [
+            'avatar' => $this->environment->render('patient/datatable/columns/avatar.html.twig', [
                 'patient' => $data
             ]),
-            'avatar' => $this->environment->render('human_resources/datatable/columns/avatar.html.twig', [
-                'user' => $data
+            'numberSocialSecurity' => $this->environment->render('patient/datatable/columns/numberSocialSecurity.html.twig', [
+                'patient' => $data
             ]),
             'firstName' => $this->environment->render('human_resources/datatable/columns/firstName.html.twig', [
                 'user' => $data
