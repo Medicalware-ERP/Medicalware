@@ -47,7 +47,6 @@ class StockFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return [
-            ServiceFixtures::class,
             ProviderFixtures::class
         ];
     }
