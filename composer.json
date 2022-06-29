@@ -108,7 +108,8 @@
             "php bin/console doctrine:fixtures:load -n",
             "php bin/console app:data:init",
             "php bin/console ckeditor:install",
-            "php bin/console assets:install public"
+            "php bin/console assets:install public",
+            "php bin/console app:generate:resources"
         ],
         "post-install-cmd": [
             "@auto-scripts"
