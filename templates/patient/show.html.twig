@@ -16,11 +16,11 @@
             {{ render(path('patient_upload_avatar', {id: patient.id})) }}
         </div>
         <div  class="p-relative d-flex" style="justify-self: flex-start; display: inline-flex">
-            <button class="p-absolute" id="uploadImage" style="right: 0;"><i class="fa fa-file-upload text-success"></i>
+            <button class="p-absolute btn btn-xs btn-success" id="uploadImage" style="top:-10px;right: 0;"><i class="fa fa-file-upload text-white"></i>
             </button>
-            <button class="p-absolute {{ not patient.avatar ? 'd-none' }}" id="removeImage"
+            <button class="btn btn-xs btn-danger p-absolute {{ not patient.avatar ? 'd-none' }}" id="removeImage"
                     data-url="{{ path('remove_avatar_patient', {id: patient.id}) }}" style="right: 0;bottom: 0"><i
-                        class="fa fa-trash text-danger"></i></button>
+                        class="fa fa-trash text-white"></i></button>
 
             <img id="img_avatar" class="avatar  {{ not patient.avatar ? 'd-none' }}"
                  src="{{ patient.avatar ? asset('uploads/patient/avatar/'~patient.id~'/'~patient.avatar ) }}" alt="avatar"/>

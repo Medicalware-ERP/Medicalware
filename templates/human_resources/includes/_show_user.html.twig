@@ -10,8 +10,8 @@
                 </div>
                 <p class="p-absolute text-danger" id="error-avatar" style="margin-left: 100px"></p>
                 <div class="p-relative">
-                    <button class="p-absolute" id="uploadImage" style="right: 0;"><i class="fa fa-file-upload text-success"></i></button>
-                    <button class="p-absolute {{ not user.avatar ? 'd-none' }}" id="removeImage" data-url="{{ path('remove_avatar', {id: user.id}) }}" style="right: 0;bottom: 0"><i class="fa fa-trash text-danger"></i></button>
+                    <button class="btn btn-xs btn-success p-absolute" id="uploadImage" style="top:-10px;right: 0;"><i class="fa fa-file-upload text-white"></i></button>
+                    <button class="btn btn-xs btn-danger p-absolute {{ not user.avatar ? 'd-none' }}" id="removeImage" data-url="{{ path('remove_avatar', {id: user.id}) }}" style="right: 0;bottom: 0"><i class="fa fa-trash text-white"></i></button>
 
                     <img id="img_avatar" class="avatar {{ not user.avatar ? 'd-none' }}" src="{{ user.avatar ? asset('uploads/user/avatar/'~user.id~'/'~user.avatar ) }}" />
                     <div id="name_avatar" class="avatar avatar-text {{ user.avatar ? 'd-none' }}">
@@ -63,6 +63,10 @@
                         <div class="margin-bottom-20 d-flex align-items-center">
                             <span class="label__show">A été créé le:</span>
                             <small class="margin-left-20">{{ user.createdAt|date('d/m/Y') }}</small>
+                        </div>
+                        <div class="margin-bottom-20 d-flex align-items-center">
+                            <span class="label__show">Email:</span>
+                            <small class="margin-left-20">{{ user.email }}</small>
                         </div>
                     </div>
                 </div>
