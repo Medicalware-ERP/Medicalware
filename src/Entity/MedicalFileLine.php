@@ -63,7 +63,6 @@ class MedicalFileLine
     public function setDoctor(?Doctor $doctor): self
     {
         $this->doctor = $doctor;
-
         return $this;
     }
 

@@ -1,0 +1,18 @@
+@mixin keyframes($animationName) {
+  @-webkit-keyframes #{$animationName} {
+    $browser: '-webkit-' !global;
+    @content;
+  }
+  @-moz-keyframes #{$animationName} {
+    $browser: '-moz-' !global;
+    @content;
+  }
+  @-o-keyframes #{$animationName} {
+    $browser: '-o-' !global;
+    @content;
+  }
+  @keyframes #{$animationName} {
+    $browser: '' !global;
+    @content;
+  }
+} $browser: null;

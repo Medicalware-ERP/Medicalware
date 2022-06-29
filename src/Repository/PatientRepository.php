@@ -23,6 +23,12 @@ class PatientRepository extends DatatableRepository
         parent::__construct($registry, Patient::class);
     }
 
+    public function findAllActive()
+    {
+        return $this->findBy([
+            "isArchived" => false
+        ]);
+    }
 
     /**
      * @throws ORMException

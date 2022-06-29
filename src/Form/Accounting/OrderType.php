@@ -44,6 +44,12 @@ class OrderType extends AbstractType
                 'class' => Tva::class,
                 'label' => 'Tva',
                 "constraints" => [new NotBlank()],
+                'choice_attr' => function(Tva $tva) {
+                    return [
+                        'data-tva' => $tva->value(),
+                        'data-tva-display' => $tva->getName(),
+                    ];
+                }
             ])
             ->add('deliveryDate', DateType::class, [
                 'label' => 'Date de livraison',

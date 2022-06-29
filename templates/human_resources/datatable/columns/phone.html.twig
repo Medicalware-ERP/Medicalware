@@ -1,4 +1,8 @@
 
 {% apply spaceless %}
-    {{ user.phoneNumber | split('', 2) |join('.') }}
+    {% if ("+" in user.phoneNumber) %}
+        {{ user.phoneNumber }}
+    {% else %}
+        {{ user.phoneNumber | split('', 2) | join('.') }}
+    {% endif %}
 {% endapply %}

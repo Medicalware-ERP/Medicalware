@@ -1,4 +1,8 @@
 
 {% apply spaceless %}
-    {{ order.deliveryDate | date('d/m/Y') }}
+    {% if order.deliveryDate is not null %}
+        {{ order.deliveryDate | date('d/m/Y') }}
+    {% else %}
+        Non livré
+    {% endif %}
 {% endapply %}

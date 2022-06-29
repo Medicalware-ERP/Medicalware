@@ -9,6 +9,7 @@ use App\Enum\UserTypeEnum;
 use App\Workflow\InvoiceStateWorkflow;
 use Doctrine\ORM\EntityManagerInterface;
 use http\Exception\RuntimeException;
+use Knp\Snappy\Pdf;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -28,6 +29,7 @@ class InvoiceStateSubscriber implements EventSubscriberInterface
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly MailerInterface $mailer,
         private readonly Environment $environment,
+        private readonly Pdf $pdf
     )
     {
     }
@@ -49,8 +51,6 @@ class InvoiceStateSubscriber implements EventSubscriberInterface
         }
 
         $invoice->setState($state);
-        $this->entityManager->persist($invoice);
-        $this->entityManager->flush();
     }
 
     public function handleValidation(GuardEvent $guardEvent)
@@ -95,11 +95,58 @@ class InvoiceStateSubscriber implements EventSubscriberInterface
 
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     */
+    public function handleTransitionValidate(TransitionEvent $event)
+    {
+        $invoice = $event->getSubject();
+
+        if (!$invoice instanceof Invoice) {
+            return;
+        }
+
+        $emails = $this->entityManager->getRepository(User::class)->findEmailsByProfession(UserTypeEnum::ACCOUNTANT);
+
+        $html = '';
+        $pdfHtml = "";
+
+        try {
+            $html = $this->environment->render('invoice/email/invoice_patient_to_pay.html.twig', [
+                'invoice' => $invoice
+            ]);
+            $pdfHtml =  $this->environment->render('invoice/pdf/_pdf.html.twig', [
+                'invoice' => $invoice,
+                'pdfEmail' => true
+            ]);
+
+        } catch (LoaderError|RuntimeError|SyntaxError $e) {
+            dd($e);
+        }
+
+        $pdfGenerated = $this->pdf->getOutputFromHtml($pdfHtml);
+
+
+        if (count($emails) > 0) {
+            $email = (new Email())
+                ->from('admin@medicalware.com')
+                ->to(...$emails)
+                ->subject('Vous avez une nouvelle ')
+                ->html($html)
+                ->attach($pdfGenerated, sprintf('facture-%s.pdf', date('Y-m-d')))
+            ;
+
+            $this->mailer->send($email);
+        }
+
+    }
+
     public static function getSubscribedEvents(): array
     {
         return [
             'workflow.' . InvoiceStateWorkflow::NAME . '.transition' => 'handleTransition',
             'workflow.' . InvoiceStateWorkflow::NAME . '.transition.to_validate' => 'handleTransitionToValidate',
+            'workflow.' . InvoiceStateWorkflow::NAME . '.transition.validate' => 'handleTransitionValidate',
             'workflow.' . InvoiceStateWorkflow::NAME . '.guard.validate' => 'handleValidation',
             'workflow.' . InvoiceStateWorkflow::NAME . '.guard.reject' => 'handleValidation',
         ];

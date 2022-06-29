@@ -1,5 +1,5 @@
 {% extends app.request.query.get('isAjax', false) ? 'layout_empty.html.twig' : 'patient/show.html.twig' %}
 
 {% block content %}
-    <p>pieces</p>
+    <div id="patient-show-planning" data-patient-id="{{ patient.id }}"></div>
 {% endblock %}

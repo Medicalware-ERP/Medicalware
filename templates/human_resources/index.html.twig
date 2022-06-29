@@ -20,17 +20,16 @@
                         <option value="30">30</option>
                     </select>
                 </div>
-                <a class="btn btn-success margin-right-10 margin-left-auto" href="{{ path('app_add_doctor') }}">
-                    <i class="fa fa-plus"></i>
-                    Ajouter un docteur
-                </a>
                 <a class="btn btn-success" href="{{ path('app_add_user') }}">
                     <i class="fa fa-plus"></i>
                     Ajouter un utilisateur
                 </a>
             </div>
+            <form id="filters">
+                <input type="hidden" name="left" data-field="e.leftAt" data-condition="IS NULL" value="">
+            </form>
 
-            <table id="table-users" class="datatable" data-url="{{ path('users_json') }}">
+            <table id="table-users" class="datatable" data-url="{{ path('users_json') }}" data-filters="#filters">
                 <thead>
                 <tr>
                     <th>Avatar</th>
@@ -40,7 +39,7 @@
                     <th>Email</th>
                     <th>Profession</th>
                     <th>Actif</th>
-                    <th>Détails</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
             </table>

@@ -1,0 +1,14 @@
+
+{% apply spaceless %}
+    {% if doctor.isActive %}
+        <label class="switch">
+            <input type="checkbox" checked data-user="{{ doctor.id }}">
+            <span class="slider round"></span>
+        </label>
+    {% else %}
+        <label class="switch">
+            <input type="checkbox" data-user="{{ doctor.id }}">
+            <span class="slider round"></span>
+        </label>
+    {% endif %}
+{% endapply %}

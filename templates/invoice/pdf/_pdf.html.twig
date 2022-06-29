@@ -6,7 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Facture {{ invoice }}</title>
-    <link rel="stylesheet" href="{{ absolute_url(asset('build/app.css')) }}">
+
     <style>
         hr{
             height: 1px;
@@ -14,12 +14,19 @@
             border: none;
             margin: 1rem 0;
         }
+        td{
+            word-break: break-word;
+            white-space:nowrap;
+        }
+        .margin-top-20 {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
 <div class="d-flex align-items-center gap-10">
     <img src="{{ asset('build/images/logo.png') }}" alt="logo" width="100"/>
-    <div>
+    <div class="margin-left-15">
         <h4>MedicalWare</h4>
         <p>22 Rue John Maynard Keynes</p>
         <p>13013 Marseille</p>
@@ -28,9 +35,6 @@
 </div>
 
 <div class="margin-top-20" style="float: right">
-   {# <div class="avatar-default img-md" style="background-color: #0F2544">
-        <span>{{ invoice.patient.firstName|slice(0,1)|upper ~ invoice.patient.lastName|slice(0,1)|upper }}</span>
-    </div>#}
     <div>
         <p>{{ invoice.patient }}</p>
         <p>{{ invoice.patient.address.street }}</p>
@@ -49,12 +53,12 @@
     <table class="datatable" style="border: 1px solid #edeff1;">
         <thead>
         <tr>
-            <th>#</th>
-            <th>Désignation</th>
-            <th>Description</th>
-            <th  style="min-width: 50px">Quantité</th>
-            <th style="min-width: 100px">Prix</th>
-            <th style="min-width: 100px">Total ht</th>
+            <th style="width: 30px">#</th>
+            <th style="width: 300px">Désignation</th>
+            <th style="width: 300px">Description</th>
+            <th style="width: 100px">Quantité</th>
+            <th style="width: 100px">Prix</th>
+            <th style="width: 100px">Total ht</th>
         </tr>
         </thead>
         <tbody>
@@ -62,8 +66,16 @@
         {% for line in invoice.invoiceLines %}
             <tr>
                 <td>{{ loop.index }}</td>
-                <td>{{ line.reference }}</td>
-                <td>{{ line.description ?? '-' }}</td>
+                <td>
+                    <div style="white-space: pre-line;word-wrap: break-word;text-align: left">
+                        {{ line.reference }}
+                    </div>
+                </td>
+                <td>
+                    <div style="white-space: pre-line;word-wrap: break-word;text-align: left">
+                        {{ line.description ?? '-' }}
+                    </div>
+                </td>
                 <td>{{ line.quantity }}</td>
                 <td>{{ line.price }} €</td>
                 <td>{{ line.ht }} €</td>
@@ -73,7 +85,7 @@
     </table>
 </div>
 
-<div class="margin-top-20">
+<div class="margin-top-20" style="">
     <div class="padding-10" style="width: 300px;border: 1px solid #edeff1;float:right">
         <p class="d-flex justify-content-between">
             <span>Total H.T</span>

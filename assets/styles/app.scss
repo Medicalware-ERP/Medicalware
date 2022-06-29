@@ -10,6 +10,7 @@
 @import "./patient/show";
 @import "./common/modal";
 @import "./event/main";
+@import "./event/show";
 @import "common/button.scss";
 @import "./medicalFile/medicalFile";
 @import "./common/utilis";
@@ -18,6 +19,8 @@
 @import "~@fullcalendar/daygrid/main.css";
 @import "~@fullcalendar/timegrid/main.css";
 @import "~@fullcalendar/list/main.css";
+@import "~@fullcalendar/resource-timeline/main.css";
+@import "~@fullcalendar/timeline/main.css";
 
 /* GlobalStyles de l'application */
 

@@ -77,7 +77,6 @@ class DataInitCommand extends Command
         return Command::SUCCESS;
     }
 
-
     /**
      * @throws \Doctrine\DBAL\Exception
      */

@@ -53,10 +53,10 @@
             </div>
 
             <div class="actions-buttons-container">
-                <a class="btn btn-warning" href="{{ path('app_edit_room', {'id': room.id }) }}">
+                <a id="btn-edit-room" class="btn btn-warning" data-room-id="{{ room.id }}">
                     Éditer
                 </a>
-                <a class="btn btn-danger btn-delete-room" data-room="{{ room.id }}">
+                <a id="btn-delete-room" class="btn btn-danger" data-room-id="{{ room.id }}">
                     Supprimer
                 </a>
             </div>

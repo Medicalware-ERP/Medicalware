@@ -53,16 +53,6 @@ class OrderLineType extends AbstractType
                     new Range(minMessage: 'Veuillez saisir une valeur supérieur ou égale à 0', min: 0),
                 ],
             ])
-            ->add('price', FloatType::class, [
-                'label' => false,
-                'attr' => [
-
-                ],
-                'constraints' => [
-                    new NotBlank(message: 'Veuillez saisir un prix'),
-                    new Range(minMessage: 'Veuillez saisir une valeur supérieur ou égale à 0', min: 0),
-                ],
-            ])
         ;
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
@@ -71,6 +61,8 @@ class OrderLineType extends AbstractType
             if (!$orderLine->getEquipment() instanceof Equipment) {
                 return;
             }
+
+            $orderLine->setPrice($orderLine->getEquipment()->getPrice());
             $orderLine->setEquipmentName($orderLine->getEquipment()->getName());
             $orderLine->setEquipmentReference($orderLine->getEquipment()->getReference());
             $orderLine->setEquipmentPrice($orderLine->getEquipment()->getPrice());

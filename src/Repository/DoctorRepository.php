@@ -3,10 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Doctor;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
+use App\Repository\Datatable\DatatableConfigColumn;
+use App\Repository\Datatable\DatatableConfigJoin;
+use App\Repository\Datatable\DatatableConfigSearch;
+use App\Repository\Datatable\DatatableRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * @method Doctor|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,7 +16,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Doctor[]    findAll()
  * @method Doctor[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class DoctorRepository extends ServiceEntityRepository
+class DoctorRepository extends DatatableRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -22,8 +24,6 @@ class DoctorRepository extends ServiceEntityRepository
     }
 
     /**
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function add(Doctor $entity, bool $flush = true): void
     {
@@ -34,8 +34,6 @@ class DoctorRepository extends ServiceEntityRepository
     }
 
     /**
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function remove(Doctor $entity, bool $flush = true): void
     {
@@ -43,6 +41,31 @@ class DoctorRepository extends ServiceEntityRepository
         if ($flush) {
             $this->_em->flush();
         }
+    }
+
+    #[Pure] public function configureDatableJoin(): array
+    {
+        return [
+            new DatatableConfigJoin('specialisation'),
+        ];
+    }
+
+    #[Pure] public function configureDatableSearch(): array
+    {
+        return [
+            new DatatableConfigSearch('lastName'),
+            new DatatableConfigSearch('phoneNumber'),
+            new DatatableConfigSearch('email'),
+            new DatatableConfigSearch('firstName'),
+            new DatatableConfigSearch('name','specialisation'),
+        ];
+    }
+
+    #[Pure] public function configureDatableColumns(): array
+    {
+        return [
+            new DatatableConfigColumn('lastName'),
+        ];
     }
 
     // /**
