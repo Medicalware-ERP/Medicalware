@@ -24,4 +24,15 @@ class RoleEnum
             'Gestionnaire des services' => self::ROLE_ADMIN_SERVICES,
         ];
     }
+
+    public static function getRolesByProfession(string $profession): array
+    {
+        return match ($profession) {
+            UserTypeEnum::DOCTOR => [self::ROLE_DOCTOR],
+            UserTypeEnum::HR_ASSISTANT, UserTypeEnum::HR_MANAGER, UserTypeEnum::HR_DIRECTOR => [self::ROLE_HUMAN_RESOURCE],
+            UserTypeEnum::STOCK_MANAGER => [self::ROLE_ADMIN_STOCK],
+            UserTypeEnum::ACCOUNTANT => [self::ROLE_ACCOUNTANT],
+            UserTypeEnum::HEAD_OF_SERVICE => [self::ROLE_ADMIN_SERVICES],
+        };
+    }
 }
