@@ -66,7 +66,7 @@ class HumanResourcesController extends BaseController
     {
         $modifier = function(QueryBuilder $queryBuilder){
             $queryBuilder->join('e.profession', 'u')
-                        ->where('u.slug != :slug')
+                        ->orWhere('u.slug != :slug')
                         ->setParameter('slug', UserTypeEnum::DOCTOR);
         };
 
