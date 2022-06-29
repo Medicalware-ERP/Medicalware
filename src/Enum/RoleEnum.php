@@ -19,7 +19,6 @@ class RoleEnum
         return [
             'Docteur'                   => self::ROLE_DOCTOR,
             'Ressources humaine'        => self::ROLE_HUMAN_RESOURCE,
-            'Secretaire'                => self::ROLE_SECRETARY,
             'Comptable'                 => self::ROLE_ACCOUNTANT,
             'Gestionnaire du stock'     => self::ROLE_ADMIN_STOCK,
             'Gestionnaire des services' => self::ROLE_ADMIN_SERVICES,
