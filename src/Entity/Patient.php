@@ -34,12 +34,13 @@ class Patient extends Person implements EntityInterface
     #[ORM\ManyToOne(targetEntity: Doctor::class, inversedBy: 'patients')]
     private ?Doctor $doctor = null;
 
-    #[Pure] public function __construct()
+    public function __construct()
     {
+        $this->setMedicalFile(new MedicalFile());
         $this->invoices = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         $isArchived = $this->isIsArchived() ? " (Archivé(e))" : "";
         return parent::__toString().$isArchived;

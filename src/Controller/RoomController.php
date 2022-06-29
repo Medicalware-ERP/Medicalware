@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Planning\Resource;
 use App\Entity\Room\Room;
+use App\Enum\RoleEnum;
 use App\Form\RoomType;
 use App\Repository\RoomOptionRepository;
 use App\Repository\RoomRepository;
@@ -20,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[IsGranted("ROLE_ADMIN_SERVICE")]
+#[IsGranted(RoleEnum::ROLE_ADMIN_SERVICES)]
 class RoomController extends BaseController
 {
     public function __construct(private readonly EntityManagerInterface $manager)

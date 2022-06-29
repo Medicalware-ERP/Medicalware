@@ -119,7 +119,7 @@ class EventRepository extends ServiceEntityRepository
 
     public function findEventOfTodayByUser($userId)
     {
-        $startAt = (new DateTime())->setTime(00, 00 , 00, 00);
+        $startAt = (new DateTime())->setTime(00, 00 , 01, 00);
         $endAt = (new DateTime())->setTime(23, 59 , 59, 59);
 
         return $this->createQueryBuilder('e')

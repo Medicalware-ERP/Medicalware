@@ -23,7 +23,7 @@ class PhoneType extends AbstractType
                 new NotBlank([
                     "message" => "Le champs ne doit être pas vide",
                 ]),
-                new Regex('/^((\+|00)33\s?|0)[67](\s?\d{2}){4}$/', "Le format du numéro n'est pas bon.")
+                new Regex('/^((\+|00)33\s?|0)[1-9](\s?\d{2}){4}$/', "Le format du numéro n'est pas bon.")
             ]
         ]);
     }
