@@ -94,7 +94,12 @@
                         {% if eventOfUserFromToday.description %}
                             <span class="title">Description: {{ eventOfUserFromToday.description | raw }}</span>
                         {% endif %}
-                        <span class="title">Crée sur le planning de : {{ eventOfUserFromToday.resource.resource }} </span>
+                        <span class="title">
+                            {% if eventOfUserFromToday.resource.resource.id != app.user.id %}
+                                Crée sur le planning de : {{ eventOfUserFromToday.resource.resource }}
+
+                            {% endif %}
+                        </span>
                     </div>
                     {% else %}
                         <div class="event d-flex align-items-center justify-content-center gap-15">
