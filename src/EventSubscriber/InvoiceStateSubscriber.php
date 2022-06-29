@@ -106,7 +106,7 @@ class InvoiceStateSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $emails = $this->entityManager->getRepository(User::class)->findEmailsByProfession(UserTypeEnum::ACCOUNTANT);
+        $emails = $invoice?->getPatient()->getEmail() ?? [];
 
         $html = '';
         $pdfHtml = "";
