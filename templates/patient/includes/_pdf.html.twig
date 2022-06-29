@@ -20,28 +20,28 @@
     <header>
         <hr>
         <div class="d-flex align-items-center justify-content-center" style="display: inline-block">
-            <h1 class="title_folder margin-bottom-15">Dossier médical</h1>
+            <h1 class="margin-bottom-15">Dossier médical</h1>
             <span style="font-weight: 500;color: #313a46;font-size: 1.5rem;">N° {{ medicalFile.patient.id }}</span>
         </div>
         <hr>
-        <div class="card bg-grey">
+        <div>
             <div class="d-flex align-items-center margin-bottom-10">
                 <div class="d-flex align-items-center" style="width:65%">
-                    <label class="label__show">Nom: </label>
+                    <label>Nom: </label>
                     <small>{{ medicalFile.patient.lastName }}</small>
                 </div>
                 <div class="d-flex align-items-center">
-                    <label class="label__show">Prénom: </label>
+                    <label>Prénom: </label>
                     <small>{{ medicalFile.patient.firstName }}</small>
                 </div>
             </div>
             <div class="d-flex align-items-center">
                 <div class="d-flex align-items-center" style="width:65%">
-                    <label class="label__show">Email: </label>
+                    <label>Email: </label>
                     <small>{{ medicalFile.patient.email }}</small>
                 </div>
                 <div class="d-flex align-items-center">
-                    <label class="label__show">Date de naissance: </label>
+                    <label>Date de naissance: </label>
                     <small>{{ medicalFile.patient.birthdayDate|date("d/m/Y") }}</small>
                 </div>
             </div>
@@ -49,46 +49,46 @@
     </header>
     <hr>
     <section>
-        <div class="card bg-grey">
+        <div>
             <div class="d-flex align-items-center margin-bottom-10">
                 <div class="d-flex align-items-center" style="width:65%">
-                    <label class="label__show">Adresse: </label>
+                    <label>Adresse: </label>
                     <small>{{ medicalFile.patient.address }}</small>
                 </div>
                 <div class="d-flex align-items-center">
-                    <label class="label__show">Téléphone: </label>
+                    <label>Téléphone: </label>
                     <small>{{ medicalFile.patient.phoneNumber | split('', 2) |join('.') }}</small>
                 </div>
             </div>
             <div class="d-flex align-items-center margin-bottom-10">
                 <div class="d-flex align-items-center" style="width:65%">
-                    <label class="label__show">Médecin traitant: </label>
+                    <label>Médecin traitant: </label>
                     <small>Mr {{ medicalFile.patient.doctor.lastName }}</small>
                 </div>
                 <div class="d-flex align-items-center">
-                    <label class="label__show">Num. securité sociale: </label>
+                    <label>Num. securité sociale: </label>
                     <small>{{ medicalFile.patient.numberSocialSecurity }}</small>
                 </div>
             </div>
             <div class="d-flex align-items-center">
                 <div class="d-flex align-items-center">
-                    <label class="label__show" >Groupe sanguin: </label>
+                    <label>Groupe sanguin: </label>
                     <small>{{ medicalFile.patient.bloodGroup }}</small>
                 </div>
             </div>
         </div>
     </section>
     <hr>
-    <main id="container__folder_medical">
-        <h3 class="label__show margin-bottom-10">Consultations</h3>
-        <table class="table_medical_file_line">
-            <thead class="table_medical_file_line_header">
-            <th></th>
-            <th>Medecin</th>
-            <th>Service</th>
-            <th>Maladie</th>
-            <th>Date de début</th>
-            <th>Date de fin</th>
+    <main>
+        <h3 class="margin-bottom-10">Consultations</h3>
+        <table>
+            <thead>
+            <th style="width:200px;"></th>
+            <th style="width:200px;">Medecin</th>
+            <th style="width:200px;">Service</th>
+            <th style="width:200px;">Maladie</th>
+            <th style="width:200px;">Date de début</th>
+            <th style="width:200px;">Date de fin</th>
             </thead>
 
             <tbody>

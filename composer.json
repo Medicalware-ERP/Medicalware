@@ -57,13 +57,15 @@
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^6.7",
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
         "phpunit/phpunit": "^9.5",
         "symfony/browser-kit": "6.0.*",
         "symfony/css-selector": "6.0.*",
         "symfony/debug-bundle": "6.0.*",
         "symfony/maker-bundle": "^1.0",
         "symfony/phpunit-bridge": "^6.0",
-        "symfony/stopwatch": "6.0.*"
+        "symfony/stopwatch": "6.0.*",
+        "symfony/web-profiler-bundle": "6.0.*"
     },
     "config": {
         "optimize-autoloader": true,
@@ -108,8 +110,7 @@
             "php bin/console doctrine:fixtures:load -n",
             "php bin/console app:data:init",
             "php bin/console ckeditor:install",
-            "php bin/console assets:install public",
-            "php bin/console app:generate:resources"
+            "php bin/console assets:install public"
         ],
         "post-install-cmd": [
             "@auto-scripts"
