@@ -11,7 +11,7 @@ const initTr = (tr : HTMLTableRowElement) => {
     const select = tr.querySelector('.equipment_select') as HTMLSelectElement;
     const callback = () => {
         const option = select.options[select.selectedIndex];
-        console.log(option)
+
         if (!(option instanceof HTMLOptionElement)){
             return;
         }
