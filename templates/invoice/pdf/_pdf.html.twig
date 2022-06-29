@@ -6,9 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Facture {{ invoice }}</title>
-    {% if pdfEmail is not defined %}
-        <link rel="stylesheet" href="{{ absolute_url(asset('build/app.css')) }}">
-    {% endif %}
+
     <style>
         hr{
             height: 1px;
@@ -19,6 +17,9 @@
         td{
             word-break: break-word;
             white-space:nowrap;
+        }
+        .margin-top-20 {
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -84,7 +85,7 @@
     </table>
 </div>
 
-<div class="margin-top-20">
+<div class="margin-top-20" style="">
     <div class="padding-10" style="width: 300px;border: 1px solid #edeff1;float:right">
         <p class="d-flex justify-content-between">
             <span>Total H.T</span>
