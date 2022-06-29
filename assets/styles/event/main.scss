@@ -1,33 +1,30 @@
-#form-event {
-    #form-event-body {
-      display: flex;
-      flex-direction: column;
-      row-gap: 1em;
-      width: 50%;
+#form-event-body {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1em;
 
-      .column {
-        display: flex;
-        flex-direction: column;
-        row-gap: 1em;
-        width: 50%;
+  .column {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1em;
+    width: 50%;
 
-        input:not([type="checkbox"]), select, .select2-selection, #checkbox-input-container {
-          width: 100%;
-          min-height: 41.38px; /* tout les inputs à la même hauteur */
-        }
+    input:not([type="checkbox"]), select, .select2-selection, #checkbox-input-container {
+      width: 100%;
+      min-height: 41.38px; /* tout les inputs à la même hauteur */
+    }
 
-        .checkbox-allday-container {
+    .checkbox-allday-container {
 
-          input[type="checkbox"] {
-            width: 100%;
-            height: 20px;
-          }
+      input[type="checkbox"] {
+        width: 100%;
+        height: 20px;
+      }
 
-          .subtitle {
-            font-size: .8em;
-            font-style: italic;
-          }
-        }
+      .subtitle {
+        font-size: .8em;
+        font-style: italic;
       }
     }
+  }
 }

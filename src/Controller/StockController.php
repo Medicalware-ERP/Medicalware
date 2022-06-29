@@ -2,21 +2,29 @@
 
 namespace App\Controller;
 
+use App\Entity\Accounting\Invoice;
+use App\Entity\Accounting\Order;
+use App\Entity\Patient;
 use App\Entity\Stock\Stock;
 use App\Entity\Stock\StockHistory;
 use App\Entity\User;
 use App\Enum\UserTypeEnum;
 use App\Form\Stock\StockType;
 use App\Repository\Stock\StockRepository;
+use App\Service\Invoice\InvoiceDataFormatter;
+use App\Service\Order\OrderDataFormatter;
 use App\Service\Stock\StockDataFormatter;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -26,8 +34,10 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
+#[IsGranted("ROLE_ADMIN_STOCK")]
 class StockController extends BaseController
 {
+
     #[Route('/stock', name: 'stock_index')]
     public function index(): Response
     {
@@ -46,6 +56,16 @@ class StockController extends BaseController
         return $this->paginateRequest(Stock::class, $request, $dataFormatter);
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    #[Route('/stock/orders/paginate', name: 'stock_order_json')]
+    public function paginateOrdersOfProvider(Request $request, OrderDataFormatter $dataFormatter): Response
+    {
+        return $this->paginateRequest(Order::class, $request, $dataFormatter);
+    }
+
     #[Route('/stock/add', name: 'stock_add')]
     public function add(Request $request, StockRepository $repository): Response
     {
@@ -59,6 +79,8 @@ class StockController extends BaseController
             } catch (UniqueConstraintViolationException $exception) {
                 $form->get('equipment')->get('reference')->addError(new FormError("Cette référence est déjà utilisé"));
             }
+
+            return $this->redirectToReferer();
         }
 
         return $this->renderForm('stock/form.html.twig', [
@@ -78,6 +100,8 @@ class StockController extends BaseController
             } catch (UniqueConstraintViolationException $exception) {
                 $form->get('equipment')->get('reference')->addError(new FormError("Cette référence est déjà utilisé"));
             }
+
+            return $this->redirectToReferer();
         }
 
         return $this->renderForm('stock/form.html.twig', [

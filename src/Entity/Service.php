@@ -18,11 +18,21 @@ class Service extends EnumEntity
     #[ORM\ManyToMany(targetEntity: Equipment::class, mappedBy: 'services')]
     private Collection $equipments;
 
+    #[ORM\OneToMany(mappedBy: 'service', targetEntity: Doctor::class)]
+    private Collection $doctors;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $isArchivedAt;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isArchived = false;
+
     #[Pure] public function __construct(string $slug = "", string $name = "")
     {
         parent::__construct($slug, $name);
         $this->medicalFileLines = new ArrayCollection();
         $this->equipments = new ArrayCollection();
+        $this->doctors = new ArrayCollection();
     }
 
     /**
@@ -78,6 +88,60 @@ class Service extends EnumEntity
         if ($this->equipments->removeElement($equipment)) {
             $equipment->removeService($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Doctor>
+     */
+    public function getDoctors(): Collection
+    {
+        return $this->doctors;
+    }
+
+    public function addDoctor(Doctor $doctor): self
+    {
+        if (!$this->doctors->contains($doctor)) {
+            $this->doctors[] = $doctor;
+            $doctor->setService($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDoctor(Doctor $doctor): self
+    {
+        if ($this->doctors->removeElement($doctor)) {
+            // set the owning side to null (unless already changed)
+            if ($doctor->getService() === $this) {
+                $doctor->setService(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getIsArchivedAt(): ?\DateTimeImmutable
+    {
+        return $this->isArchivedAt;
+    }
+
+    public function setIsArchivedAt(?\DateTimeImmutable $isArchivedAt): self
+    {
+        $this->isArchivedAt = $isArchivedAt;
+
+        return $this;
+    }
+
+    public function isIsArchived(): ?bool
+    {
+        return $this->isArchived;
+    }
+
+    public function setIsArchived(bool $isArchived): self
+    {
+        $this->isArchived = $isArchived;
 
         return $this;
     }

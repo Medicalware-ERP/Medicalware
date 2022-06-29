@@ -1,16 +1,54 @@
 {% extends app.request.query.get('isAjax', false) ? 'layout_empty.html.twig' : 'provider/show.html.twig' %}
 
 {% block content %}
-    <div class="d-flex flex-column gap-10">
-        <h2 class="margin-y-1">Informations</h2>
-        <p>{{ provider.name }}</p>
-        <p>{{ provider.address.street }}</p>
-        {% if provider.address.complementaryInfo is not null %}
-            <p>{{ provider.address.complementaryInfo }}</p>
-        {% endif %}
-        <p>{{ provider.address.postalCode }} {{ provider.address.city }}</p>
-        <p>{{ provider.email }}</p>
-        <p>{{ provider.phone | split('', 2) | join('.') }}</p>
-
-    </div>
+    <section class="card__informations">
+        <div class="d-flex align-items-center">
+            <i class="fa fa-check-circle margin-right-5"></i>
+            <span class="date_show">{{ provider.name }}</span>
+        </div>
+        <hr>
+        <h2 class="margin-bottom-10 d-flex align-items-center">Fournisseur:<span class="pastille green"></span>{{ provider.id }}</h2>
+        <div class="card d-flex bg-grey">
+            <div class="wrapper">
+                <div class="sommet"></div>
+                <div class="corps">
+                    <div class="circle">
+                        <div class="black-point"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="left_card">
+                <div class="margin-bottom-10 d-flex align-items-center">
+                    <span class="label__show">Rue:</span>
+                    <small class="margin-left-20">{{ provider.address.street }}</small>
+                </div>
+                <div class="margin-bottom-10 d-flex align-items-center">
+                    <span class="label__show">Infos complémentaires:</span>
+                    {% if provider.address.complementaryInfo is not null %}
+                        <small class="margin-left-20">{{ provider.address.complementaryInfo }}</small>
+                    {% else %}
+                        <small class="margin-left-20">Non renseignée</small>
+                    {% endif %}
+                </div>
+                <div class="margin-bottom-10 d-flex align-items-center">
+                    <span class="label__show">Code postal:</span>
+                    <small class="margin-left-20">{{ provider.address.postalCode }}</small>
+                </div>
+                <div class="margin-bottom-10 d-flex align-items-center">
+                    <span class="label__show">Ville:</span>
+                    <small class="margin-left-20">{{ provider.address.city }}</small>
+                </div>
+            </div>
+            <div class="right_card margin-left-10">
+                <div class="margin-bottom-10 d-flex align-items-center">
+                    <span class="label__show">Email:</span>
+                    <small class="margin-left-20">{{ provider.email }}</small>
+                </div>
+                <div class="margin-bottom-10 d-flex align-items-center">
+                    <span class="label__show">Téléphone:</span>
+                    <small class="margin-left-20">{{ provider.phone | split('', 2) | join('.') }}</small>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}

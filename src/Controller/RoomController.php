@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Planning\Resource;
 use App\Entity\Room\Room;
+use App\Enum\RoleEnum;
 use App\Form\RoomType;
 use App\Repository\RoomOptionRepository;
 use App\Repository\RoomRepository;
@@ -12,12 +14,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[IsGranted(RoleEnum::ROLE_ADMIN_SERVICES)]
 class RoomController extends BaseController
 {
     public function __construct(private readonly EntityManagerInterface $manager)
@@ -54,14 +58,22 @@ class RoomController extends BaseController
     {
         $room = new Room();
 
-        $form = $this->createForm(RoomType::class, $room);
+        $form = $this->createForm(RoomType::class, $room, [ "action" => $request->getUri() ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->manager->persist($room);
             $this->manager->flush();
 
-            return $this->redirectToRoute("index_room");
+            $resource = new Resource();
+            $resource->setResourceId($room->getId());
+            $resource->setResourceClass(Room::class);
+
+            $this->manager->persist($resource);
+            $this->manager->flush();
+
+            $referer = $request->headers->get('referer');
+            return $this->redirect($referer);
         }
 
         return $this->renderForm('room/form.html.twig', [
@@ -74,14 +86,15 @@ class RoomController extends BaseController
     {
         $room = $this->manager->find(Room::class, $id) ?? throw new NotFoundHttpException("Salle non trouvé");
 
-        $form = $this->createForm(RoomType::class, $room);
+        $form = $this->createForm(RoomType::class, $room, [ "action" => $request->getUri() ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->manager->persist($room);
             $this->manager->flush();
 
-            return $this->redirectToRoute("index_room");
+            $referer = $request->headers->get('referer');
+            return $this->redirect($referer);
         }
 
         return $this->renderForm('room/form.html.twig', [
@@ -102,16 +115,6 @@ class RoomController extends BaseController
         $roomRepository->add($room);
 
         return $this->redirectToRoute("index_room");
-    }
-
-    #[Route('/room/{id}', name: 'app_show_room')]
-    public function show(int $id): Response
-    {
-        $room = $this->manager->find(Room::class, $id) ?? throw new NotFoundHttpException("Salle non trouvée");
-
-        return $this->render('room/show.html.twig', [
-            'room' => $room
-        ]);
     }
 
     #[Route('/room/{id}/show', name: 'show_room_information')]
@@ -137,20 +140,20 @@ class RoomController extends BaseController
     #[Route('/room/include/list', name: 'index_room')]
     public function roomIndex(RoomRepository $roomRepository) : Response
     {
-        $provider = $roomRepository->findAllActive();
+        $data = $roomRepository->findAllActive();
 
         return $this->renderForm('room/includes/_room.html.twig', [
-            'rooms' => $provider
+            'rooms' => $data
         ]);
     }
 
     #[Route('/room/include/type', name: 'index_room_type')]
     public function roomTypeIndex(RoomTypeRepository $roomTypeRepository) : Response
     {
-        $provider = $roomTypeRepository->findAllActive();
+        $data = $roomTypeRepository->findAllActive();
 
         return $this->renderForm('room/includes/_types.html.twig', [
-            'roomTypes' => $provider
+            'roomTypes' => $data
         ]);
     }
 
@@ -171,10 +174,10 @@ class RoomController extends BaseController
     #[Route('/room/include/option', name: 'index_room_option')]
     public function roomOptionIndex(RoomOptionRepository $roomOptionRepository) : Response
     {
-        $provider = $roomOptionRepository->findAllActive();
+        $data = $roomOptionRepository->findAllActive();
 
         return $this->renderForm('room/includes/_options.html.twig', [
-            'roomOptions' => $provider
+            'roomOptions' => $data
         ]);
     }
 

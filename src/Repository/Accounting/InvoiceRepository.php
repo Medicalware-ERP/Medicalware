@@ -3,6 +3,8 @@
 namespace App\Repository\Accounting;
 
 use App\Entity\Accounting\Invoice;
+use App\Entity\Accounting\InvoiceState;
+use App\Enum\Accounting\InvoiceStateEnum;
 use App\Repository\Datatable\DatatableConfigJoin;
 use App\Repository\Datatable\DatatableConfigSearch;
 use App\Repository\Datatable\DatatableRepository;
@@ -51,7 +53,6 @@ class InvoiceRepository extends DatatableRepository
     {
         return [
             new DatatableConfigSearch('reference'),
-            new DatatableConfigSearch('name', 'patient'),
             new DatatableConfigSearch('firstName', 'patient'),
             new DatatableConfigSearch('lastName', 'patient')
         ];
@@ -62,5 +63,27 @@ class InvoiceRepository extends DatatableRepository
         return [
 
         ];
+    }
+
+    public function findByDelivery()
+    {
+        return $this->createQueryBuilder('e')
+            ->join('e.state', 'u')
+            ->andWhere('u.name = :state')
+            ->setParameter('state', 'payé')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findByValid()
+    {
+        return $this->createQueryBuilder('e')
+            ->join('e.state', 'u')
+            ->andWhere('u.name = :state')
+            ->setParameter('state', 'valider')
+            ->getQuery()
+            ->getResult()
+            ;
     }
 }

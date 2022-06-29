@@ -1,0 +1,5 @@
+{% extends app.request.query.get('isAjax', false) ? 'layout_empty.html.twig' : 'human_resources/show.html.twig' %}
+
+{% block content %}
+    <div id="user-show-planning" data-user-id="{{ user.id }}"></div>
+{% endblock %}

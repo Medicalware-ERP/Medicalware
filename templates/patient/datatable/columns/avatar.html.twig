@@ -1,0 +1,10 @@
+
+{% apply spaceless %}
+    {% if patient.avatar is not null %}
+        <img id="img_avatar" class="avatar-default" src="{{ patient.avatar ? asset('uploads/patient/avatar/'~patient.id~'/'~patient.avatar ) }}"  alt=""/>
+    {% else %}
+        <div class="avatar-default {{ class|default('') }}">
+            <span>{{ patient.firstName|slice(0,1)|upper ~ patient.lastName|slice(0,1)|upper }}</span>
+        </div>
+    {% endif %}
+{% endapply %}

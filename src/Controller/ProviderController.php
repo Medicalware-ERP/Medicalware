@@ -2,16 +2,20 @@
 
 namespace App\Controller;
 
+use App\Entity\Doctor;
+use App\Entity\Planning\Resource;
 use App\Entity\Provider;
 use App\Form\ProviderType;
 use App\Repository\ProviderRepository;
 use App\Service\Provider\ProviderDataFormatter;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+#[IsGranted("ROLE_ADMIN_STOCK")]
 class ProviderController extends BaseController
 {
     #[Route('/provider', name: 'provider_index')]
@@ -31,7 +35,7 @@ class ProviderController extends BaseController
     }
 
     #[Route('/provider/add', name: 'provider_add')]
-    public function add(Request $request, ProviderRepository $providerRepository): Response
+    public function add(Request $request, ProviderRepository $providerRepository, EntityManagerInterface $entityManager): Response
     {
         $provider = new Provider();
 
@@ -40,7 +44,13 @@ class ProviderController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $providerRepository->add($provider);
-            return $this->redirectToRoute('provider_show_information', ['id' => $provider->getId()]);
+            $resource = new Resource();
+            $resource->setResourceId($provider->getId());
+            $resource->setResourceClass(Provider::class);
+
+            $entityManager->persist($resource);
+            $entityManager->flush();
+            return $this->redirectToReferer();
         }
 
         return $this->renderForm('provider/form.html.twig', [
@@ -58,7 +68,7 @@ class ProviderController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $providerRepository->edit($provider);
-            return $this->redirectToRoute('provider_show_information', ['id' => $provider->getId()]);
+            return $this->redirectToReferer();
         }
 
         return $this->renderForm('provider/form.html.twig', [
@@ -102,6 +112,16 @@ class ProviderController extends BaseController
         $provider = $providerRepository->find($id);
 
         return $this->renderForm('provider/includes/_piece.html.twig', [
+            'provider' => $provider
+        ]);
+    }
+
+    #[Route('/provider/show/{id}/planning', name: 'provider_show_planning')]
+    public function providerPlanning(int $id, ProviderRepository $providerRepository): Response
+    {
+        $provider = $providerRepository->find($id);
+
+        return $this->renderForm('provider/includes/_show_planning.html.twig', [
             'provider' => $provider
         ]);
     }

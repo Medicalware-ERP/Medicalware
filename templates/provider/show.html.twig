@@ -7,20 +7,23 @@
         <div class="avatar-default margin-right-10" style="">
             <span>{{ provider.name|slice(0,2)|upper }}</span>
         </div>
-        {{  provider }}
+        <span class="title">{{  provider }}</span>
     </header>
 {% endblock %}
 
 {% block aside_nav %}
     <nav class="d-flex" style="flex-direction: column; gap: 20px">
         <button class="btn-show d-flex align-items-center" data-name="inforamtions" data-url="{{ path('provider_show_information', {id: provider.id}) }}">
-            <i class="margin-right-5 fa fa-address-card"></i> Informations
+            <i class="margin-right-5 fa fa-address-card"></i> <span>Informations</span>
         </button>
         <button class="btn-show d-flex align-items-center" data-name="command" data-url="{{ path('provider_show_command', {id: provider.id}) }}">
-            <i class="margin-right-5 fa fa-receipt"></i> Commandes
+            <i class="margin-right-5 fa fa-receipt"></i> <span>Commandes</span>
         </button>
         <button class="btn-show d-flex align-items-center" data-name="equipment" data-url="{{ path('provider_show_piece', {id: provider.id}) }}">
-            <i class="margin-right-5 fa fa-cube"></i> Équipement
+            <i class="margin-right-5 fa fa-cube"></i> <span>Équipement</span>
+        </button>
+        <button class="btn-show d-flex align-items-center" data-name="provider.planning" data-url="{{ path('provider_show_planning', {id: provider.id}) }}">
+            <i class="margin-right-5 fa fa-calendar-alt"></i> <span>Planning</span>
         </button>
     </nav>
 {% endblock %}

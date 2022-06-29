@@ -11,6 +11,9 @@ use App\Entity\User;
 use App\Form\Base\EditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
@@ -20,6 +23,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class EventType extends AbstractType
 {
@@ -30,28 +35,35 @@ class EventType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $choices = $this->manager->getRepository(User::class)->findAll();
-        $choices = array_merge($choices, $this->manager->getRepository(Patient::class)->findAll());
+        $choices = $this->manager->getRepository(User::class)->findAllActive();
+        $choices = array_merge($choices, $this->manager->getRepository(Patient::class)->findAllActive());
 
         $builder
-            ->add('title', TextType::class,[
-                "label" => "Titre"
+            ->add('title', TextType::class, [
+                "label" => "Titre",
+                "required" => true,
+                'constraints' => [
+                    new NotBlank(),
+                ]
             ])
             ->add('type', EntityType::class, [
                 "label" => "Type",
-                "class" => \App\Entity\Planning\EventType::class
+                "class" => \App\Entity\Planning\EventType::class,
+                "required" => true
             ])
             ->add('startAt', DateTimeType::class, [
                 'label' => "Date début",
                 'widget' => 'single_text',
-                'input_format' => 'yyyy-MM-dd  HH:mm:ss'
+                'input_format' => 'yyyy-MM-dd  HH:mm:ss',
+                "required" => true
             ])
             ->add('endAt', DateTimeType::class, [
                 'label' => "Date fin",
                 'widget' => 'single_text',
-                'input_format' => 'yyyy-MM-dd  HH:mm:ss'
+                'input_format' => 'yyyy-MM-dd  HH:mm:ss',
+                "required" => true
             ])
-            ->add('description', EditorType::class,[
+            ->add('description', EditorType::class, [
                 "label" => "Description :",
                 "label_attr" => [
                     "class" => "d-block margin-bottom-5"
@@ -61,14 +73,22 @@ class EventType extends AbstractType
                 "label" => "Participants",
                 "required" => false,
                 "choices" => $choices,
-                "mapped" => false,
-                "choice_label" => function($a) { return $a; }
+                "choice_label" => function ($a) {
+                    return $a;
+                }
             ])
             ->add('allDay', CheckboxType::class, [
                 "label" => "Toute la journée",
                 "required" => false
-            ])
-        ;
+            ]);
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvent) {
+            /** @var Event $event */
+            $event = $formEvent->getData();
+            if ($event->getAllDay()) {
+                //$event->setEndAt($event->getEndAt()->modify('-1 day'));
+            }
+        });
 
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $formEvents) {
             /** @var Event $event */
@@ -82,26 +102,46 @@ class EventType extends AbstractType
             $endAt = $event->getEndAt();
 
             // Si le allDay est vrai, on set le temps à minuit et +1j pour le dernier jour
-            if ($event->getAllDay())
-            {
-                $event->setStartAt($startAt->setTime(0, 0 ,0));
-                $event->setEndAt($endAt->setTime(0, 0 ,0)->modify("+1 day"));
+            if ($event->getAllDay()) {
+                $event->setStartAt($startAt->setTime(0, 0, 0));
+                $event->setEndAt($endAt->setTime(0, 0, 0)->modify("+1 day"));
             }
         });
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $formEvents) {
-            /** @var Event $event */
-            $event = $formEvents->getData();
-            $formData = $formEvents->getForm();
 
-            foreach ($formData->get("attendees")->getData() as $participant) {
-                $attendee = new Participant();
-                $attendee->setResourceId($participant->getId());
-                $attendee->setResourceClass($participant::class);
+        $builder->get('attendees')
+            ->addModelTransformer(
+                new class implements DataTransformerInterface {
 
-                $event->addAttendee($attendee);
-            }
-        });
+                    public function transform(mixed $value): array
+                    {
+                        /** @var Participant[] $participants */
+                        $participants = $value->toArray();
+
+                        $data = [];
+                        foreach ($participants as $participant) {
+                            $data[] = $participant->getResource();
+                        }
+
+                        return $data;
+                    }
+
+                    public function reverseTransform(mixed $value): array
+                    {
+                        $data = [];
+
+                        foreach ($value as $item) {
+                            $id = $item->getId();
+
+                            $data[] = (new Participant())
+                                ->setResourceId($id)
+                                ->setResourceClass($item::class);
+                        }
+
+                        return $data;
+                    }
+                }
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

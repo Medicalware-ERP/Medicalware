@@ -2,8 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Doctor;
 use App\Entity\Patient;
 use App\Form\Base\PhoneType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -71,6 +73,25 @@ class PatientType extends AbstractType
                     "M" => "M",
                     "F" => "F"
                 ]
+            ])
+            ->add('bloodGroup', ChoiceType::class, [
+                'label' => 'Groupe sanguin:',
+                'placeholder' => 'Choisir un groupe sanguin: ',
+                "constraints" => [new NotBlank()],
+                "choices" => [
+                    "A+" => "A+",
+                    "A-" => "A-",
+                    "B+" => "B+",
+                    "B-" => "B-",
+                    "AB+" => "AB+",
+                    "AB-" => "AB-",
+                    "O+" => "O+",
+                    "O-" => "O-"
+                ]
+            ])
+            ->add('doctor', EntityType::class, [
+                'class' => Doctor::class,
+                'label' => 'Médecin traitant',
             ])
         ;
     }
