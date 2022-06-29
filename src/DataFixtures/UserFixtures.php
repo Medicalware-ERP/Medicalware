@@ -6,6 +6,7 @@ use App\Entity\Address;
 use App\Entity\User;
 use App\Entity\UserType;
 use App\Enum\UserTypeEnum;
+use DateTime;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -37,7 +38,7 @@ class UserFixtures extends Fixture
             ->setPhoneNumber('0712124578')
             ->setProfession($profession)
             ->setAddress($address)
-            ->setBirthdayDate(new DateTimeImmutable())
+            ->setBirthdayDate((new DateTime())->modify("-13 year"))
             ->setEmail('admin@medicalware.fr')
             ->setIsActive(true)
             ->setGender("M")
@@ -60,7 +61,7 @@ class UserFixtures extends Fixture
             ->setProfession($profession1)
             ->setAddress($address1)
             ->setGender("M")
-            ->setBirthdayDate(new DateTimeImmutable())
+            ->setBirthdayDate((new DateTime())->modify("-33 year"))
             ->setEmail('admin@medicfdfalware.fr')
             ->setIsActive(true)
             ->setRoles(["ROLE_ADMIN"])
@@ -82,7 +83,7 @@ class UserFixtures extends Fixture
             ->setProfession($profession2)
             ->setAddress($address2)
             ->setGender("M")
-            ->setBirthdayDate(new DateTimeImmutable())
+            ->setBirthdayDate((new DateTime())->modify("-53 year"))
             ->setEmail('admin@medicalwafsdfsdre.fr')
             ->setIsActive(true)
             ->setRoles(["ROLE_ADMIN"])
