@@ -33,6 +33,7 @@ class RoleEnum
             UserTypeEnum::STOCK_MANAGER => [self::ROLE_ADMIN_STOCK],
             UserTypeEnum::ACCOUNTANT => [self::ROLE_ACCOUNTANT],
             UserTypeEnum::HEAD_OF_SERVICE => [self::ROLE_ADMIN_SERVICES],
+            default => []
         };
     }
 }

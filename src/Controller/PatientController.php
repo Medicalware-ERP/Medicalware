@@ -15,6 +15,7 @@ use App\Repository\MedicalFileLineRepository;
 use App\Repository\PatientRepository;
 use App\Service\Invoice\InvoiceDataFormatter;
 use App\Service\Patient\PatientDataFormatter;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -25,6 +26,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -90,17 +92,24 @@ class PatientController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->manager->persist($patient);
-            $this->manager->flush();
+            try {
+                $this->manager->persist($patient);
+                $this->manager->flush();
 
-            $resource = new Resource();
-            $resource->setResourceId($patient->getId());
-            $resource->setResourceClass(Patient::class);
+                $resource = new Resource();
+                $resource->setResourceId($patient->getId());
+                $resource->setResourceClass(Patient::class);
 
-            $this->manager->persist($resource);
-            $this->manager->flush();
+                $this->manager->persist($resource);
+                $this->manager->flush();
 
-            return $this->redirectToReferer();
+                return $this->redirectToReferer();
+            }catch (UniqueConstraintViolationException) {
+                $form->get('email')->addError(new FormError("Cette email est déjà utilisé"));
+                return $this->renderForm('patient/form.html.twig', [
+                    'form' => $form
+                ]);
+            }
         }
 
         return $this->renderForm('patient/form.html.twig', [
@@ -117,9 +126,17 @@ class PatientController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->manager->persist($patient);
-            $this->manager->flush();
-            return $this->redirectToReferer();
+            try{
+                $this->manager->persist($patient);
+                $this->manager->flush();
+
+                return $this->redirectToReferer();
+            }catch (UniqueConstraintViolationException) {
+                $form->get('email')->addError(new FormError("Cette email est déjà utilisé"));
+                return $this->renderForm('patient/form.html.twig', [
+                    'form' => $form
+                ]);
+            }
         }
 
         return $this->renderForm('patient/form.html.twig', [
