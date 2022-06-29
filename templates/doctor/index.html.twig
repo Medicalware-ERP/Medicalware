@@ -26,7 +26,11 @@
                 </a>
             </div>
 
-            <table id="table-doctors" class="datatable" data-url="{{ path('doctors_json') }}">
+            <form id="filters">
+                <input type="hidden" name="left" data-field="e.leftAt" data-condition="IS NULL" value="">
+            </form>
+
+            <table id="table-doctors" class="datatable" data-url="{{ path('doctors_json') }}" data-filters="#filters">
                 <thead>
                 <tr>
                     <th>Avatar</th>
