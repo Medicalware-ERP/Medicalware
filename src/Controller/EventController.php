@@ -16,6 +16,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use function App\Service\Planning\getOrCreateResource;
+use function PHPUnit\Framework\throwException;
 
 class EventController extends BaseController
 {
@@ -181,5 +182,41 @@ class EventController extends BaseController
         $events = $this->manager->getRepository(Event::class)->findAllFromResourcesAndAttendees();
 
         return $this->json(["resources" => $resources, "events" => $events ], context: [AbstractNormalizer::GROUPS => [ "main" ] ]);
+    }
+
+    #[Route('/event/period/validity', name: 'event_period_validity')]
+    public function checkEventValididty(Event $event)
+    {
+        dd($event);
+        $eventRepository = $this->manager->getRepository(Event::class);
+        /* TODO : Vérification sur la période de l'event que :
+            - La ressource n'a pas un autre event
+            -Les attendees n'ont pas d'autre event
+        */
+
+        /* TODO : Récupération de TOUT les EVENTS => on attrape tous ceux qui sont lié en ressource ou en attendees
+            à la ressource et aux attendees de CET event et on check si les périodes ce chevauge, si oui on récup l'évent */
+
+        // Vu qu'on récup tous les events de TOUS LE MONDE, les attendees sont afficher en mode ressource
+        // Faire une recherche sur les events between ?
+        $events = $this->manager->getRepository(Event::class)->findAllFromResourcesAndAttendees();
+        $resource = $event->getResource()->getResource();
+        $attendees = $event->getAttendees();
+
+        // On commence d'abord par vérifier les ressources
+
+        // Puis les attendees
+        /** @var Participant $attendee */
+        foreach ($attendees as $attendee)
+        {
+            $startAt = $attendee->getResource()->getStartAt();
+            $endAt = $attendee->getResource()->getEndAt();
+
+            // Ca va marcher que pour les User du coup car patient pas pris en compte dans requete
+            $events = $eventRepository->findEventsInPeriodByUser($attendee->getId(), $startAt, $endAt);
+
+        }
+
+        return true;
     }
 }

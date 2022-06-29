@@ -154,37 +154,51 @@ function editEventDate (info: any) {
     const dateStart = info?.event?.start;
     const dateEnd = info?.event?.end;
 
+    console.log(dateStart,dateEnd );
+
     const dateStartString = info.event.allDay
         ? dateStart?.toLocaleDateString('fr-FR', { timeZone: 'UTC' })
         : dateStart?.toLocaleString('fr-FR', { timeZone: 'UTC' });
 
-    let dateEndString ;
+    let dateEndString: string;
 
     if (info.event.allDay) {
-        dateEnd.setHours(dateEnd.getHours() - 1)
+        dateEnd?.setHours(dateEnd.getHours() - 1)
         dateEndString = dateEnd?.toLocaleDateString('fr-FR', { timeZone: 'UTC' })
     } else {
         dateEndString = dateEnd?.toLocaleString('fr-FR', { timeZone: 'UTC' });
     }
 
-    const text = `Vous allez déplacer l'évènement sur la période du ${dateStartString} au ${dateEndString}`;
+    const checkValidityEventUrl = Routing.generate("event_period_validity", {
+        event: info.event
+    });
 
-    swaleWarning(text).then(res => {
-        if (res.isConfirmed) {
-            const url = Routing.generate("event_edit_time", {
-                id: info?.event?.id,
-                startAt: dateStart?.toISOString(),
-                endAt: dateEnd?.toISOString()
+    axios.get(checkValidityEventUrl)
+        .then(res => {
+            console.log(res);
+
+            const text = `Vous allez déplacer l'évènement sur la période du ${dateStartString} au ${dateEndString}`;
+
+            swaleWarning(text).then(res => {
+                if (res.isConfirmed) {
+                    const url = Routing.generate("event_edit_time", {
+                        id: info?.event?.id,
+                        startAt: dateStart?.toISOString(),
+                        endAt: dateEnd?.toISOString()
+                    });
+
+                    axios.get(url).then();
+                } else {
+                    info.revert();
+                }
             });
 
-            axios.get(url).then();
-        } else {
-            info.revert();
-        }
-    });
+        })
+        .catch(err => console.log(err));
 }
 
 // Demande de confirmation de déplacement d'un évènement (changement de dateTime et de ressource)
+// NOTE : Plus utilisé, mais on garde au cas où ...
 const editEventDateResource = (info: any) => {
     const dateStart = info?.event?.start;
     const dateEnd = info?.event?.end;

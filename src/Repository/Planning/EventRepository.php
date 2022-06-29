@@ -5,7 +5,6 @@ namespace App\Repository\Planning;
 use App\Entity\Planning\Event;
 use App\Entity\Planning\Participant;
 use App\Entity\Planning\Resource;
-use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -117,11 +116,8 @@ class EventRepository extends ServiceEntityRepository
         }
     }
 
-    public function findEventOfTodayByUser($userId)
+    public function findEventsInPeriodByUser($userId, $startAt, $endAt)
     {
-        $startAt = (new DateTime())->setTime(00, 00 , 01, 00);
-        $endAt = (new DateTime())->setTime(23, 59 , 59, 59);
-
         return $this->createQueryBuilder('e')
             ->leftJoin('e.attendees', 'p')
             ->join('e.resource', 'r')

@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use DateTime;
 
 class DashboardController extends AbstractController
 {
@@ -45,7 +46,10 @@ class DashboardController extends AbstractController
         }
         $totalOrderPrices = array_sum($orderPrices);
         $user = $this->getUser()->getId();
-        $eventsOfUserOfToday = $eventRepository->findEventOfTodayByUser($user);
+        $startAt = (new DateTime())->setTime(00, 00 , 01, 00);
+        $endAt = (new DateTime())->setTime(23, 59 , 59, 59);
+
+        $eventsOfUserOfToday = $eventRepository->findEventsInPeriodByUser($user, $startAt, $endAt);
         return $this->render('dashboard/index.html.twig', [
             'countDoctor' => $countDoctor,
             'countUser' => $countUser,
