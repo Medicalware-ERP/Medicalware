@@ -95,7 +95,7 @@ class PatientController extends BaseController
 
             $resource = new Resource();
             $resource->setResourceId($patient->getId());
-            $resource->setResourceClass($patient::class);
+            $resource->setResourceClass(Patient::class);
 
             $this->manager->persist($resource);
             $this->manager->flush();

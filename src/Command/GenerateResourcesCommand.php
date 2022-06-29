@@ -7,6 +7,7 @@ use App\Entity\Planning\Resource;
 use App\Entity\Provider;
 use App\Entity\Room\Room;
 use App\Entity\User;
+use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -67,7 +68,7 @@ class GenerateResourcesCommand extends Command
 
                 $newResource = new Resource();
                 $newResource->setResourceId($entity->getId());
-                $newResource->setResourceClass($entity::class);
+                $newResource->setResourceClass(ClassUtils::getRealClass($entity::class));
 
                 $this->manager->persist($newResource);
             }

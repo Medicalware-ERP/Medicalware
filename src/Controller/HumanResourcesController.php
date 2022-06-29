@@ -91,7 +91,7 @@ class HumanResourcesController extends BaseController
 
                 $resource = new Resource();
                 $resource->setResourceId($user->getId());
-                $resource->setResourceClass($user::class);
+                $resource->setResourceClass(User::class);
 
                 $this->manager->persist($resource);
                 $this->manager->flush();

@@ -66,7 +66,7 @@ class RoomController extends BaseController
 
             $resource = new Resource();
             $resource->setResourceId($room->getId());
-            $resource->setResourceClass($room::class);
+            $resource->setResourceClass(Room::class);
 
             $this->manager->persist($resource);
             $this->manager->flush();

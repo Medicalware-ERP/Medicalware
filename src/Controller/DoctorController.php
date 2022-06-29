@@ -86,7 +86,7 @@ class DoctorController extends BaseController
 
                 $resource = new Resource();
                 $resource->setResourceId($doctor->getId());
-                $resource->setResourceClass($doctor::class);
+                $resource->setResourceClass(Doctor::class);
 
                 $this->manager->persist($resource);
                 $this->manager->flush();
