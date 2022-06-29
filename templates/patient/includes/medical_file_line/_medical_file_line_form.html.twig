@@ -2,7 +2,9 @@
         <td>{{ form_widget(form.doctor) }}</td>
         <td class="label">
             {% if form.vars.value is not null %}
-                {{ form.vars.value.service }}
+                <span class="doctor_service label">
+                    {{ form.vars.value.service }}
+                </span>
             {% else %}
                 <span class="doctor_service label"></span>
             {% endif %}

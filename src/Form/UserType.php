@@ -16,8 +16,8 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -80,6 +80,12 @@ class UserType extends AbstractType
                 ]);
         }
 
+        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+            /** @var User $user */
+            $user = $event->getData();
+
+            $user->setRoles(RoleEnum::getRolesByProfession($user->getProfession()->getSlug()));
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

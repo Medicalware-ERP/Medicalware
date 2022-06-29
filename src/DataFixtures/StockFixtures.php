@@ -26,10 +26,11 @@ class StockFixtures extends Fixture implements DependentFixtureInterface
             $stock = new Stock();
             $equipment = new Equipment();
             $provider  = $providers[rand(0, 19)];
+            $number = $faker->numberBetween(0, 90000);
 
             $equipment
-                ->setReference($faker->name)
-                ->setName($faker->name)
+                ->setReference(strval($number))
+                ->setName("Matériel ".$number)
                 ->setPrice(rand(3, 1000))
                 ->setProvider($provider)
                 ->addService($services[rand(0, 16)])
