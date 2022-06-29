@@ -86,7 +86,7 @@ class EventType extends AbstractType
             /** @var Event $event */
             $event = $formEvent->getData();
             if ($event->getAllDay()) {
-                $event->setEndAt($event->getEndAt()->modify('-1 day'));
+                //$event->setEndAt($event->getEndAt()->modify('-1 day'));
             }
         });
 

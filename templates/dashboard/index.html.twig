@@ -91,7 +91,7 @@
                         {% if eventOfUserFromToday.description %}
                             <span class="title">Description: {{ eventOfUserFromToday.description | raw }}</span>
                         {% endif %}
-                        <span class="title">Crée sur le planning de : {{ eventOfUserFromToday.resource.resource.lastName }} {{ eventOfUserFromToday.resource.resource.firstName }}</span>
+                        <span class="title">Crée sur le planning de : {{ eventOfUserFromToday.resource.resource }} </span>
                     </div>
                     {% else %}
                         <div class="event d-flex align-items-center justify-content-center gap-15">
