@@ -51,7 +51,7 @@
                 {{ form_row(form.invoiceLines) }}
                 <tfoot>
                 <tr>
-                    <td colspan="5">
+                    <td colspan="4">
                         <button
                                 class="btn btn-success"
                                 data-collection-action="addElementToCollection"
@@ -62,8 +62,10 @@
                             Ajouter
                         </button>
                     </td>
-                    <td>
-                        <span data-total-lines></span> €
+                    <td colspan="2">
+                       <p>Total ht :  <span data-total-lines></span> €</p>
+                        <p>Tva : <span data-total-tva></span></p>
+                        <p>Total ttc :  <span data-total-ttc></span> €</p>
                     </td>
                 </tr>
                 </tfoot>

@@ -1,0 +1,102 @@
+{% extends app.request.query.get('isAjax', false) ? 'layout_empty.html.twig' : 'doctor/show.html.twig' %}
+
+{% block content %}
+    <input type="hidden" id="user-id" data-user="{{ doctor.id }}">
+    <div id="user-details-container">
+        <section class="card__informations">
+            <div class="d-flex card card-row align-items-center justify-content-between">
+                <div class="d-none" id="file_form">
+                    {{ render(path('upload_avatar', {id: doctor.id})) }}
+                </div>
+                <p class="p-absolute text-danger" id="error-avatar" style="margin-left: 100px"></p>
+                <div class="p-relative">
+                    <button class="p-absolute" id="uploadImage" style="right: 0;"><i class="fa fa-file-upload text-success"></i></button>
+                    <button class="p-absolute {{ not doctor.avatar ? 'd-none' }}" id="removeImage" data-url="{{ path('remove_avatar', {id: doctor.id}) }}" style="right: 0;bottom: 0"><i class="fa fa-trash text-danger"></i></button>
+
+                    <img id="img_avatar" class="avatar {{ not doctor.avatar ? 'd-none' }}" src="{{ doctor.avatar ? asset('uploads/user/avatar/'~doctor.id~'/'~doctor.avatar ) }}" />
+                    <div id="name_avatar" class="avatar avatar-text {{ doctor.avatar ? 'd-none' }}">
+                        <span>
+                            {{ doctor.firstName|first|upper ~ doctor.lastName|first|upper }}
+                        </span>
+                    </div>
+                </div>
+
+
+                <div class="d-flex align-items-center gap-10">
+                    {% for role in doctor.roles %}
+                        <span class="badge secondary">{{ role }} </span>
+                    {% endfor %}
+                </div>
+            </div>
+            <hr>
+            <h2 class="margin-bottom-20 d-flex align-items-center">Docteur #<span class="pastille {{ doctor.isActive ? "green" : "red" }}"></span>{{ doctor.id }}</h2>
+            <div class="card d-flex">
+                <div class="d-flex align-items-center card card-row justify-content-center bg-grey" style="margin-bottom: -1em">
+                    <div class="w-50">
+                        <div class="margin-bottom-20 d-flex align-items-center">
+                            <span class="label__show">Nom:</span>
+                            <small class="margin-left-20">{{ doctor.lastName }}</small>
+                        </div>
+                        <div class="margin-bottom-20 d-flex align-items-center">
+                            <span class="label__show">Prénom:</span>
+                            <small class="margin-left-20">{{ doctor.firstName }}</small>
+                        </div>
+                        <div class="margin-bottom-20 d-flex align-items-center">
+                            <span class="label__show">Genre:</span>
+                            <small class="margin-left-20">{{ doctor.gender }}</small>
+                        </div>
+                        <div class="margin-bottom-20 d-flex align-items-center">
+                            <span class="label__show">Téléphone:</span>
+                            <small class="margin-left-20">{{ doctor.phoneNumber | split('', 2) |join('.') }}</small>
+                        </div>
+                    </div>
+                    <div class="margin-left-10">
+                        <div class="margin-bottom-20 d-flex align-items-center">
+                            <span class="label__show">Adresse:</span>
+                            <small class="margin-left-20">{{ doctor.address }}</small>
+                        </div>
+                        <div class="margin-bottom-20 d-flex align-items-center">
+                            <span class="label__show">Âge:</span>
+                            <small class="margin-left-20">{{ date().diff(date(doctor.birthdayDate)).y }} ans ({{ doctor.birthdayDate|date('d/m/Y') }})
+                            </small>
+                        </div>
+                        <div class="margin-bottom-20 d-flex align-items-center">
+                            <span class="label__show">A été créé le:</span>
+                            <small class="margin-left-20">{{ doctor.createdAt|date('d/m/Y') }}</small>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="d-flex align-items-center justify-content-center gap-20">
+                    <span class="badge {{ doctor.isActive ? "success" : "danger" }}">{{ doctor.isActive ? 'Actif' : 'Non actif' }}</span>
+                    <span class="badge secondary">{{ doctor.profession }}</span>
+                    <span class="badge secondary">{{ doctor.specialisation }}</span>
+                </div>
+                <div class="row row-actions">
+                    <div class="left-item">
+                        #{{ doctor.id }}
+                    </div>
+                    <div class="right-item">
+                        {% if app.user.id == doctor.id  or is_granted("ROLE_ADMIN") %}
+                            <a id="change_password" data-url="{{ path('user_change_password', {id: doctor.id}) }}" class="btn btn-primary" title="Changer de mot de passe">
+                                <i class="fa fa-key"></i>
+                            </a>
+                        {% endif %}
+                        <a class="btn btn-warning" href="{{ path('app_edit_doctor', {'id': doctor.id}) }}">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        {% if (doctor.isActive)%}
+                            <a id="user-disable" class="btn btn-danger" href="#">
+                                <i class="fa fa-ban"></i>
+                            </a>
+                        {% else %}
+                            <a id="user-enable" class="btn btn-success" href="#">
+                                <i class="fa fa-sun"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

@@ -25,6 +25,11 @@ document.addEventListener('collection.element.removed', (e: Event) => {
 const initTotalInvoice = () => {
     const orderTotalSpan = document.querySelector('[data-total-lines]') as HTMLElement;
     const spanTotalLines = document.querySelectorAll('span[data-total]');
+    const tvaElement     = document.querySelector('#invoice_tva') as HTMLSelectElement;
+    const tva            =  parseFloat(tvaElement.options[tvaElement.selectedIndex].dataset.tva as string);
+    const tvaDisplay     =  tvaElement.options[tvaElement.selectedIndex].dataset.tvaDisplay as string;
+    const tvaResult      = document.querySelector('[data-total-tva]') as HTMLElement;
+    const ttcResult      = document.querySelector('[data-total-ttc]')  as HTMLElement;
 
     let orderTotal = 0;
 
@@ -33,6 +38,8 @@ const initTotalInvoice = () => {
     });
 
     orderTotalSpan.innerHTML = orderTotal.toFixed(2).toString();
+    tvaResult.innerHTML = tvaDisplay;
+    ttcResult.innerHTML = (orderTotal * tva).toFixed(2).toString();
 };
 
 const initInputListener = () => {
@@ -41,6 +48,8 @@ const initInputListener = () => {
             initTotalInvoice();
         });
     });
+
+    $('#invoice_tva')?.addEventListener('change', initTotalInvoice);
 
     $('.price_element', function (elem: HTMLElement) {
         elem.addEventListener('change', function () {

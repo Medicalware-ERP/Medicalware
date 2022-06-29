@@ -21,6 +21,13 @@ class EventTypeRepository extends ServiceEntityRepository
         parent::__construct($registry, EventType::class);
     }
 
+    public function findAllActive()
+    {
+        return $this->findBy([
+            "archivedAt" => null
+        ]);
+    }
+
     /**
      * @throws ORMException
      * @throws OptimisticLockException

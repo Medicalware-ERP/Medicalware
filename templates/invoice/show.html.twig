@@ -30,7 +30,12 @@
                 {% endif %}
 
                 <a href="{{ path('invoice_export_pdf', { id: invoice.id }) }}" class="btn btn-sm btn-primary">Exporter <i class="fa fa-file-download"></i></a>
-                <a href="{{ path('invoice_edit', {id:invoice.id}) }}" class="btn btn-sm btn-primary">Modifier <i class="fa fa-pen"></i></a>
+
+                {% set draft = constant('App\\Enum\\Accounting\\InvoiceStateEnum::DRAFT') %}
+
+                {% if invoice.state.slug == draft %}
+                    <a href="{{ path('invoice_edit', {id:invoice.id}) }}" class="btn btn-sm btn-primary">Modifier <i class="fa fa-pen"></i></a>
+                {% endif %}
             </div>
         </div>
     </div>

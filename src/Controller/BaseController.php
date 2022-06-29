@@ -3,16 +3,30 @@
 namespace App\Controller;
 
 use App\Entity\EntityInterface;
+use App\Entity\User;
 use App\Service\DataFormatterInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
+use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
+use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
 class BaseController extends AbstractController
 {
+    use ResetPasswordControllerTrait;
+
+
     public const LIMIT = 2;
 
     /**
@@ -24,6 +38,7 @@ class BaseController extends AbstractController
             parent::getSubscribedServices(),
             [
                 EntityManagerInterface::class => EntityManagerInterface::class,
+                RequestStack::class => RequestStack::class,
             ],
         );
     }
@@ -55,5 +70,22 @@ class BaseController extends AbstractController
             'totalCount' => $manager->getRepository($entity)->count([])
         ]);
     }
+
+
+    public function redirectToReferer(): RedirectResponse|Response
+    {
+        try{
+            $requestStack = $this->container->get(RequestStack::class);
+        } catch (NotFoundExceptionInterface|ContainerExceptionInterface) {
+            return new Response("Une erreur est survenue");
+        }
+
+        $request = $requestStack->getCurrentRequest();
+
+        $referer = array_values($request->request->all())[0]['referer'] ?? $request->headers->get('referer');
+
+        return $this->redirect($referer);
+    }
+
 
 }

@@ -19,6 +19,7 @@ use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Knp\Snappy\Pdf;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -30,6 +31,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Workflow\Registry;
 use Symfony\Component\Workflow\WorkflowInterface;
 
+#[Security("is_granted('ROLE_ACCOUNTANT') or is_granted('ROLE_DOCTOR')")]
 class InvoiceController extends BaseController
 {
     #[Route('/invoice', name: 'invoice_index')]
@@ -57,6 +59,8 @@ class InvoiceController extends BaseController
             }catch (UniqueConstraintViolationException $exception) {
                 $form->get('reference')->addError(new FormError("Cette référence est déjà utilisé"));
             }
+
+            return $this->redirectToReferer();
         }
 
         return $this->render('invoice/form.html.twig', [
@@ -76,6 +80,8 @@ class InvoiceController extends BaseController
             }catch (UniqueConstraintViolationException $exception) {
                 $form->get('reference')->addError(new FormError("Cette référence est déjà utilisé"));
             }
+
+            return $this->redirectToReferer();
         }
 
         return $this->render('invoice/form.html.twig', [
@@ -103,15 +109,18 @@ class InvoiceController extends BaseController
     }
 
     #[Route('/invoice/{id}/workflow/{transition}', name: 'invoice_workflow_transition')]
-    public function workflowTransition(Request $request, Invoice $invoice, string $transition, Registry $registry): RedirectResponse
+    public function workflowTransition(Request $request, Invoice $invoice, string $transition, Registry $registry, EntityManagerInterface $entityManager): RedirectResponse
     {
         $workflow = $registry->get($invoice, InvoiceStateWorkflow::NAME);
 
         try {
             $workflow->apply($invoice, $transition);
-        }catch (Exception) {
+        }catch (Exception $exception) {
             $this->addFlash('error', 'Une erreur est survenue lors du changement de status');
         }
+
+        $entityManager->persist($invoice);
+        $entityManager->flush();
 
         return $this->redirectToRoute('invoice_show', ['id' => $invoice->getId()]);
     }

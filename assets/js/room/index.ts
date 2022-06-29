@@ -1,19 +1,22 @@
 import generateDatable from "../datatable/datatableGeneric";
-import {$} from "../utils";
+import {$, findInDataset} from "../utils";
 import {swaleDangerAndRedirect, swaleDanger} from "../util/swal";
 import Routing from "../Routing";
-import {openAjaxModal} from "../util/modal";
+import {openAjaxModal, ModalOption} from "../util/modal";
+import {initTypes} from "./index_types";
+import {initOptions} from "./index_options";
+import {importSelect2} from "../app";
 
 const table = $("#table-rooms");
 
-const archiveRoom = () => {
+const onClickArchiveButtons = () => {
     const callback = (e: Event) => {
         e.stopPropagation();
 
         const button = <HTMLInputElement>e.currentTarget;
         const text: string = "Vous êtes sur le point d'archiver une salle."
         const url = Routing.generate('app_archive_room', {
-            id: button.dataset.room
+            id: button.dataset.roomId
         });
 
         swaleDanger(text).then(r => {
@@ -32,108 +35,63 @@ const archiveRoom = () => {
     });
 }
 
-document.addEventListener('datatable.loaded', archiveRoom);
+const onClickEditButtons = () => {
+    // Mise en place du binding pour l'édition d'une salle
+    $(".btn-edit-room", (elem: Node) => {
+        elem.addEventListener('click', (e)=> {
+            const currentButton = <HTMLInputElement>e.currentTarget;
+            const id =  findInDataset(currentButton, 'roomId');
+            const url = Routing.generate('app_edit_room', {id})
 
-document.addEventListener('layout.rooms.loaded', () => {
-    const roomTable = $("#table-rooms");
-    if (!!roomTable) generateDatable(roomTable as HTMLTableElement);
-});
+            const modalOption: ModalOption = {
+                title: "Modifier une salle",
+                removeAction: false
+            }
 
-function initTypes(){
-    // Mise en place du binding pour l'ajout d'un type
-    const addButton = document.querySelector("#btn-add-room-type");
-    addButton?.addEventListener("click", () => {
-        const url = Routing.generate("add_enum",{
-            class : "App\\Entity\\Room\\RoomType"
+            openAjaxModal(url, modalOption);
         });
-        openAjaxModal(url, "Ajouter un type");
-    })
-
-    // Mise en place du binding pour l'édition d'un des types
-    const editTypeCallback = (e: Event) => {
-        const button = <HTMLInputElement>e.currentTarget;
-
-        const url = Routing.generate("edit_enum",{
-            class : "App\\Entity\\Room\\RoomType",
-            id : button.dataset.type
-        });
-        openAjaxModal(url, "Modifier un type");
-    }
-
-    $(".btn-edit-room-type", (elem: Node) => {
-        elem.addEventListener('click', editTypeCallback)
-    });
-
-    // Mise en place du binding pour l'archivage d'un des types
-    const callback = (e: Event) => {
-        e.stopPropagation();
-
-        const buttons = <HTMLInputElement>e.currentTarget;
-        const text: string = "Vous êtes sur le point de supprimer un type de salle."
-        const url = Routing.generate('app_archive_room_type', {
-            id: buttons.dataset.type
-        });
-
-        swaleDangerAndRedirect(text, url);
-    };
-
-    $(".btn-delete-room-type", (elem: Node) => {
-        elem.addEventListener('click', callback)
     });
 }
+
+const initIndex = () => {
+    // Mise en place du binding pour l'ajout d'une salle
+    const addButton = document.querySelector("#btn-add-room");
+    addButton?.addEventListener("click", () => {
+        const url = Routing.generate("app_add_room");
+
+        const modalOption: ModalOption = {
+            title: "Ajouter une salle",
+            removeAction: false
+        }
+
+        openAjaxModal(url, modalOption);
+    });
+}
+
+document.addEventListener('datatable.loaded', () => {
+    onClickArchiveButtons();
+    onClickEditButtons();
+    
+    document.addEventListener("modal.loaded", (e) => {
+        importSelect2(true);
+    });
+});
+
+document.addEventListener('layout.rooms.loaded', () => {
+    initIndex();
+    generateDatable($("#table-rooms") as HTMLTableElement);
+});
 
 document.addEventListener('layout.types.loaded', () => {
     initTypes();
 });
-
-function initOptions(){
-    // Mise en place du binding pour l'ajout d'une option
-    const addButton = document.querySelector("#btn-add-room-option");
-    addButton?.addEventListener("click", () => {
-        const url = Routing.generate("add_enum",{
-            class : "App\\Entity\\Room\\RoomOption"
-        });
-        openAjaxModal(url, "Ajouter une option");
-    })
-
-    // Mise en place du binding pour l'édition d'une des options
-    const editOptionCallback = (e: Event) => {
-        const button = <HTMLInputElement>e.currentTarget;
-
-        const url = Routing.generate("edit_enum",{
-            class : "App\\Entity\\Room\\RoomOption",
-            id : button.dataset.option
-        });
-        openAjaxModal(url, "Modifier une option");
-    }
-
-    $(".btn-edit-room-option", (elem: Node) => {
-        elem.addEventListener('click', editOptionCallback)
-    });
-
-    // Mise en place du binding pour l'archivage d'une option
-    const callback = (e: Event) => {
-        e.stopPropagation();
-
-        const button = <HTMLInputElement>e.currentTarget;
-        const text: string = "Vous êtes sur le point de supprimer une option de salle."
-        const url = Routing.generate('app_archive_room_option', {
-            id: button.dataset.option
-        });
-
-        swaleDangerAndRedirect(text, url);
-    };
-
-    $(".btn-delete-room-option", (elem: Node) => {
-        elem.addEventListener('click', callback)
-    });
-}
 
 document.addEventListener('layout.options.loaded', () => {
     initOptions();
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+    initIndex();
     initTypes();
     initOptions();
 });

@@ -12,7 +12,7 @@ use phpDocumentor\Reflection\Types\String_;
 class Doctor extends User
 {
 
-    #[ORM\ManyToOne(targetEntity: Specialisation::class, inversedBy: 'doctors')]
+    #[ORM\ManyToOne(targetEntity: Specialisation::class, cascade: ['persist'], inversedBy: 'doctors')]
     private ?Specialisation $specialisation = null;
 
     #[ORM\OneToMany(mappedBy: 'doctor', targetEntity: MedicalFileLine::class)]
@@ -20,6 +20,9 @@ class Doctor extends User
 
     #[ORM\OneToMany(mappedBy: 'doctor', targetEntity: Patient::class)]
     private Collection $patients;
+
+    #[ORM\ManyToOne(targetEntity: Service::class, cascade: ['persist'], inversedBy: 'doctors')]
+    private ?Service $service = null;
 
     public function __construct()
     {
@@ -96,14 +99,21 @@ class Doctor extends User
         return $this;
     }
 
-    public function __toString(): string
-    {
-        return $this->getFirstName() . " " . $this->getLastName();
-    }
-
     public function setSpecialisation(?Specialisation $specialisation): self
     {
         $this->specialisation = $specialisation;
+
+        return $this;
+    }
+
+    public function getService(): ?Service
+    {
+        return $this->service;
+    }
+
+    public function setService(?Service $service): self
+    {
+        $this->service = $service;
 
         return $this;
     }

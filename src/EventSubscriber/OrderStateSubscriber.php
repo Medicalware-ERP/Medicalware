@@ -83,7 +83,7 @@ class OrderStateSubscriber implements EventSubscriberInterface
 
         try {
             $html = $this->environment->render('order/email/order_to_validate.html.twig', [
-                'invoice' => $order
+                'order' => $order
             ]);
         } catch (LoaderError|RuntimeError|SyntaxError $e) {
         }

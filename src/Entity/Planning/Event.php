@@ -32,14 +32,6 @@ class Event
     #[Range(minMessage: "La date de fin doit être supérieur à la date de début", minPropertyPath: "startAt")]
     private ?\DateTimeInterface $endAt = null;
 
-    #[ORM\Column(type: 'integer')]
-    #[Groups("main")]
-    private ?int $resourceId = null;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    #[Groups("main")]
-    private ?string $resourceClass = null;
-
     #[ORM\Column(type: 'string', length: 255)]
     #[Groups("main")]
     private ?string $color = null;
@@ -61,9 +53,22 @@ class Event
     #[Groups("main")]
     private bool $allDay = false;
 
+    #[ORM\ManyToOne(targetEntity: Resource::class, inversedBy: 'events', cascade: ["persist"])]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups("main")]
+    private $resource;
+
     public function __construct()
     {
         $this->attendees = new ArrayCollection();
+    }
+
+    // Utiliser dans le cas de la duplication d'un évènement pour l'affichage sur la ressource et les attendees dans le planning
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getId(): ?int
@@ -76,7 +81,7 @@ class Event
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(?string $title): self
     {
         $this->title = $title;
 
@@ -103,30 +108,6 @@ class Event
     public function setEndAt(\DateTimeInterface $endAt): self
     {
         $this->endAt = $endAt;
-
-        return $this;
-    }
-
-    public function getResourceId(): ?int
-    {
-        return $this->resourceId;
-    }
-
-    public function setResourceId(int $resourceId): self
-    {
-        $this->resourceId = $resourceId;
-
-        return $this;
-    }
-
-    public function getResourceClass(): ?string
-    {
-        return $this->resourceClass;
-    }
-
-    public function setResourceClass(string $resourceClass): self
-    {
-        $this->resourceClass = $resourceClass;
 
         return $this;
     }
@@ -207,5 +188,33 @@ class Event
         $this->allDay = $allDay;
 
         return $this;
+    }
+
+    public function getResource(): ?Resource
+    {
+        return $this->resource;
+    }
+
+    public function setResource(?Resource $resource): self
+    {
+        $this->resource = $resource;
+
+        return $this;
+    }
+
+    public function copyEvent(): Event
+    {
+        $newEvent = new Event();
+        $newEvent->setId($this->getId());
+        $newEvent->setTitle($this->getTitle());
+        $newEvent->setType($this->getType());
+        $newEvent->setDescription($this->getDescription());
+        $newEvent->setAllDay($this->getAllDay());
+        $newEvent->setStartAt($this->getStartAt());
+        $newEvent->setEndAt($this->getEndAt());
+        $newEvent->setColor($this->getColor());
+        $newEvent->setResource($this->getResource());
+
+        return $newEvent;
     }
 }
