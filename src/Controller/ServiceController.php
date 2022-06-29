@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Service;
+use App\Enum\RoleEnum;
 use App\Repository\ServiceRepository;
 use App\Service\Service\ServiceDataFormatter;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[IsGranted("ROLE_ADMIN_SERVICE")]
+#[IsGranted(RoleEnum::ROLE_ADMIN_SERVICES)]
 class ServiceController extends BaseController
 {
     public function __construct(private readonly EntityManagerInterface $manager)

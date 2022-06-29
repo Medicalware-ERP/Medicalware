@@ -7,12 +7,12 @@ namespace App\Enum;
 
 class RoleEnum
 {
-    private const ROLE_DOCTOR           = 'ROLE_DOCTOR';
-    private const ROLE_HUMAN_RESOURCE   = 'ROLE_HUMAN_RESOURCE';
-    private const ROLE_SECRETARY        = 'ROLE_SECRETARY';
-    private const ROLE_ACCOUNTANT       = 'ROLE_ACCOUNTANT';
-    private const ROLE_ADMIN_STOCK      = 'ROLE_ADMIN_STOCK';
-    private const ROLE_ADMIN_SERVICES   = 'ROLE_ADMIN_SERVICES';
+    public const ROLE_DOCTOR           = 'ROLE_DOCTOR';
+    public const ROLE_HUMAN_RESOURCE   = 'ROLE_HUMAN_RESOURCE';
+    public const ROLE_SECRETARY        = 'ROLE_SECRETARY';
+    public const ROLE_ACCOUNTANT       = 'ROLE_ACCOUNTANT';
+    public const ROLE_ADMIN_STOCK      = 'ROLE_ADMIN_STOCK';
+    public const ROLE_ADMIN_SERVICES   = 'ROLE_ADMIN_SERVICES';
 
     public static function getChoiceList(): array
     {

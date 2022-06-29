@@ -83,7 +83,7 @@
                 </ul>
             </li>
         {% endif %}
-        {% if is_granted("ROLE_ADMIN_SERVICE") %}
+        {% if is_granted("ROLE_ADMIN_SERVICES") %}
             <li>
                 <a href="{{ path('service_index') }}">
                     <i class="fas fa-cubes"></i>

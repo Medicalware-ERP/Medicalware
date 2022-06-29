@@ -60,6 +60,11 @@
                 {{ form_row(form.bloodGroup) }}
             </div>
         </div>
+        <div class="container__row">
+            <div class="card__row">
+                {{ form_row(form.doctor) }}
+            </div>
+        </div>
         <input type="submit" class="btn btn-success center-input-submit" value="{{ patient is defined ? "Modifier" : "Ajouter" }}">
         {{ form_end(form) }}
     </div>
