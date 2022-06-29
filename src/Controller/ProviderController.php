@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Doctor;
+use App\Entity\Planning\Resource;
 use App\Entity\Provider;
 use App\Form\ProviderType;
 use App\Repository\ProviderRepository;
 use App\Service\Provider\ProviderDataFormatter;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -32,7 +35,7 @@ class ProviderController extends BaseController
     }
 
     #[Route('/provider/add', name: 'provider_add')]
-    public function add(Request $request, ProviderRepository $providerRepository): Response
+    public function add(Request $request, ProviderRepository $providerRepository, EntityManagerInterface $entityManager): Response
     {
         $provider = new Provider();
 
@@ -41,6 +44,12 @@ class ProviderController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $providerRepository->add($provider);
+            $resource = new Resource();
+            $resource->setResourceId($provider->getId());
+            $resource->setResourceClass(Provider::class);
+
+            $entityManager->persist($resource);
+            $entityManager->flush();
             return $this->redirectToReferer();
         }
 

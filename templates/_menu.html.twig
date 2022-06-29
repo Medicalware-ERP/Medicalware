@@ -60,7 +60,7 @@
                     <li><a href="{{ path('invoice_index') }}">Factures</a></li>
                 {% endif %}
                 {% if is_granted("ROLE_ACCOUNTANT") or is_granted("ROLE_ADMIN_STOCK") %}
-                    <li><a href="{{ path('app_doctor') }}">Commandes d'achats</a></li>
+                    <li><a href="{{ path('order_index') }}">Commandes d'achats</a></li>
                 {% endif %}
             </ul>
         </li>

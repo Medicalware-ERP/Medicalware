@@ -39,22 +39,22 @@ export const toggleActive = () => {
 
 document.addEventListener('datatable.loaded', () => {
     toggleActive();
+    if (table instanceof HTMLTableElement) {
+        $('[data-delete]', (btn: HTMLButtonElement) => {
+            const url = findInDataset(btn, 'delete');
 
-    $('[data-delete]', (btn: HTMLButtonElement) => {
-        const url = findInDataset(btn, 'delete');
+            btn.addEventListener('click', () => {
+                swaleDanger('Vous êtes sûr le point de supprimer cet utilisateur').then(r => {
+                    if (r.isConfirmed) {
+                        axios.get(url).then(r => {
 
-        btn.addEventListener('click', () => {
-            swaleDanger('Vous êtes sûr le point de supprimer cet utilisateur').then(r => {
-                if (r.isConfirmed) {
-                    axios.get(url).then(r => {
-                        if (table instanceof HTMLTableElement) {
                             generateDatable(table);
-                        }
-                    })
-                }
+                        })
+                    }
+                })
             })
-        })
-    })
+        });
+    }
 });
 
 if (table instanceof HTMLTableElement) {

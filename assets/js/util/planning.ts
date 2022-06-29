@@ -56,7 +56,6 @@ export const declarePlanning = (planningId: string) => {
             resources: resources,
             events: events,
             eventDataTransform: (data) => {
-                console.log(data, data.resource)
                 // On transforme nos datas event en objet que le calendrier pourra traiter
                 return {
                     id: data.id,
@@ -114,7 +113,6 @@ export const declareCalendar = (calendarId: string, resourceId: number, resource
         timeZone: "UTC",
         events: { url: url },
         eventDataTransform: (data) => {
-            console.log(data)
             // On transforme nos datas event en objet que le calendrier pourra traiter
             return {
                 id: data.id,
@@ -155,7 +153,21 @@ export const declareCalendar = (calendarId: string, resourceId: number, resource
 function editEventDate (info: any) {
     const dateStart = info?.event?.start;
     const dateEnd = info?.event?.end;
-    const text = `Vous allez déplacer l'évènement sur la période du ${dateStart?.toLocaleString('fr-FR', { timeZone: 'UTC' })} au ${dateEnd?.toLocaleString('fr-FR', { timeZone: 'UTC' })}`;
+
+    const dateStartString = info.event.allDay
+        ? dateStart?.toLocaleDateString('fr-FR', { timeZone: 'UTC' })
+        : dateStart?.toLocaleString('fr-FR', { timeZone: 'UTC' });
+
+    let dateEndString ;
+
+    if (info.event.allDay) {
+        dateEnd.setHours(dateEnd.getHours() - 1)
+        dateEndString = dateEnd?.toLocaleDateString('fr-FR', { timeZone: 'UTC' })
+    } else {
+        dateEndString = dateEnd?.toLocaleString('fr-FR', { timeZone: 'UTC' });
+    }
+
+    const text = `Vous allez déplacer l'évènement sur la période du ${dateStartString} au ${dateEndString}`;
 
     swaleWarning(text).then(res => {
         if (res.isConfirmed) {

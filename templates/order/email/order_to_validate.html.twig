@@ -41,17 +41,18 @@
     </style>
 </head>
 <body>
+    {# @var order \App\Entity\Accounting\Order #}
     <div class="center">
         <img src="{{ absolute_url(asset('build/images/logo.png')) }}" alt="logo" width="150"/>
         <h2 class="logo_name">MedicalWare</h2>
     </div>
     <div class="center">
-        <h4>Vous avez une nouvelle facture à valider</h4>
-        <p>Réference {{ invoice.reference }}</p>
-        <p>Date {{ invoice.date| date('d/m/Y') }}</p>
-        <p>Total TTC {{ invoice.ttc|format_currency('EUR', [], 'fr_FR') }}</p>
+        <h4>Vous avez une nouvelle commande d'achat à valider</h4>
+        <p>Réference {{ order.reference }}</p>
+        <p>Date prévue de livraison {{ order.deliveryPlannedDate | date('d/m/Y') }}</p>
+        <p>Total TTC {{ order.ttc|format_currency('EUR', [], 'fr_FR') }}</p>
 
-        <a href="{{ absolute_url(path('invoice_show', {id: invoice.id})) }}" class="btn btn-primary">Voir la facture</a>
+        <a href="{{ absolute_url(path('order_show', {id: order.id})) }}" class="btn btn-primary">Voir la commande</a>
     </div>
 </body>
 </html>
