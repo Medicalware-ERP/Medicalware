@@ -10,6 +10,7 @@ use App\Entity\UserType;
 use App\Enum\ServiceEnum;
 use App\Enum\SpecialisationEnum;
 use App\Enum\UserTypeEnum;
+use DateTime;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -59,7 +60,7 @@ class DoctorFixtures extends Fixture
                 ->setPhoneNumber("06". $numberTrunced)
                 ->setProfession($profession)
                 ->setAddress($address)
-                ->setBirthdayDate(new DateTimeImmutable())
+                ->setBirthdayDate((new DateTime())->modify("-33 year"))
                 ->setEmail($faker->email)
                 ->setIsActive(false)
                 ->setGender("H")
