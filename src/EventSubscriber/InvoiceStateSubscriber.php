@@ -106,7 +106,7 @@ class InvoiceStateSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $emails = $invoice?->getPatient()->getEmail() ?? [];
+        $emails = $invoice->getPatient()?->getEmail() ?? [];
 
         $html = '';
         $pdfHtml = "";
@@ -127,10 +127,10 @@ class InvoiceStateSubscriber implements EventSubscriberInterface
         $pdfGenerated = $this->pdf->getOutputFromHtml($pdfHtml);
 
 
-        if (count($emails) > 0) {
+        if ($emails) {
             $email = (new Email())
                 ->from('admin@medicalware.com')
-                ->to(...$emails)
+                ->to($emails)
                 ->subject('Vous avez une nouvelle ')
                 ->html($html)
                 ->attach($pdfGenerated, sprintf('facture-%s.pdf', date('Y-m-d')))
