@@ -10,8 +10,8 @@
                 </div>
                 <p class="p-absolute text-danger" id="error-avatar" style="margin-left: 100px"></p>
                 <div class="p-relative">
-                    <button class="p-absolute" id="uploadImage" style="right: 0;"><i class="fa fa-file-upload text-success"></i></button>
-                    <button class="p-absolute {{ not doctor.avatar ? 'd-none' }}" id="removeImage" data-url="{{ path('remove_avatar', {id: doctor.id}) }}" style="right: 0;bottom: 0"><i class="fa fa-trash text-danger"></i></button>
+                    <button class="btn btn-xs btn-success p-absolute" id="uploadImage" style="top:-10px;right: 0;"><i class="fa fa-file-upload text-white"></i></button>
+                    <button class="btn btn-xs btn-danger p-absolute {{ not doctor.avatar ? 'd-none' }}" id="removeImage" data-url="{{ path('remove_avatar', {id: doctor.id}) }}" style="right: 0;bottom: 0"><i class="fa fa-trash text-white"></i></button>
 
                     <img id="img_avatar" class="avatar {{ not doctor.avatar ? 'd-none' }}" src="{{ doctor.avatar ? asset('uploads/user/avatar/'~doctor.id~'/'~doctor.avatar ) }}" />
                     <div id="name_avatar" class="avatar avatar-text {{ doctor.avatar ? 'd-none' }}">
