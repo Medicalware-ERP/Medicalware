@@ -6,9 +6,6 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Facture {{ invoice }}</title>
-    {% if pdfEmail is not defined %}
-        <link rel="stylesheet" href="{{ absolute_url(asset('build/app.css')) }}">
-    {% endif %}
     <style>
         hr{
             height: 1px;
@@ -16,9 +13,52 @@
             border: none;
             margin: 1rem 0;
         }
-        td{
+        .margin-top-20 {
+            margin-top: 20px;
+        }
+        .margin-bottom-15{
+            margin-bottom: 15px;
+        }
+        .padding-10 {
+            padding: 10px;
+        }
+        .d-flex {
+            display: flex;
+        }
+        .justify-content-between {
+            justify-content: space-between;
+        }
+        .datatable {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: #eef2f7;
+        }
+
+        th {
+            color: #313a46;
+            font-weight: 500;
+            text-align: left;
+            border-bottom: 1px solid #edeff1;
+            padding: 0.95rem;
+        }
+
+        td {
+            color: #9a898f;
+            font-weight: 100;
+            text-align: left;
+            border-bottom: 1px solid #edeff1;
+            padding: 0.95rem;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
             word-break: break-word;
-            white-space:nowrap;
+        }
+
+        tr {
+            position: relative;
         }
     </style>
 </head>
