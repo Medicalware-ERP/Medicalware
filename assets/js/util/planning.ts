@@ -56,7 +56,6 @@ export const declarePlanning = (planningId: string) => {
             resources: resources,
             events: events,
             eventDataTransform: (data) => {
-                console.log(data, data.resource)
                 // On transforme nos datas event en objet que le calendrier pourra traiter
                 return {
                     id: data.id,
@@ -114,7 +113,6 @@ export const declareCalendar = (calendarId: string, resourceId: number, resource
         timeZone: "UTC",
         events: { url: url },
         eventDataTransform: (data) => {
-            console.log(data)
             // On transforme nos datas event en objet que le calendrier pourra traiter
             return {
                 id: data.id,
